@@ -4,6 +4,7 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   modules: ["@nuxt/eslint", "@nuxt/fonts"],
   app: {
+    baseURL: process.env.NODE_ENV === 'production' ? '/nuxt_front_app/' : '/',
     head: {
       title: "Фронтенд 2024-2025 на Vue",
       htmlAttrs: {
