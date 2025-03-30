@@ -1,4 +1,4 @@
-# Nuxt Minimal Starter
+# Сайт курса "Фронтенд 2024-2025" на Vue
 
 Look at the [Nuxt documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
 
