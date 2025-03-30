@@ -1,4 +1,3 @@
-<!-- eslint-disable vue/no-multiple-template-root -->
 <template>
   <header class="links">
     <NuxtLink to="/">Главная</NuxtLink>

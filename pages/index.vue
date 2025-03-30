@@ -10,7 +10,6 @@ useHead({
 });
 </script>
 
-<!-- eslint-disable vue/no-multiple-template-root -->
 <template>
   <h1>Сайт курса "Фронтенд 2024-2025, ИТМО"</h1>
   <p>Сделан на Vue, Nuxt.</p>
