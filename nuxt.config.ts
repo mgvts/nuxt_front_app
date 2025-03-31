@@ -14,7 +14,13 @@ export default defineNuxtConfig({
       viewport: "width=device-width, initial-scale=1",
     },
   },
-  components: [{path:"~/components/UI/", prefix: "UI"}, "~/components/"],
+  components: [
+    { 
+      path: "~/components/UI/",
+      prefix: "UI"
+    },
+    "~/components/"
+  ],
   css: ["~/assets/css/main.css"],
   typescript: {
     strict: true,
