@@ -31,7 +31,7 @@ const props = defineProps({
 	</NuxtLink>
 </template>
 
-<style lang="css" scoped>
+<style scoped lang="css">
 .link {
     text-decoration: none;
 }

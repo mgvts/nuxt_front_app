@@ -33,7 +33,7 @@ const props = defineProps({
 .link-style {
     display: inline-block;
     font-family: var(--font-kantumruy);
-    line-height: normal;
+    line-height: 1;
 }
 
 .link {
