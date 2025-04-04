@@ -1,0 +1,55 @@
+<script setup lang="ts">
+export type SizeValues = 'link' | 'text' | 'upper'
+
+const props = defineProps({
+    color: {
+        type: String,
+        default: 'black'
+    },
+    isFirstLetter: {
+        type: Boolean,
+        default: false,
+    },
+    size: {
+        type: String as PropType<SizeValues>,
+        default: 'text'
+    }
+});
+
+</script>
+
+<template>
+    <span
+        class="link-style" 
+        :class="[props.size, props.isFirstLetter ? 'capital' : '']"
+        :style="{ color: props.color }"
+        v-bind="$attrs"
+    >
+        <slot />
+    </span>
+</template>
+
+<style scoped lang="css">
+.link-style {
+    display: inline-block;
+    font-family: var(--font-kantumruy);
+}
+
+.link {
+    font-size: 50px;
+}
+
+.text {
+    font-size: 70px;
+}
+
+.upper {
+    font-size: 50px;
+}
+
+.capital::first-letter {
+    font-family: var(--font-katari);
+    font-size: 120px;
+    color: var(--violet);
+}
+</style>

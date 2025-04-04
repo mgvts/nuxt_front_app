@@ -1,29 +1,37 @@
 <script setup lang="ts">
 const props = defineProps({
-	text: {
-		type: String,
-		required: true,
-	},
 	to: {
 		type: String,
 		required: true,
 	},
-	animate: {
-		type: Boolean,
-		default: false,
+	color: {
+		type: String,
+		default: 'transparent',
 	},
+	target: {
+		type: String,
+		default: undefined
+	}
 })
 </script>
 
 <template>
-	<NuxtLink :to="props.to" :class="{ animate }">
-		{{ text }}
+	<NuxtLink 
+		:to="props.to" 
+		:target="props.target" 
+		class="link"
+	>
+		<UIText 
+			:color="props.color"
+			v-bind="$attrs"
+		>
+			<slot />
+		</UIText>
 	</NuxtLink>
 </template>
 
-<style scoped lang="css">
-.animate {
-	color: red;
-	text-decoration: none;
+<style lang="css" scoped>
+.link {
+    text-decoration: none;
 }
 </style>
