@@ -63,7 +63,7 @@ const userImgMap = {
         Leave a review about the course:
       </UIText>
       <UIText color="white" style="margin: 40px auto 0 75px">
-        <a href="t.me/@olegmokov">@olegmokov</a>
+        <a href="https://t.me/@olegmokov">@olegmokov</a>
       </UIText>
     </div>
   </div>
