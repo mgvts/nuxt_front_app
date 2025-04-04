@@ -1,0 +1,1 @@
+[nuxt 3 link](https://nuxt.com/docs/guide/directory-structure/pages)

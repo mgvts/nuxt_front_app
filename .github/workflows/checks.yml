@@ -1,0 +1,30 @@
+name: Lint & TypeScript Check
+
+on:
+  pull_request:
+    branches:
+      - main
+      - master
+
+jobs:
+  lint-ts:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run ESLint
+        run: npm run lint
+
+      - name: Run TypeScript Check
+        run: npm run type-check

@@ -8,7 +8,13 @@ export default withNuxt([
       "@typescript-eslint/no-unused-vars": "warn",
     },
   },
-
+  {
+    files: ["**/*.ts", "**/*.vue"],
+    rules: {
+      "@typescript-eslint/no-unused-vars": "warn",
+      "eol-last": ["error", "always"] 
+    },
+  },
   {
     files: ["**/*.vue"],
     rules: {

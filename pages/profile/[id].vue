@@ -1,19 +1,19 @@
 <script setup lang="ts">
-import type { User } from "~/server/api/users/[id]";
 
 const route = useRoute();
-const userId = route.params.id;
+const userId = route.params.id as string;
+const { fetchUserById } = useUsers()
+
 useHead({
-  title: userId as string,
+  title: userId,
   meta: [
     { name: "description", content: `Профиль лектора с id ${route.params.id}` },
   ],
 });
-const user: User = await $fetch(`/api/users/${userId}`);
+
+const user = await fetchUserById(userId);
 </script>
 
-// @TODO: разнести это все по компонентам 
-// и сделать красиво
 <template>
   <div>
     <h1>{{ user.name ?? route.params.id }}</h1>
