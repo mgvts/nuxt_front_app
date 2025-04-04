@@ -4,7 +4,7 @@ export default defineNuxtConfig({
   devtools: {
     enabled: true,
   },
-  modules: ["@nuxt/eslint", "@nuxt/fonts"],
+  modules: ["@nuxt/eslint", "@nuxt/fonts", "vuetify-nuxt-module"],
   app: {
     head: {
       title: "Фронтенд 2024-2025 на Vue",
@@ -25,4 +25,10 @@ export default defineNuxtConfig({
   typescript: {
     strict: true,
   },
+  vuetify: {
+    moduleOptions: {
+      /* module specific options */
+    },
+    vuetifyOptions: './plugins/vuetify.config.ts' 
+  }
 });

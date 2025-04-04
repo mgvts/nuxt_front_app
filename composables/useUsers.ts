@@ -1,9 +1,10 @@
+// composables/useUsers.ts
 import type { User } from '~/types/user';
 import { useApi } from './useApi';
 
 export function useUsers() {
-  const fetchUsers = () => useApi<User[]>('/api/users').data;
+  const { data: users, error, refresh } = useApi<User[]>('/api/users');
   const fetchUserById = (id: User['id']) => useApi<User>(`/api/users/${id}`).data;
 
-  return { fetchUsers, fetchUserById };
+  return { users, error, refresh, fetchUserById };
 }

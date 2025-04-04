@@ -1,17 +1,16 @@
 <template>
-  <header class="links">
-    <NuxtLink to="/">Главная</NuxtLink>
-    <NuxtLink to="/profile">Профили</NuxtLink>
-  </header>
-  <main>
-    <slot />
-  </main>
+  <VLayout class="flex-column">
+    <UINavbar />
+    <main class="main-layout">
+      <slot />
+    </main>
+  </VLayout>
 </template>
 
-<style scoped>
-.links {
-  display: flex;
-  gap: 1rem;
-  padding: 1rem 0;
+<style scoped lang="css">
+.main-layout {
+  padding-top: 240px;
+  width: 1312px;
+  margin: auto;
 }
 </style>

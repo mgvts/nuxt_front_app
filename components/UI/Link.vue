@@ -2,11 +2,11 @@
 const props = defineProps({
 	to: {
 		type: String,
-		required: true,
+		default: undefined
 	},
 	color: {
 		type: String,
-		default: undefined,
+		default: undefined
 	},
 	target: {
 		type: String,
@@ -34,5 +34,8 @@ const props = defineProps({
 <style scoped lang="css">
 .link {
     text-decoration: none;
+}
+.link:hover {
+	text-decoration: underline;
 }
 </style>

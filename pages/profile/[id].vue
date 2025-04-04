@@ -1,58 +1,112 @@
 <script setup lang="ts">
+import type { User } from '~/types/user';
+import { useApi } from '~/composables/useApi';
+import { useRoute, useHead } from '#imports';
 
 const route = useRoute();
 const userId = route.params.id as string;
-const { fetchUserById } = useUsers()
+
+const { data: user, error } = useApi<User>(`/api/users/${userId}`);
 
 useHead({
-  title: userId,
-  meta: [
-    { name: "description", content: `Профиль лектора с id ${route.params.id}` },
-  ],
+  title: "Профиль пользователя",
+  meta: [{ name: "description", content: "Детали профиля пользователя" }],
 });
+const getSplitName = computed(() => user.value?.name?.split(' '))
+const contactMap = {
+  email: 'mailto:',
+  tg: 't.me/'
+}
 
-const user = await fetchUserById(userId);
+const createContactHref = (c) => `${contactMap[c.type]}${c.contact}` 
 </script>
 
 <template>
   <div>
-    <h1>{{ user.name ?? route.params.id }}</h1>
-    <h2>Образование</h2>
-    <div v-for="(edu, index) in user.education" :key="index">
-      <div>
-        <h3>{{ edu.name }}</h3>
-        <div>{{ edu.degree }}</div>
-        <div>
-          <span>{{ edu.startDate }}</span>
-          &mdash;
-          <span>{{ edu.endDate }}</span>
+    <div v-if="error">
+      Ошибка загрузки пользователя.
+    </div>
+    <div v-else-if="!user">
+      Загрузка...
+    </div>
+    <article v-if="user" class="container">
+      <section class="user-info">
+        <div class="avatar" />
+        <div class="info">
+          <div>
+            <UIText is-first-letter>{{ getSplitName?.[0] }}</UIText>&nbsp;
+            <UIText is-first-letter>{{ getSplitName?.[1] }}</UIText>
+          </div>
+          <!-- todo here need add wrapper if >3 then need ellipsis else must render as col -->
+          <div>
+            <div v-for="ed of user.education" :key="ed.id">
+              <UIText size="link">
+                {{ ed.name }} {{ ed.startDate }}-{{ ed.endDate }}
+              </UIText>
+            </div>
+          </div>
+
         </div>
-      </div>
-    </div>
-    <h2>Опыт работы</h2>
-    <div v-for="(company, index) in user.workExperience" :key="index">
-      <div>
-        <h3>{{ company.companyName }}</h3>
-        <div>{{ company.jobName }}</div>
-        <div class="dates">
-          <span>{{ company.startDate }}</span>
-          &mdash;
-          <span>{{ company.endDate }}</span>
+      </section>
+      <section class="user-lection">
+        <div style="width: fit-content;" class="ma-auto h-100 d-flex align-center">
+          <UIText>
+            here will be link on lecture
+          </UIText>
         </div>
-        <div>{{ company.description }}</div>
-      </div>
-    </div>
-    <div v-for="(skill, index) in user.skills" :key="index">
-      <div>
-        <h3>{{ skill.skillName }}</h3>
-        <div>{{ skill.proficiency }}</div>
-      </div>
-    </div>
-	<div v-for="(contact, index) in user.contacts" :key="index">
-      <div>
-        <h3>{{ contact.type }}</h3>
-        <div>{{ contact.contact }}</div>
-      </div>
-    </div>
+      </section>
+      <section class="user-work">
+
+      </section>
+      <section class="user-skills">
+
+      </section>
+      <section class="user-contact">
+        <UIText>contacts:</UIText>
+        <div class="links-grid">
+
+        </div>
+        <div v-for="contact of user.contacts" :key="contact.id">
+          <UILink :href="createContactHref(contact)">{{ contact.contact }}</UILink>
+        </div>
+      </section>
+    </article>
   </div>
 </template>
+
+<style lang="css" scoped>
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.user-info {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 20px;
+
+  .avatar {
+    background: lightblue;
+    border-radius: 50%;
+    height: 300px;
+    width: 300px;
+  }
+}
+
+.user-lection {
+  width: 100%;
+  height: 900px;
+  background: lightcyan;
+  border-radius: 50px;
+}
+
+.user-info {
+  .links-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+}
+</style>

@@ -1,28 +1,28 @@
 <script setup lang="ts">
+import { useUsers } from '~/composables/useUsers';
+import { useHead } from '#imports';
+
 useHead({
-  title: "Профили",
-  meta: [{ name: "description", content: "Профили лекторов" }],
+  title: "Профили лекторов",
+  meta: [{ name: "description", content: "Профили лекторов курса" }],
 });
+
+const { users, error } = useUsers();
 </script>
 
 <template>
   <div>
     <h1>Профили лекторов курса</h1>
-    <ul class="profile-list">
-      <li><NuxtLink to="/profile/mgvts">Влад Целиков</NuxtLink></li>
-      <li><NuxtLink to="/profile/kirat_0">Артемий Казаков</NuxtLink></li>
-      <li><NuxtLink to="/profile/awakywaky">Александра Шипилова</NuxtLink></li>
-      <li><NuxtLink to="/profile/ArtyomShvetsov">Артём Швецов</NuxtLink></li>
+    <div v-if="error">
+      {{ error }}
+    </div>
+    <div v-else-if="!users || !users.length">
+      Loading...
+    </div>
+    <ul v-else class="profile-list">
+      <li v-for="user in users" :key="user.id">
+        <UILink :to="`/profile/${user.id}`">{{ user.name }}</UILink>
+      </li>
     </ul>
   </div>
 </template>
-
-<style scoped>
-.profile-list {
-  padding: 0;
-}
-.profile-list > li {
-  list-style: none;
-  padding: 0.5rem 0;
-}
-</style>

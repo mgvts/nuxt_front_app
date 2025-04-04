@@ -4,7 +4,7 @@ import logo from '~/assets/img/logo.svg'
 const links = [
     { to: '/', text: 'info' },
     { to: '/profile', text: 'profile' },
-    { to: '/lecture', text: 'lecture' },
+    { to: '/profile', text: 'profile2' },
 ]
 </script>
 
