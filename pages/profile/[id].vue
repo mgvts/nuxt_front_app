@@ -19,6 +19,13 @@ const contactMap = {
 }
 
 const createContactHref = (c) => `${contactMap[c.type]}${c.contact}` 
+// todo это поедет если поменяются id
+const userImgMap = {
+  15: '/images/art-shvetsov.png',
+  17: '/images/sasha.png',
+  21: '/images/artemii.png',
+  22: '/images/vlad.png'
+}
 </script>
 
 <template>
@@ -31,7 +38,9 @@ const createContactHref = (c) => `${contactMap[c.type]}${c.contact}`
     </div>
     <article v-if="user" class="container">
       <section class="user-info">
-        <div class="avatar" />
+        <div class="avatar" >
+          <img :src="userImgMap[user.id]" height="300" width="300" :alt="user.name">
+        </div>
         <div class="info">
           <div>
             <UIText is-first-letter>{{ getSplitName?.[0] }}</UIText>&nbsp;
@@ -88,8 +97,6 @@ const createContactHref = (c) => `${contactMap[c.type]}${c.contact}`
   gap: 20px;
 
   .avatar {
-    background: lightblue;
-    border-radius: 50%;
     height: 300px;
     width: 300px;
   }

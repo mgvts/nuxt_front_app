@@ -8,6 +8,15 @@ useHead({
     },
   ],
 });
+const { users, error } = useUsers();
+
+// todo это поедет если поменяются id
+const userImgMap = {
+  15: '/images/art-shvetsov.png',
+  17: '/images/sasha.png',
+  21: '/images/artemii.png',
+  22: '/images/vlad.png'
+}
 </script>
 
 <template>
@@ -39,28 +48,22 @@ useHead({
         You create the code - we help you grow!
       </UIText>
     </div>
-    <div class="cards profiles">
-      <img src="/images/arrow.png" width="57" height="57" alt="arrow" class="arrow-left">
-      <UILink to="profile/ArtyomShvetsov">
-        <img src="/images/art-shvetsov.png" height="220" width="220" alt="Artyom Shvetsov">
-      </UILink>
-      <UILink to="profile/awakywaky">
-        <img src="/images/sasha.png" height="220" width="220" alt="Sasha">
-      </UILink>
-      <UILink to="profile/kirat_0">
-        <img src="/images/artemii.png" height="220" width="220" alt="Artemii">
-      </UILink>
-      <UILink to="profile/mgvts">
-        <img src="/images/vlad.png" height="220" width="220" alt="Vlad">
-      </UILink>
-      <img src="/images/arrow.png" width="57" height="57" alt="arrow" class="arrow-right">
+    <div v-if="error">Ошибка при загрузке пользователей</div>
+    <div v-if="users">
+      <div class="cards profiles">
+        <img src="/images/arrow.png" width="57" height="57" alt="arrow" class="arrow-left">
+        <UILink v-for="user of users" :to="`./profile/${user.id}`">
+          <img :src="userImgMap[user.id]" height="220" width="220" :alt="user.name">
+        </UILink>
+        <img src="/images/arrow.png" width="57" height="57" alt="arrow" class="arrow-right">
+      </div>
     </div>
     <div class="review">
       <UIText color="white" is-first-letter style="margin: 20px auto 0 75px;">
         Leave a review about the course:
       </UIText>
       <UIText color="white" style="margin: 40px auto 0 75px">
-        @olegmokov
+        <a href="t.me/@olegmokov">@olegmokov</a>
       </UIText>
     </div>
   </div>
