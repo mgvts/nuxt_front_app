@@ -8,10 +8,6 @@ const props = defineProps({
     type: String,
     default: undefined,
   },
-  baseWidth: {
-    type: String,
-    default: '264px',
-  }
 })
 </script>
 
@@ -21,7 +17,6 @@ const props = defineProps({
     :style="{
       backgroundColor: props.color, 
       color: props.textColor,
-      flex: `0 0 ${props.baseWidth}`,
     }"
   >
     <div class="card-content">
@@ -33,7 +28,8 @@ const props = defineProps({
 <style scoped>
 .card {
   width: 100%;
-  height: 188px;
+  height: auto;
+  aspect-ratio: 264/188;
   border-radius: 40px;
   background-color: #fff;
   box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
@@ -47,5 +43,12 @@ const props = defineProps({
 .card-content {
   width: 100%;
   padding: 16px;
+}
+
+@media (max-width: 768px) {
+  .card {
+    max-width: 264px;
+    max-height: 188px;
+  }
 }
 </style>

@@ -72,6 +72,9 @@ useHead({
       <UIText color="white" is-first-letter style="margin: 20px auto 0 75px;">
         Leave a review about the course:
       </UIText>
+      <UIText color="white" style="margin: 40px auto 0 75px">
+        @olegmokov
+      </UIText>
     </div>
   </UIColumn>
 </template>
@@ -89,35 +92,17 @@ main {
 }
 
 .cards {
-  max-width: 100%;
+  width: 100%;
   display: flex;
-  flex-wrap: wrap;
   gap: 42px;
-  margin: 37px auto 0;
+  margin: 50px auto 0;
+  align-items: center;
   justify-content: center;
-}
-
-@media (max-width: 768px) {
-  .cards {
-    gap: 20px;
-  }
-  
-  .card {
-    flex: 0 0 calc(50% - 20px);
-    height: auto;
-    min-height: 150px;
-  }
-}
-
-@media (max-width: 480px) {
-  .card {
-    flex: 0 0 100%;
-  }
 }
 
 .profiles {
   margin-top: 144px;
-  gap: 61px;
+  gap: 40px;
 }
 
 .arrow-left {
@@ -143,32 +128,23 @@ main {
 .responsive-image {
   width: 100%;
   height: auto;
-  max-width: 220px;
-  max-height: 220px;
-  object-fit: contain;
-  transition: all 0.3s ease;
-}
-
-@media (min-width: 768px) {
-  .responsive-image {
-    max-width: 260px;
-    max-height: 260px;
-  }
-}
-
-@media (min-width: 1200px) {
-  .responsive-image {
-    max-width: 300px;
-    max-height: 300px;
-  }
+  aspect-ratio: 1;
 }
 
 .review {
-  width: 1318px;
-  height: 557px;
+  max-width: 1318px;
+  height: auto;
+  aspect-ratio: 1318/557;
   margin: 89px auto;
   background: black;
   border-radius: 50px;
+}
+
+@media (max-width: 1200px) {
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+  }
 }
 
 </style>
