@@ -4,7 +4,7 @@ export type SizeValues = 'link' | 'text' | 'upper'
 const props = defineProps({
     color: {
         type: String,
-        default: 'black'
+        default: undefined
     },
     isFirstLetter: {
         type: Boolean,
@@ -33,6 +33,7 @@ const props = defineProps({
 .link-style {
     display: inline-block;
     font-family: var(--font-kantumruy);
+    line-height: normal;
 }
 
 .link {

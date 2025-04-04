@@ -6,7 +6,7 @@ const props = defineProps({
 	},
 	color: {
 		type: String,
-		default: 'transparent',
+		default: undefined,
 	},
 	target: {
 		type: String,
@@ -23,6 +23,7 @@ const props = defineProps({
 	>
 		<UIText 
 			:color="props.color"
+			size="link"
 			v-bind="$attrs"
 		>
 			<slot />
