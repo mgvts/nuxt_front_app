@@ -11,35 +11,8 @@ useHead({
 </script>
 
 <template>
-<<<<<<< HEAD
-  <h1>Сайт курса "Фронтенд 2024-2025, ИТМО"</h1>
-  <p>Сделан на Vue, Nuxt.</p>
-  <UILink to="/profile" text="Профили лекторов" />
-  <div style="border: thin solid black; padding: 20px; margin: 20px; display: flex; flex-direction: column; gap: 200px">
-    <li>
-      this text Comp:
-      <UIText
-        is-first-letter
-      >lorem 123123123123</UIText>
-    </li>
-    <li>
-      this text Lint:
-        <UILink 
-          to="./profile" 
-          color="red" 
-          font="link"
-        >profiles</UILink>
-    </li>
-  </div>
-=======
-  <UIColumn>
-    <img
-      class="itmo-img"
-      src="/images/itmo-uni.png"
-      width="1319"
-      height="589"
-      alt="ITMO University"
-    >
+  <div>
+    <img class="itmo-img" src="/images/itmo-uni.png" width="1319" height="589" alt="ITMO University">
     <div class="cards">
       <img src="/images/arrow.png" width="57" height="57" alt="arrow" class="arrow-left">
       <UIMainNavigationCard>
@@ -57,19 +30,12 @@ useHead({
       <img src="/images/arrow.png" width="57" height="57" alt="arrow" class="arrow-right">
     </div>
     <div class="first-text">
-      <UIText 
-        is-first-letter
-        size="text"
-      >
+      <UIText is-first-letter size="text">
         From knowledge to code: Improve your skills with the best frontend lecturers!
       </UIText>
     </div>
     <div class="second-text">
-      <UIText
-        is-first-letter
-        size="text"
-        style="margin-top: 130px; text-align: center;"
-      >
+      <UIText is-first-letter size="text" style="margin-top: 130px; text-align: center;">
         You create the code - we help you grow!
       </UIText>
     </div>
@@ -97,15 +63,10 @@ useHead({
         @olegmokov
       </UIText>
     </div>
-  </UIColumn>
->>>>>>> 47003c5c1ea44c8b129a5a971d0cc519baedea91
+  </div>
 </template>
 
 <style scoped>
-main {
-  margin: 60px;
-}
-
 .itmo-img {
   width: 100%;
   height: auto;
@@ -168,5 +129,4 @@ main {
     grid-template-columns: repeat(3, 1fr);
   }
 }
-
 </style>

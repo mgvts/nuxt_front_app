@@ -5,7 +5,5 @@
 </template>
 
 <style scoped>
-.column {
-  margin: 60px;
-}
+
 </style>
