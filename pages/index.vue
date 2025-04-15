@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { useSemesterStore } from '~/stores/semesterStore';
+
 useHead({
   title: "Главная",
   meta: [
@@ -9,6 +11,12 @@ useHead({
   ],
 });
 const { users, error } = useUsers();
+const semesterStore = useSemesterStore();
+
+
+onMounted(async () => {
+  await semesterStore.loadSemesters()
+})
 
 // todo это поедет если поменяются id
 const userImgMap = {

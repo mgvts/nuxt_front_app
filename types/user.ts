@@ -1,3 +1,4 @@
+// todo: deprecate
 type Education = {
   name: string;
   degree: string;
