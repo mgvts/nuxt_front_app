@@ -15,6 +15,7 @@ const semesterStore = useSemesterStore();
 
 
 onMounted(async () => {
+  await $fetch('/api/ping')
   await semesterStore.loadSemesters()
 })
 

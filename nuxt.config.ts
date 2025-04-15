@@ -13,18 +13,9 @@ export default defineNuxtConfig({
   ssr: true,
   nitro: {
     preset: 'vercel', 
+    logLevel: 2
   },
   vite: {
-    // server: {
-    //   proxy: {
-    //     '/api': {
-    //       target: 'http://84.201.151.242:8080',
-    //       changeOrigin: true,
-    //       secure: false,
-    //       rewrite: (path) => path.replace(/^\/api/, ''),
-    //     }
-    //   }
-    // }
   },
   app: {
     head: {
