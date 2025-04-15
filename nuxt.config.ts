@@ -10,6 +10,10 @@ export default defineNuxtConfig({
     "vuetify-nuxt-module",
     "@pinia/nuxt",
   ],
+  ssr: true,
+  nitro: {
+    preset: 'vercel', 
+  },
   vite: {
     // server: {
     //   proxy: {
