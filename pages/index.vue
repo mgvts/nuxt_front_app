@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { useSemesterStore } from '~/stores/semesterStore';
-
 useHead({
   title: "Главная",
   meta: [
@@ -10,15 +8,7 @@ useHead({
     },
   ],
 });
-const { users, error } = useUsers();
-const semesterStore = useSemesterStore();
 
-
-onMounted(async () => {
-  await semesterStore.loadSemesters()
-})
-
-// todo это поедет если поменяются id
 const userImgMap = {
   15: '/images/art-shvetsov.png',
   17: '/images/sasha.png',
@@ -73,6 +63,9 @@ const userImgMap = {
       <UIText color="white" style="margin: 40px auto 0 75px">
         <a href="https://t.me/olegmokhov">@olegmokhov</a>
       </UIText>
+    </div>
+    <div>
+        <UILink to="./semesters">to semesters</UILink>
     </div>
   </div>
 </template>

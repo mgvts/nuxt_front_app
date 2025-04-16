@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import type { User } from '~/types/user';
-import { useApi } from '~/composables/useApi';
 import { useRoute, useHead } from '#imports';
 
 const route = useRoute();
