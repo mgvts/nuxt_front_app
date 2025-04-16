@@ -13,7 +13,11 @@ export default defineNuxtConfig({
   ssr: true,
   nitro: {
     preset: 'vercel', 
-    logLevel: 2
+  },
+  routeRules: {
+    '/api/**': {
+      proxy: 'http://84.201.151.242:8080/api/v1/**',
+    },
   },
   vite: {
   },
