@@ -1,4 +1,4 @@
-import { api } from "~/api"
+import { api } from "~/composables/api"
 import type { Semester } from "~/types/semester"
 
 export const useSemesterStore = defineStore('semester', () => {
