@@ -2,7 +2,7 @@
 
 export default defineEventHandler(async (event) => {
     // Базовый URL внешнего API
-    const base = "http://84.201.151.242:8080/api/v1";
+    const base = "http://84.201.151.242:8080/v1/";
   
     // Динамический параметр "proxy" для подстановки URL из запроса.
     // Если запрос, к примеру, /api/semesters или /api/lectures/some-slug,
