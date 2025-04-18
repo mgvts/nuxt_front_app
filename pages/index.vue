@@ -43,7 +43,7 @@ onMounted(async () => {
         <UILink 
           v-for="semester in sortedSemesters.slice(0, 2)" 
           :key="semester.id"
-          :to="`/semester/${semester.id}`" 
+          :to="`/semesters/${semester.id}`" 
           class="semester-card"
         >
           <div class="card-content">
@@ -58,7 +58,7 @@ onMounted(async () => {
       <div class="right-column">
         <UILink 
           v-if="sortedSemesters[2]"
-          :to="`/semester/${sortedSemesters[2].id}`" 
+          :to="`/semesters/${sortedSemesters[2].id}`" 
           class="semester-card"
         >
           <div class="card-content">
