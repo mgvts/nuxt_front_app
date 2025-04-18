@@ -12,7 +12,7 @@ const {
 } = storeToRefs(lectureStore)
 
 onMounted(async () => {
-    if (!lecture.value) {
+    if (!(lecture.value && lecture.value.slug === slug)) {
         await lectureStore.loadLecture(slug)
     }
 })
