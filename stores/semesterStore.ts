@@ -13,8 +13,12 @@ export const useSemesterStore = defineStore('semester', () => {
     error.value = null
     try {
       semesters.value = await api.semester.getSemesters()
-    } catch (e: any) {
-      error.value = e.message || 'Ошибка при загрузке семестров'
+    } catch (e) {
+      if (e instanceof Error) {
+        console.error(e.message)
+        error.value = e?.message || `Ошибка при загрузке семестров`
+      }
+      throw e
     } finally {
       loading.value = false
     }
@@ -25,8 +29,12 @@ export const useSemesterStore = defineStore('semester', () => {
     error.value = null
     try {
       currentSemester.value = await api.semester.getSemester(id)
-    } catch (e: any) {
-      error.value = e.message || `Ошибка при загрузке семестра ${id}`
+    } catch (e) {
+      if (e instanceof Error) {
+        console.error(e.message)
+        error.value = e?.message || `Ошибка при загрузке семестра ${id}`
+      }
+      throw e
     } finally {
       loading.value = false
     }

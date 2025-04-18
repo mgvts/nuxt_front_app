@@ -5,16 +5,37 @@ import type { Lecture } from '~/types/lecture'
 
 export const useLectureStore = defineStore('lecture', () => {
   const lecture = ref<Lecture | null>(null)
+  const lectures = ref<Lecture[] | null>(null)
   const loading = ref<boolean>(false)
   const error = ref<string | null>(null)
+
+  async function loadLectures() {
+    loading.value = true
+    error.value = null
+    try {
+      lectures.value = await api.lecture.getLectures()
+    } catch (e) {
+      if (e instanceof Error) {
+        console.error(e.message)
+        error.value = e?.message || `Ошибка при загрузке лекций`
+      }
+      throw e
+    } finally {
+      loading.value = false
+    }
+  }
 
   async function loadLecture(slug: string) {
     loading.value = true
     error.value = null
     try {
       lecture.value = await api.lecture.getLecture(slug)
-    } catch (e: any) {
-      error.value = e.message || `Ошибка при загрузке лекции ${slug}`
+    } catch (e) {
+      if (e instanceof Error) {
+        console.error(e.message)
+        error.value = e?.message || `Ошибка при загрузке лекции ${slug}`
+      }
+      throw e
     } finally {
       loading.value = false
     }
@@ -22,8 +43,11 @@ export const useLectureStore = defineStore('lecture', () => {
 
   return {
     lecture,
+    lectures,
     loading,
     error,
+    
     loadLecture,
+    loadLectures,
   }
 })

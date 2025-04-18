@@ -21,8 +21,6 @@ onMounted(async () => {
   await $fetch('https://ktcourse.ru/api/v1/lectures/html')
   await $fetch('https://ktcourse.ru/api/v1/profiles')
   await $fetch('https://ktcourse.ru/api/v1/profiles/kiratnine')
-
-
 })
 </script>
 

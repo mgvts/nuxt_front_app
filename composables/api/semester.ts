@@ -1,13 +1,16 @@
 import type { Semester } from '~/types/semester'
+import { wrapGet } from './base'
+
+const get = wrapGet('/semesters')
 
 export const semester = {
   /** Получить список всех семестров */
   async getSemesters(): Promise<Semester[]> {
-    return await $fetch<Semester[]>('https://ktcourse.ru/api/v1/semesters')
+    return await get<Semester[]>()
   },
 
   /** Получить данные одного семестра по ID */
   async getSemester(id: string): Promise<Semester> {
-    return await $fetch<Semester>(`/api/semesters/${id}`)
+    return await get<Semester>(`/${id}`)
   }
 }

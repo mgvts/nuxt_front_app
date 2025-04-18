@@ -1,22 +1,17 @@
-import axios, { type AxiosRequestConfig } from "axios";
-
-const axiosConf: AxiosRequestConfig = {
-  baseURL: "/api",
-  headers: {
-    Authorization: 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJraXJhdG5pbmUiLCJyb2xlIjoiQURNSU4iLCJpYXQiOjE3NDQ3NTE3OTAsImV4cCI6MTc0NjIyMzAxOX0.epnVOnjX443BYsmkEEHXi7-R234tuuPrML5mcZLnq1SIU7F-wpgfEec7mtqwyD7QEj5ySrIuVB27vJzZXWbQ7g'
-  },
-};
+const BASE_URL = "https://ktcourse.ru/api/v1";
 
 export const wrapGet =
   (resourcePath: string) =>
-  <T>(suffix = "", config: AxiosRequestConfig = {}): Promise<T> =>
-    axios
-      .get(`${resourcePath}${suffix}`, { ...axiosConf, ...config })
-      .then((res) => res.data);
+  <T>(suffix = "", config = {}): Promise<T> =>
+    $fetch(`${BASE_URL}${resourcePath}${suffix}`, {
+      method: "GET",
+      ...config,
+    });
 
-export function get<Request>(
-  url: string,
-  config: AxiosRequestConfig
-): Promise<Request> {
-  return axios.get(url, config);
-}
+export const wrapPost = 
+  (resourcePath: string) =>
+    <T>(suffix = "", config = {}): Promise<T> =>
+      $fetch(`${BASE_URL}${resourcePath}${suffix}`, {
+        method: "POST",
+        ...config,
+      });

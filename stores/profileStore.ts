@@ -14,8 +14,12 @@ export const useProfileStore = defineStore('profile', () => {
     error.value = null
     try {
       profiles.value = await api.profile.getProfiles()
-    } catch (e: any) {
-      error.value = e.message || 'Ошибка при загрузке профилей'
+    } catch (e) {
+      if (e instanceof Error) {
+        console.error(e.message)
+        error.value = e.message || `Ошибка при загрузке профилей`
+      }
+      throw e
     } finally {
       loading.value = false
     }
@@ -26,8 +30,12 @@ export const useProfileStore = defineStore('profile', () => {
     error.value = null
     try {
       currentProfile.value = await api.profile.getProfile(login)
-    } catch (e: any) {
-      error.value = e.message || `Ошибка при загрузке профиля ${login}`
+    } catch (e) {
+      if (e instanceof Error) {
+        console.error(e.message)
+        error.value = e.message || `Ошибка при загрузке профиля ${login}`
+      }
+      throw e
     } finally {
       loading.value = false
     }
@@ -38,6 +46,7 @@ export const useProfileStore = defineStore('profile', () => {
     currentProfile,
     loading,
     error,
+
     loadProfiles,
     loadProfile,
   }
