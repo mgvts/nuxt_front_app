@@ -9,6 +9,9 @@ useHead({
   ],
 });
 
+const semesterStore = useSemesterStore()
+const { sortedSemesters, loading, error } = storeToRefs(semesterStore)
+
 // onMounted(async () => {
 //   await $fetch('https://ktcourse.ru/api/v1/semesters')
 //   await $fetch('https://ktcourse.ru/api/v1/semesters/1')
@@ -16,38 +19,51 @@ useHead({
 //   await $fetch('https://ktcourse.ru/api/v1/profiles')
 //   await $fetch('https://ktcourse.ru/api/v1/profiles/kiratnine')
 // })
+onMounted(async () => {
+  try {
+    await semesterStore.loadSemesters()
+  } catch (e) {
+    console.error('Failed to load semesters:', e)
+  }
+})
 </script>
 
 <template>
   <div class="semesters-container">
-    <div class="semesters-grid">
+    <div v-if="loading" class="loading">
+      Загрузка семестров...
+    </div>
+    <div v-else-if="error" class="error">
+      {{ error }}
+    </div>
+    <div v-else class="semesters-grid">
       <div class="left-column">
-        <UILink to="/semester/1/js" class="semester-card">
+        <UILink 
+          v-for="semester in sortedSemesters.slice(0, 2)" 
+          :key="semester.id"
+          :to="`/semester/${semester.id}`" 
+          class="semester-card"
+        >
           <div class="card-content">
-            <span class="number">1</span>
+            <span class="number">{{ semester.title }}</span>
             <div class="text-content">
               <div class="semester-title">semester</div>
-              <div class="semester-subject">JavaScript</div>
-            </div>
-          </div>
-        </UILink>
-        <UILink to="/semester/1/html" class="semester-card">
-          <div class="card-content">
-            <span class="number">1</span>
-            <div class="text-content">
-              <div class="semester-title">semester</div>
-              <div class="semester-subject">(HTML/CSS)</div>
+              <div class="semester-subject">{{ semester.description }}</div>
             </div>
           </div>
         </UILink>
       </div>
       <div class="right-column">
-        <UILink to="/semester/2/js" class="semester-card">
+        <UILink 
+          v-if="sortedSemesters[2]"
+          :to="`/semester/${sortedSemesters[2].id}`" 
+          class="semester-card"
+        >
           <div class="card-content">
-            <span class="number">2</span>
+            <span class="number">{{ sortedSemesters[2].title }}</span>
             <div class="text-content">
               <div class="semester-title">semester</div>
-              <div class="semester-subject">JavaScript</div>
+              <div class="semester-subject">{{ sortedSemesters[2].description }}</div>
             </div>
           </div>
         </UILink>
@@ -62,6 +78,17 @@ useHead({
   width: 100%;
   max-width: 1400px;
   margin: 0 auto;
+}
+
+.loading, .error {
+  text-align: center;
+  padding: 2rem;
+  font-size: 1.2rem;
+  color: #003049;
+}
+
+.error {
+  color: #dc3545;
 }
 
 .semesters-grid {
