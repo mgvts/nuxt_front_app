@@ -1,5 +1,23 @@
 <script setup lang="ts">
 import logo from '~/assets/img/logo.svg'
+import { ref } from 'vue'
+
+const accountRotation = ref(0)
+const menuScale = ref(1)
+
+const spinAccount = () => {
+    accountRotation.value += 360
+}
+
+const squishMenu = () => {
+    menuScale.value = 0.8
+    setTimeout(() => {
+        menuScale.value = 1.2
+        setTimeout(() => {
+            menuScale.value = 1
+        }, 150)
+    }, 150)
+}
 </script>
 
 <template>
@@ -11,8 +29,28 @@ import logo from '~/assets/img/logo.svg'
                         <img :src="logo">
                     </UILink>
                     <div class="links">
-                        <v-icon icon="mdi-account" class="text-h2 text-white"/>
-                        <v-icon icon="mdi-menu" class="text-h2 text-white"/>
+                        <UIButton 
+                            text=""
+                            class="icon-button"
+                            @click="spinAccount"
+                        >
+                            <v-icon 
+                                icon="mdi-account" 
+                                class="text-h2 text-white"
+                                :style="{ transform: `rotate(${accountRotation}deg)`, transition: 'transform 0.5s ease' }"
+                            />
+                        </UIButton>
+                        <UIButton 
+                            text=""
+                            class="icon-button"
+                            @click="squishMenu"
+                        >
+                            <v-icon 
+                                icon="mdi-menu" 
+                                class="text-h2 text-white"
+                                :style="{ transform: `scale(${menuScale})`, transition: 'transform 0.15s ease' }"
+                            />
+                        </UIButton>
                     </div>
                 </div>
             </div>
@@ -44,5 +82,20 @@ import logo from '~/assets/img/logo.svg'
     display: flex;
     flex-direction: row;
     gap: 40px;
+}
+
+.icon-button {
+    background: transparent !important;
+    padding: 8px !important;
+    border-radius: 50% !important;
+    transition: background-color 0.3s ease !important;
+}
+
+.icon-button:hover {
+    background: rgba(255, 255, 255, 0.1) !important;
+}
+
+.icon-button:active {
+    background: rgba(255, 255, 255, 0.2) !important;
 }
 </style>
