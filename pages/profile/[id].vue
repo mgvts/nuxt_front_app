@@ -1,24 +1,22 @@
 <script setup lang="ts">
-import type { User } from '~/types/user';
-import { useApi } from '~/composables/useApi';
 import { useRoute, useHead } from '#imports';
 
 const route = useRoute();
-const userId = route.params.id as string;
+// const userId = route.params.id as string;
 
-const { data: user, error } = useApi<User>(`/api/users/${userId}`);
+// const { data: user, error } = useApi<User>(`/api/users/${userId}`);
 
 useHead({
   title: "Профиль пользователя",
   meta: [{ name: "description", content: "Детали профиля пользователя" }],
 });
-const getSplitName = computed(() => user.value?.name?.split(' '))
+// const getSplitName = computed(() => user.value?.name?.split(' '))
 const contactMap = {
   email: 'mailto:',
   tg: 't.me/'
 }
 
-const createContactHref = (c) => `${contactMap[c.type]}${c.contact}` 
+// const createContactHref = (c) => `${contactMap[c.type]}${c.contact}` 
 // todo это поедет если поменяются id
 const userImgMap = {
   15: '/images/art-shvetsov.png',
@@ -29,7 +27,10 @@ const userImgMap = {
 </script>
 
 <template>
-  <div>
+  <div v-if="true">
+    here users
+  </div>
+  <div v-else>
     <div v-if="error">
       Ошибка загрузки пользователя.
     </div>

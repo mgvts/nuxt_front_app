@@ -4,7 +4,23 @@ export default defineNuxtConfig({
   devtools: {
     enabled: true,
   },
-  modules: ["@nuxt/eslint", "@nuxt/fonts", "vuetify-nuxt-module"],
+  modules: [
+    "@nuxt/eslint",
+    "@nuxt/fonts",
+    "vuetify-nuxt-module",
+    "@pinia/nuxt",
+  ],
+  ssr: true,
+  nitro: {
+    preset: 'vercel', 
+  },
+  routeRules: {
+    '/api/**': {
+      proxy: 'http://84.201.151.242:8080/api/v1/**',
+    },
+  },
+  vite: {
+  },
   app: {
     head: {
       title: "Фронтенд 2024-2025 на Vue",
@@ -15,11 +31,11 @@ export default defineNuxtConfig({
     },
   },
   components: [
-    { 
+    {
       path: "~/components/UI/",
-      prefix: "UI"
+      prefix: "UI",
     },
-    "~/components/"
+    "~/components/",
   ],
   css: ["~/assets/css/main.css"],
   typescript: {
@@ -29,6 +45,9 @@ export default defineNuxtConfig({
     moduleOptions: {
       /* module specific options */
     },
-    vuetifyOptions: './plugins/vuetify.config.ts' 
-  }
+    vuetifyOptions: "./plugins/vuetify.config.ts",
+  },
+  pinia: {
+    storesDirs: ['./stores/**'],
+  },
 });
