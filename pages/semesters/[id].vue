@@ -14,7 +14,7 @@ onMounted(async () => {
 })
 
 useHead(() => ({
-  title: currentSemester.value?.title || 'Семестр',
+  title: currentSemester.value?.title + ' semester' || 'Семестр',
   meta: [
     {
       name: "description",
