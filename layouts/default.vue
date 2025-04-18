@@ -10,7 +10,7 @@
 <style scoped lang="css">
 .main-layout {
   padding-top: 240px;
-  width: 1312px;
+  width: 1200px;
   margin: auto;
 }
 </style>

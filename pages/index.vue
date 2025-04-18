@@ -9,12 +9,6 @@ useHead({
   ],
 });
 
-const userImgMap = {
-  15: '/images/art-shvetsov.png',
-  17: '/images/sasha.png',
-  21: '/images/artemii.png',
-  22: '/images/vlad.png'
-}
 onMounted(async () => {
   await $fetch('https://ktcourse.ru/api/v1/semesters')
   await $fetch('https://ktcourse.ru/api/v1/semesters/1')
@@ -53,16 +47,6 @@ onMounted(async () => {
         You create the code - we help you grow!
       </UIText>
     </div>
-    <div v-if="error">Ошибка при загрузке пользователей</div>
-    <div v-if="users">
-      <div class="cards profiles">
-        <img src="/images/arrow.png" width="57" height="57" alt="arrow" class="arrow-left">
-        <UILink v-for="user of users" :to="`./profile/${user.id}`">
-          <img :src="userImgMap[user.id]" height="220" width="220" :alt="user.name">
-        </UILink>
-        <img src="/images/arrow.png" width="57" height="57" alt="arrow" class="arrow-right">
-      </div>
-    </div>
     <div class="review">
       <UIText color="white" is-first-letter style="margin: 20px auto 0 75px;">
         Leave a review about the course:
@@ -70,14 +54,6 @@ onMounted(async () => {
       <UIText color="white" style="margin: 40px auto 0 75px">
         <a href="https://t.me/olegmokhov">@olegmokhov</a>
       </UIText>
-    </div>
-    <div>
-        <div>https://docs.google.com/presentation/d/1tqYX1esIeqHsGzC1BDZJXnmy_TJAWniCkekTef18KSs/edit#slide=id.g34b31594e95_0_73</div>
-        <img
-          src="https://docs.google.com/presentation/d/1tqYX1esIeqHsGzC1BDZJXnmy_TJAWniCkekTef18KSs/export/png"
-          alt="Превью слайда"
-        />
-        <UILink to="./semesters">to semesters</UILink>
     </div>
   </div>
 </template>
