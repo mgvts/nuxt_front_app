@@ -74,7 +74,7 @@ onMounted(async () => {
     <div>
         <div>https://docs.google.com/presentation/d/1tqYX1esIeqHsGzC1BDZJXnmy_TJAWniCkekTef18KSs/edit#slide=id.g34b31594e95_0_73</div>
         <img
-          src="https://docs.google.com/presentation/d/1tqYX1esIeqHsGzC1BDZJXnmy_TJAWniCkekTef18KSs/export/png?pageid=g34b31594e95_0_73&w=400"
+          src="https://docs.google.com/presentation/d/1tqYX1esIeqHsGzC1BDZJXnmy_TJAWniCkekTef18KSs/export/png"
           alt="Превью слайда"
         />
         <UILink to="./semesters">to semesters</UILink>
