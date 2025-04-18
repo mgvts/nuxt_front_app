@@ -33,7 +33,7 @@ const props = defineProps({
 
 <style scoped lang="css">
 .link {
-    text-decoration: none;
+  text-decoration: none;
 }
 .link:hover {
 	text-decoration: underline;

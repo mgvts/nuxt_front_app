@@ -27,5 +27,8 @@ export default defineVuetifyConfiguration({
     themes: {
         myTheme
     }
-  }
+  },
+  icons: {
+    defaultSet: 'mdi',
+  },
 })
