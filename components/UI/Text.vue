@@ -20,10 +20,10 @@ const props = defineProps({
 
 <template>
     <span
+        v-bind="$attrs"
         class="link-style" 
         :class="[props.size, props.isFirstLetter ? 'capital' : '']"
         :style="{ color: props.color }"
-        v-bind="$attrs"
     >
         <slot />
     </span>
