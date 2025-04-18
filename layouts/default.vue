@@ -10,7 +10,41 @@
 <style scoped lang="css">
 .main-layout {
   padding-top: 240px;
-  width: 1312px;
   margin: auto;
+}
+
+.main-layout {
+  width: 1900;
+}
+
+@media (width > 1920px) {
+  .main-layout {
+    width: 1900px;
+  }
+}
+
+@media (1440px < width <=1920px) {
+  .main-layout {
+    width: 1400px;
+  }
+}
+
+@media (1240px < width <=1440px) {
+  .main-layout {
+    width: 1200px;
+  }
+}
+
+@media (940px < width <=1240px) {
+  .main-layout {
+    width: 900px;
+  }
+}
+
+@media (width <=940px) {
+  .main-layout {
+    width: 100%;
+    margin: 0 20px;
+  }
 }
 </style>
