@@ -28,16 +28,16 @@ onMounted(async () => {
   <article class="d-flex flex-col">
     <section v-for="semester of sortedSemesters" :key="semester.id">
       <UICard style="width: fit-content">
-        <div class="d-flex flex-row" :style="{ width: 420, height: 300 }">
-          <div class="text-indigo-darken-2 text-h2">
+        <div class="d-flex flex-row font" :style="{ width: 420, height: 300 }">
+          <div class="text-indigo-darken-2">
             <span>{{ semester.id }}</span>
           </div>
 
           <div class="d-flex flex-column">
-            <div class="text-indigo-darken-1 text-h4">
+            <div class="text-indigo-darken-1 ">
               semester
             </div>
-            <div class="text-indigo-darken-1 text-h4">
+            <div class="text-indigo-darken-1 ">
               {{ semester.title }}
             </div>
           </div>
@@ -50,4 +50,8 @@ onMounted(async () => {
   </article>
 </template>
 
-<style scoped></style>
+<style scoped>
+.font {
+  font-family: var(--font-grover) !important;
+  font-size: 5rem;
+}</style>
