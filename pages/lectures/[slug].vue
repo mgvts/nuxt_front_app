@@ -30,8 +30,10 @@ onMounted(async () => {
             <div class="d-flex flex-row ga-16">
                 <UILink v-if="lecture.presentationId" :to="getPresentationExternalUrl(lecture.presentationId)"
                     target="_blank">
-                    <img :src="getPresentationPreviewUrl(lecture.presentationId)" class="lecture-thumbnail" width="420"
-                        height="300" alt="Превью презентации">
+                    <ClientOnly>
+                        <img :src="getPresentationPreviewUrl(lecture.presentationId)" class="lecture-thumbnail"
+                            width="420" height="300" alt="Превью презентации">
+                    </ClientOnly>
                 </UILink>
                 <div v-else class="placeholder">
                     Нет изображения
