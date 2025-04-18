@@ -8,6 +8,10 @@ export const useSemesterStore = defineStore('semester', () => {
   const loading = ref<boolean>(false)
   const error = ref<string | null>(null)
 
+  const sortedSemesters = computed(() => {
+    return semesters.value.sort(s => s.position)
+  })
+
   async function loadSemesters() {
     loading.value = true
     error.value = null
@@ -42,6 +46,7 @@ export const useSemesterStore = defineStore('semester', () => {
 
   return {
     semesters,
+    sortedSemesters,
     currentSemester,
     loading,
     error,

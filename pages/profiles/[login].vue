@@ -23,7 +23,7 @@ onMounted(() => {
     <div v-else-if="error" class="error">{{ error }}</div>
     <div v-else-if="profile">
       <p>Логин: {{ profile.login }}</p>
-      <p>Email: {{ profile.email }}</p>
+      <p>Email: {{ profile?.email }}</p>
       <pre>
         {{ profile }}
       </pre>

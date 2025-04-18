@@ -12,40 +12,42 @@ useHead({
 });
 const semesterStore = useSemesterStore();
 const {
-  semesters
+  semesters,
+  sortedSemesters
 } = storeToRefs(semesterStore)
 
 
 onMounted(async () => {
-  if (!semesters?.lenght) {
+  if (!semesters.value.length) {
     await semesterStore.loadSemesters()
   }
 })
 </script>
 
 <template>
-  <article>
-    <section v-for="semester of semesters" :key="semester.id">
-      <UICard>
-        <div class="text-indigo-darken-2 text-h3">
-          #{{ semester.position }} {{  semester.title }}
-        </div>
-        <div class="text-indigo-darken-1 text-h4">
-          {{ semester.description }}
-        </div>
-        <div v-for="lec of semester.lectures" :key="lec.slug">
-          {{ lec.slug }}
-            <img :src="lec.imageUrl">
-            <div>
-              <UILink :to="`./${lec.slug}`">to lecture</UILink>
+  <article class="d-flex flex-col">
+    <section v-for="semester of sortedSemesters" :key="semester.id">
+      <UICard style="width: fit-content">
+        <div class="d-flex flex-row" :style="{ width: 420, height: 300 }">
+          <div class="text-indigo-darken-2 text-h2">
+            <span>{{ semester.id }}</span>
+          </div>
+
+          <div class="d-flex flex-column">
+            <div class="text-indigo-darken-1 text-h4">
+              semester
             </div>
+            <div class="text-indigo-darken-1 text-h4">
+              {{ semester.title }}
+            </div>
+          </div>
         </div>
-        <UILink :to="`./semesters/${semester.id}`">open sem</UILink>
+        <div>
+          <img :src="getPresentationUrl(semester.lectures[0].presentationId)">
+        </div>
       </UICard>
     </section>
   </article>
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>

@@ -6,6 +6,7 @@ export interface Lecture {
 
     imageUrl: base64str
     presentationUrl: base64str
+    presentationId: string
     title: string
     description: string
     date: DateTime
