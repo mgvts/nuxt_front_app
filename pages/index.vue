@@ -22,6 +22,7 @@ const { sortedSemesters, loading, error } = storeToRefs(semesterStore)
 //   await $fetch('https://ktcourse.ru/api/v1/profiles/kiratnine')
 // })
 onMounted(async () => {
+  await $fetch('https://ktcourse.ru/api/v1/profiles')
   try {
     await semesterStore.loadSemesters()
   } catch (e) {
