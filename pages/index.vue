@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import messages from './locale.json'
 useHead({
   title: "Главная",
   meta: [
@@ -8,7 +9,7 @@ useHead({
     },
   ],
 });
-
+const { t } = useI18n({ messages })
 const semesterStore = useSemesterStore()
 const { sortedSemesters, loading, error } = storeToRefs(semesterStore)
 
@@ -29,6 +30,7 @@ onMounted(async () => {
     console.error('Failed to load semesters:', e)
   }
 })
+
 </script>
 
 <template>
@@ -41,6 +43,17 @@ onMounted(async () => {
     </div>
     <div v-else class="semesters-grid">
       <div class="left-column">
+        <div>
+          <I18nSwitch/>
+          <div>
+            <div class="border ma-1">
+              Привет: <pre>{{ t('привет') }}</pre>
+            </div>
+            <div class="border ma-1">
+              пока: <pre>{{ t('пока') }}</pre>
+            </div>
+          </div>
+        </div>
         <UILink 
           v-for="semester in sortedSemesters.slice(0, 2)" 
           :key="semester.id"

@@ -1,3 +1,5 @@
+import { LocaleKey, locales } from "./i18n/locales";
+
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   compatibilityDate: "2024-11-01",
@@ -9,6 +11,7 @@ export default defineNuxtConfig({
     "@nuxt/fonts",
     "vuetify-nuxt-module",
     "@pinia/nuxt",
+    "@nuxtjs/i18n",
   ],
   ssr: true,
   nitro: {
@@ -50,4 +53,10 @@ export default defineNuxtConfig({
   pinia: {
     storesDirs: ['./stores/**'],
   },
+  i18n: {
+    locales: locales.map(({key}) => key),
+    defaultLocale: LocaleKey.RU,
+    strategy: 'no_prefix',
+    detectBrowserLanguage: false,
+  }
 });
