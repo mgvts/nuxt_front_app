@@ -1,9 +1,10 @@
-const BASE_URL = "https://ktcourse.ru/api/v1";
+const BASE_URL = "/api";
+
 
 export const wrapGet =
   (resourcePath: string) =>
   <T>(suffix = "", config = {}): Promise<T> =>
-    $fetch(`${BASE_URL}${resourcePath}${suffix}`, {
+    useNuxtApp().$apiFetch(`${BASE_URL}${resourcePath}${suffix}`, {
       method: "GET",
       ...config,
     });
@@ -11,7 +12,7 @@ export const wrapGet =
 export const wrapPost = 
   (resourcePath: string) =>
     <T>(suffix = "", config = {}): Promise<T> =>
-      $fetch(`${BASE_URL}${resourcePath}${suffix}`, {
+      useNuxtApp().$apiFetch(`${BASE_URL}${resourcePath}${suffix}`, {
         method: "POST",
         ...config,
       });

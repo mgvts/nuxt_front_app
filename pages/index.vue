@@ -11,21 +11,16 @@ useHead({
 });
 const { t } = useI18n({ messages })
 const semesterStore = useSemesterStore()
+const profileStore = useProfileStore()
 const { sortedSemesters, loading, error } = storeToRefs(semesterStore)
 
-// onMounted(async () => {
-//   await $fetch('https://ktcourse.ru/api/v1/semesters')
-//   await $fetch('https://ktcourse.ru/api/v1/semesters/3')
-//   await $fetch('https://ktcourse.ru/api/v1/semesters/4')
-//   await $fetch('https://ktcourse.ru/api/v1/semesters/6')
-//   await $fetch('https://ktcourse.ru/api/v1/lectures/html')
-//   await $fetch('https://ktcourse.ru/api/v1/profiles')
-//   await $fetch('https://ktcourse.ru/api/v1/profiles/kiratnine')
-// })
+
 onMounted(async () => {
-  await $fetch('https://ktcourse.ru/api/v1/profiles')
   try {
-    await semesterStore.loadSemesters()
+    await Promise.all([
+      semesterStore.loadSemesters(),
+      profileStore.loadProfiles()
+    ])
   } catch (e) {
     console.error('Failed to load semesters:', e)
   }
@@ -44,22 +39,20 @@ onMounted(async () => {
     <div v-else class="semesters-grid">
       <div class="left-column">
         <div>
-          <I18nSwitch/>
+          <I18nSwitch />
           <div>
             <div class="border ma-1">
-              Привет: <pre>{{ t('привет') }}</pre>
+              Привет:
+              <pre>{{ t('привет') }}</pre>
             </div>
             <div class="border ma-1">
-              пока: <pre>{{ t('пока') }}</pre>
+              пока:
+              <pre>{{ t('пока') }}</pre>
             </div>
           </div>
         </div>
-        <UILink 
-          v-for="semester in sortedSemesters.slice(0, 2)" 
-          :key="semester.id"
-          :to="`/semesters/${semester.id}`" 
-          class="semester-card"
-        >
+        <UILink v-for="semester in sortedSemesters.slice(0, 2)" :key="semester.id" :to="`/semesters/${semester.id}`"
+          class="semester-card">
           <div class="card-content">
             <span class="number">{{ semester.title }}</span>
             <div class="text-content">
@@ -70,11 +63,7 @@ onMounted(async () => {
         </UILink>
       </div>
       <div class="right-column">
-        <UILink 
-          v-if="sortedSemesters[2]"
-          :to="`/semesters/${sortedSemesters[2].id}`" 
-          class="semester-card"
-        >
+        <UILink v-if="sortedSemesters[2]" :to="`/semesters/${sortedSemesters[2].id}`" class="semester-card">
           <div class="card-content">
             <span class="number">{{ sortedSemesters[2].title }}</span>
             <div class="text-content">
@@ -96,7 +85,8 @@ onMounted(async () => {
   margin: 0 auto;
 }
 
-.loading, .error {
+.loading,
+.error {
   text-align: center;
   padding: 2rem;
   font-size: 1.2rem;

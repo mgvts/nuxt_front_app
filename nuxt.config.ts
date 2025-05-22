@@ -13,13 +13,13 @@ export default defineNuxtConfig({
     "@pinia/nuxt",
     "@nuxtjs/i18n",
   ],
-  ssr: true,
+  ssr: true, //
   nitro: {
     preset: 'vercel', 
   },
   routeRules: {
     '/api/**': {
-      proxy: 'http://84.201.151.242:8080/api/v1/**',
+      proxy: 'http://84.201.151.242:8080/v1/**',
     },
   },
   vite: {
@@ -58,5 +58,10 @@ export default defineNuxtConfig({
     defaultLocale: LocaleKey.RU,
     strategy: 'no_prefix',
     detectBrowserLanguage: false,
+  },
+  runtimeConfig: {
+    public: {
+      apiBase: 'https://ktcourse.ru/'
+    }
   }
 });

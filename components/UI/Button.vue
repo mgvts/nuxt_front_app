@@ -34,9 +34,16 @@ const handleClick = (event: MouseEvent) => {
 </script>
 
 <template>
-    <button :class="buttonClass" @click="handleClick">
-        <slot>{{ props.text }}</slot>
-    </button>
+    <VBtn
+        class="font-weight-bold"
+        variant="flat"
+        color="primary"
+
+        v-bind="$attrs"
+        @click="handleClick" 
+    >
+        <slot class="text-white">{{ props.text }}</slot>
+    </VBtn>
 </template>
 
 
