@@ -37,3 +37,11 @@ a {
 img {
   user-select: none;
 }
+
+.w-fit {
+  width: fit-content !important;
+}
+
+.h-fit {
+  height: fit-content !important;
+}
