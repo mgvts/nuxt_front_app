@@ -47,7 +47,7 @@ useHead(() => ({
         <UILink
           v-for="lecture in currentSemester.lectures"
           :key="lecture.slug"
-          :to="`/lectures/${lecture.slug}`"
+          :to="`/lectures/${lecture.id}`"
           class="lecture-card"
         >
           <div class="lecture-content">

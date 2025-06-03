@@ -31,7 +31,9 @@ const squishMenu = () => {
                     <div class="links">
                         <UIButton 
                             text=""
-                            class="icon-button"
+                            class=" w-fit h-fit bg-transparent px-0 rounded-circle"
+                            :ripple="false"
+                            to="/auth"
                             @click="spinAccount"
                         >
                             <v-icon 
@@ -42,15 +44,17 @@ const squishMenu = () => {
                         </UIButton>
                         <UIButton 
                             text=""
-                            class="icon-button"
+                            class="w-fit h-fit bg-transparent px-0 rounded-circle"
+                            :ripple="false"
                             @click="squishMenu"
                         >
                             <v-icon 
-                                icon="mdi-menu" 
+                                icon="mdi-plus"
                                 class="text-h2 text-white"
                                 :style="{ transform: `scale(${menuScale})`, transition: 'transform 0.15s ease' }"
                             />
                         </UIButton>
+                            
                     </div>
                 </div>
             </div>

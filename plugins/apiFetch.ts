@@ -6,13 +6,22 @@ export default defineNuxtPlugin((nuxtApp) => {
   
   async function apiFetch<T = unknown>(path: string, opts = {}): Promise<T> {
     const jwt = useCookie('jwt').value
+    const lang = useCookie('lang').value
     const headers = {
       ...(opts.headers || {}),
       ...(jwt ? { Authorization: `Bearer ${jwt}` } : {})
     }
-    const url = import.meta.client
+
+    let langQuery = ''
+
+    if (opts.method === 'GET') {
+      langQuery = `?lang=${lang}`
+    }
+
+    let url = import.meta.client
         ? path
         : apiBase + path
+    url += langQuery
 
     return await $fetch<T>(url, {
       ...opts,
@@ -20,7 +29,6 @@ export default defineNuxtPlugin((nuxtApp) => {
     })
   }
 
-  // возвращаем в provide, чтобы Nuxt «подхватил» на клиенте и на сервере
   return {
     provide: {
       apiFetch

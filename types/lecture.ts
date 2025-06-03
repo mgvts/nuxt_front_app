@@ -2,7 +2,7 @@ import type { base64str, DateTime } from ".";
 import type { ProfilePick } from "./profile";
 
 export interface Lecture {
-    slug: string
+    id: number
 
     imageUrl: base64str
     presentationUrl: base64str

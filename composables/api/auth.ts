@@ -12,7 +12,6 @@ export const auth = {
   },
 
   async login(payload: LoginPayload): Promise<AuthResponse> {
-    console.log(payload)
     return await post<AuthResponse>('/login', {
       method: 'POST',
       body: payload
