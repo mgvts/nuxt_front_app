@@ -1,34 +1,32 @@
-gj<script setup lang="ts">
-const route = useRoute()
-const semesterId = route.params.id as string
+<script setup lang="ts">
+const route = useRoute();
+const semesterId = route.params.id as string;
 
-const semesterStore = useSemesterStore()
-const { currentSemester, loading, error } = storeToRefs(semesterStore)
+const semesterStore = useSemesterStore();
+const { currentSemester, loading, error } = storeToRefs(semesterStore);
 
 onMounted(async () => {
   try {
-    await semesterStore.loadSemester(semesterId)
+    await semesterStore.loadSemester(semesterId);
   } catch (e) {
-    console.error('Failed to load semester:', e)
+    console.error("Failed to load semester:", e);
   }
-})
+});
 
 useHead(() => ({
-  title: currentSemester.value?.title + ' semester' || 'Семестр',
+  title: currentSemester.value?.title + " semester" || "Семестр",
   meta: [
     {
       name: "description",
-      content: currentSemester.value?.description || 'Страница семестра',
+      content: currentSemester.value?.description || "Страница семестра",
     },
   ],
-}))
+}));
 </script>
 
 <template>
   <div class="semester-container">
-    <div v-if="loading" class="loading">
-      Загрузка семестра...
-    </div>
+    <div v-if="loading" class="loading">Загрузка семестра...</div>
     <div v-else-if="error" class="error">
       {{ error }}
     </div>
@@ -38,24 +36,37 @@ useHead(() => ({
           <span class="number">{{ currentSemester.title }}</span>
           <div class="text-content">
             <div class="semester-title">semester</div>
-            <div class="semester-description">{{ currentSemester.description }}</div>
+            <div class="semester-description">
+              {{ currentSemester.description }}
+            </div>
           </div>
         </div>
       </div>
-      
+
       <div class="lectures-grid">
-        <UILink 
-          v-for="lecture in currentSemester.lectures" 
+        <UILink
+          v-for="lecture in currentSemester.lectures"
           :key="lecture.slug"
           :to="`/lectures/${lecture.slug}`"
           class="lecture-card"
         >
           <div class="lecture-content">
-            <div class="lecture-date">{{ new Date(lecture.date).toLocaleDateString('ru-RU', { day: 'numeric', month: 'long' }) }}</div>
+            <div class="lecture-date">
+              {{
+                new Date(lecture.date).toLocaleDateString("ru-RU", {
+                  day: "numeric",
+                  month: "long",
+                })
+              }}
+            </div>
             <h3 class="lecture-title">{{ lecture.title }}</h3>
             <div class="lecture-description">{{ lecture.description }}</div>
             <div class="lecture-lecturers">
-              <div v-for="profile in lecture.profiles" :key="profile.login" class="lecturer">
+              <div
+                v-for="profile in lecture.profiles"
+                :key="profile.login"
+                class="lecturer"
+              >
                 {{ profile.name }}
               </div>
             </div>
@@ -74,7 +85,8 @@ useHead(() => ({
   margin: 0 auto;
 }
 
-.loading, .error {
+.loading,
+.error {
   text-align: center;
   padding: 2rem;
   font-size: 1.2rem;
@@ -86,7 +98,7 @@ useHead(() => ({
 }
 
 .semester-header-card {
-  background: #A0D6FF8A;
+  background: #a0d6ff8a;
   border: 2px solid #003049;
   border-radius: 16px;
   padding: 2rem;
@@ -137,7 +149,7 @@ useHead(() => ({
 .lecture-card {
   flex: 1 1 calc(25% - 2rem);
   min-width: 280px;
-  background: #A0D6FF8A;
+  background: #a0d6ff8a;
   border: 2px solid #003049;
   border-radius: 16px;
   padding: 1.5rem;
@@ -146,7 +158,7 @@ useHead(() => ({
 }
 
 .lecture-card:hover {
-  background: #A0D6FFAA;
+  background: #a0d6ffaa;
   transform: translateY(-2px);
   transition: all 0.3s ease;
   text-decoration: none !important;
@@ -234,4 +246,4 @@ useHead(() => ({
     flex: 1 1 100%;
   }
 }
-</style> 
+</style>
