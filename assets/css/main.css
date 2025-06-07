@@ -1,14 +1,15 @@
-@import url('https://fonts.googleapis.com/css2?family=Kantumruy+Pro:ital,wght@0,100..700;1,100..700&family=Noto+Sans+Gothic&family=Roboto:ital,wght@0,100..900;1,100..900&family=UnifrakturCook:wght@700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300..700;1,300..700&family=Kantumruy+Pro:ital,wght@0,100..700;1,100..700&family=Noto+Sans+Gothic&family=Roboto:ital,wght@0,100..900;1,100..900&family=UnifrakturCook:wght@700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300..700;1,300..700&family=Irish+Grover&family=Kantumruy+Pro:ital,wght@0,100..700;1,100..700&family=Noto+Sans+Gothic&family=Roboto:ital,wght@0,100..900;1,100..900&family=UnifrakturCook:wght@700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Kantumruy+Pro:ital,wght@0,100..700;1,100..700&family=Noto+Sans+Gothic&family=Roboto:ital,wght@0,100..900;1,100..900&family=UnifrakturCook:wght@700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300..700;1,300..700&family=Kantumruy+Pro:ital,wght@0,100..700;1,100..700&family=Noto+Sans+Gothic&family=Roboto:ital,wght@0,100..900;1,100..900&family=UnifrakturCook:wght@700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300..700;1,300..700&family=Irish+Grover&family=Kantumruy+Pro:ital,wght@0,100..700;1,100..700&family=Noto+Sans+Gothic&family=Roboto:ital,wght@0,100..900;1,100..900&family=UnifrakturCook:wght@700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap");
 
 :root {
-  --font-kantumruy: 'Kantumruy Pro';
-  --font-katari: 'Cormorant Garamond';
-  --font-grover: 'Irish Grover';
-  --yellow: #DBFF00;
-  --violet: #8E6FF8;
-  --white: #FFFFFF;
+  --font-kantumruy: "Kantumruy Pro";
+  --font-katari: "Cormorant Garamond";
+  --font-grover: "Irish Grover";
+  --yellow: #dbff00;
+  --violet: #8e6ff8;
+  --white: #ffffff;
   --black: #000000;
 }
 
@@ -23,7 +24,7 @@ body {
   line-height: 24px;
   font-size: 16px;
   font-weight: 400;
-  color: var(--black); 
+  color: var(--black);
   background-color: var(--bg);
   direction: ltr;
   font-synthesis: none;
@@ -31,7 +32,7 @@ body {
 }
 
 a {
-  color: inherit
+  color: inherit;
 }
 
 img {
