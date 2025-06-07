@@ -4,26 +4,48 @@ import { defineVuetifyConfiguration } from "vuetify-nuxt-module/custom-configura
 const WHITE = "#FFFFFF"
 const BLACK = "#000000"
 
+const lightColors = {
+  white: "#FFFFFF",
+  primary1: "#7546AC",
+  primary2: '#F4DFF0',
+  secondary1: "#F8F7E9",
+  background: '#FFFFFF',
+  surface: "#F8F7E9",
+}
+
+const darkColors = {
+  white: "#FFFFFF",
+  primary1: "#F4DFF0",
+  primary2: '#7C71AF',
+  secondary1: "#3C3C3C",
+  background: '#26192C',
+  surface: "#3C3C3C",
+}
+
 const light = {
   dark: false,
   colors: {
-    primary: "#7546AC",
+    primary: lightColors.primary1,
     'on-primary': WHITE,
-    'primary-1': "#7546AC",
+    'primary-1': lightColors.primary1,
     'on-primary-1': WHITE,
-    'primary-2': "#F4DFF0",
-    'on-primary-2': WHITE,
 
-    secondary: "#bfbfb0",
-    'secondary-1': "#f5f4df",
+    'primary-2': lightColors.primary2,
+    'on-primary-2': lightColors.primary1,
 
+    secondary: lightColors.secondary1,
+    'on-secondary': WHITE,
+    'secondary-1': lightColors.secondary1,
+    'on-secondary-1': WHITE,
+
+    background: lightColors.background,
+    'on-background': lightColors.primary1,
+
+    surface : lightColors.surface,
+    'on-surface':lightColors.primary1,
+    
     white: WHITE,
     black: BLACK,
-
-    error: "#B00020",
-    info: "#2196F3",
-    success: "#4CAF50",
-    warning: "#FB8C00",
   },
   variables: {
     "border-radius": "50px",
@@ -33,13 +55,24 @@ const light = {
 const dark = {
   dark: true,
   colors: {
-    white: "#8E6FF8",
-    black: "#000000",
+    primary: darkColors.primary1,
+    'on-primary': WHITE,
+    'primary-1': darkColors.primary1,
+    'on-primary-1': WHITE,
 
-    error: "#B00020",
-    info: "#2196F3",
-    success: "#4CAF50",
-    warning: "#FB8C00",
+    'primary-2': darkColors.primary2,
+    'on-primary-2': darkColors.primary1,
+
+    secondary: darkColors.secondary1,
+    'on-secondary': WHITE,
+    'secondary-1': darkColors.secondary1,
+    'on-secondary-1': WHITE,
+
+    background: darkColors.background,
+    'on-background': darkColors.primary1,
+
+    surface : darkColors.surface,
+    'on-surface':darkColors.primary1,
   },
   variables: {
     "border-radius": "50px",

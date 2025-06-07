@@ -1,10 +1,21 @@
+<script setup lang="ts">
+onMounted(()=> {
+  const {themeCookie, setTheme} = useI18nCookie();
+  const theme = useTheme()
+  if (themeCookie.value) {
+    setTheme(themeCookie.value)
+    theme.global.name.value = themeCookie.value
+  }
+})
+</script>
+
 <template>
-  <VLayout class="flex-column">
-    <UINavbar />
-    <main class="main-layout">
-      <slot />
-    </main>
-  </VLayout>
+    <VLayout class="flex-column bg-background" >
+      <UINavbar />
+      <main class="main-layout">
+        <slot />
+      </main>
+    </VLayout>
 </template>
 
 <style scoped lang="css">

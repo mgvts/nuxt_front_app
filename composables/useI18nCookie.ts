@@ -4,7 +4,7 @@ import type { JWT } from "~/types"
 export const useI18nCookie = () => {
     const locale = useCookie('lang')
     const jwt = useCookie('jwt')
-
+    const themeCookie = useCookie('theme')
 
     const getLocale = (): string | undefined | null => {
         return locale.value
@@ -21,6 +21,10 @@ export const useI18nCookie = () => {
         return jwt.value
     }
 
+    const setTheme = (newTheme: string)  => {
+        themeCookie.value = newTheme
+    }
+
     return {
         locale,
 
@@ -31,5 +35,8 @@ export const useI18nCookie = () => {
 
         getJWT,
         setJWT,
+
+        themeCookie,
+        setTheme,
     }
 }
