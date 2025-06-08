@@ -14,7 +14,7 @@
       >
         <Logo />
         <div class="d-flex ga-4">
-          <UIIcon icon="mdi-account" to="/auth" />
+          <AccountBtn />
           <I18nSwitch />
           <ThemeToggle />
         </div>

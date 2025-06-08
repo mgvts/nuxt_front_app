@@ -5,6 +5,7 @@ export const useI18nCookie = () => {
     const locale = useCookie('lang')
     const jwt = useCookie('jwt')
     const themeCookie = useCookie('theme')
+    const login = useCookie('login')
 
     const getLocale = (): string | undefined | null => {
         return locale.value
@@ -21,6 +22,10 @@ export const useI18nCookie = () => {
         return jwt.value
     }
 
+    const setLogin = (newLogin: string) => {
+        login.value = newLogin
+    }
+
     const setTheme = (newTheme: string)  => {
         themeCookie.value = newTheme
     }
@@ -35,6 +40,8 @@ export const useI18nCookie = () => {
 
         getJWT,
         setJWT,
+        login,
+        setLogin,
 
         themeCookie,
         setTheme,
