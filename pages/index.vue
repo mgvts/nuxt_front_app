@@ -36,6 +36,26 @@ onMounted(async () => {
       Олега Мохова
     </h1>
   </div>
+
+  <section class="courses-section">
+    <h2 class="courses-title">Наши курсы</h2>
+    <div class="courses-list">
+      <div
+        v-for="semester in sortedSemesters"
+        :key="semester.id"
+        class="course-card"
+        :class="{ alt: semester.id % 2 === 0 }"
+      >
+        <div class="course-card-content">
+          <div class="course-title">{{ semester.title }}</div>
+          <div class="course-description">{{ semester.description }}</div>
+        </div>
+        <NuxtLink :to="`/semesters/${semester.id}`" class="course-link"
+          >перейти</NuxtLink
+        >
+      </div>
+    </div>
+  </section>
 </template>
 
 <style scoped>
@@ -95,6 +115,102 @@ onMounted(async () => {
     max-width: 100vw;
     flex: none;
     align-items: flex-start;
+  }
+}
+
+.courses-section {
+  margin-top: 64px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.courses-title {
+  font-family: var(--font-lato), sans-serif;
+  font-size: 64px;
+  font-weight: 700;
+  margin-bottom: 48px;
+  text-align: center;
+}
+.courses-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 32px;
+  justify-content: center;
+  width: 100%;
+  max-width: 1400px;
+}
+.course-card {
+  background: #f5eaff;
+  border-radius: 32px;
+  padding: 32px 24px 24px 24px;
+  min-width: 280px;
+  max-width: 340px;
+  flex: 1 1 320px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+  transition: box-shadow 0.2s;
+}
+
+.course-card.alt {
+  background: #faf8ee;
+}
+
+.course-title {
+  font-family: var(--font-lato), sans-serif;
+  font-size: 32px;
+  font-weight: 700;
+  color: #8e6ff8;
+  margin-bottom: 16px;
+  text-align: center;
+}
+.course-description {
+  font-family: var(--font-lato), sans-serif;
+  font-size: 16px;
+  color: #6b5ca5;
+  margin-bottom: 32px;
+  text-align: center;
+}
+.course-link {
+  display: block;
+  width: 100%;
+  background: #fff;
+  color: #8e6ff8;
+  font-family: var(--font-lato), sans-serif;
+  font-size: 28px;
+  font-weight: 700;
+  border-radius: 16px;
+  padding: 8px 0;
+  text-align: center;
+  text-decoration: none;
+  box-shadow: 0 2px 8px rgba(142, 111, 248, 0.08);
+  margin-top: auto;
+  transition: background 0.2s, color 0.2s;
+}
+.course-link:hover {
+  background: #8e6ff8;
+  color: #fff;
+}
+@media (max-width: 900px) {
+  .courses-title {
+    font-size: 40px;
+    margin-bottom: 32px;
+  }
+  .courses-list {
+    gap: 16px;
+  }
+  .course-card {
+    padding: 24px 12px 16px 12px;
+    min-width: 220px;
+    max-width: 100vw;
+  }
+  .course-title {
+    font-size: 22px;
+  }
+  .course-link {
+    font-size: 20px;
   }
 }
 </style>
