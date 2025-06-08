@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from "vue";
+import { computed, ref } from "vue";
 import messages from "./locale.json";
 useHead({
   title: "Главная",
@@ -15,6 +15,8 @@ const semesterStore = useSemesterStore();
 const profileStore = useProfileStore();
 const { sortedSemesters, loading, error } = storeToRefs(semesterStore);
 
+const isLoading = ref(true);
+
 onMounted(async () => {
   try {
     await Promise.all([
@@ -23,6 +25,8 @@ onMounted(async () => {
     ]);
   } catch (e) {
     console.error("Failed to load semesters:", e);
+  } finally {
+    isLoading.value = false;
   }
 });
 
@@ -54,50 +58,70 @@ const lecturers = computed(() => {
   <section class="courses-section">
     <h2 class="courses-title">Наши курсы</h2>
     <div class="courses-list">
-      <div
-        v-for="semester in sortedSemesters"
-        :key="semester.id"
-        class="course-card"
-        :class="{ alt: semester.id % 2 === 0 }"
-      >
-        <div class="course-card-content">
-          <img
-            v-if="semester.imageUrl"
-            :src="semester.imageUrl"
-            :alt="semester.title"
-            class="course-image"
-          />
-          <div class="course-title">{{ semester.title }}</div>
-          <div class="course-description">{{ semester.description }}</div>
+      <template v-if="isLoading || !sortedSemesters.length">
+        <div v-for="i in 4" :key="i" class="course-card skeleton">
+          <div class="course-card-content">
+            <div class="course-image skeleton-image" />
+            <div class="course-title skeleton-text" />
+            <div class="course-description skeleton-text" />
+          </div>
+          <div class="course-link skeleton-button" />
         </div>
-        <NuxtLink :to="`/semesters/${semester.id}`" class="course-link"
-          >перейти</NuxtLink
+      </template>
+      <template v-else>
+        <div
+          v-for="semester in sortedSemesters"
+          :key="semester.id"
+          class="course-card"
+          :class="{ alt: semester.id % 2 === 0 }"
         >
-      </div>
+          <div class="course-card-content">
+            <img
+              v-if="semester.imageUrl"
+              :src="semester.imageUrl"
+              :alt="semester.title"
+              class="course-image"
+            />
+            <div class="course-title">{{ semester.title }}</div>
+            <div class="course-description">{{ semester.description }}</div>
+          </div>
+          <NuxtLink :to="`/semesters/${semester.id}`" class="course-link"
+            >перейти</NuxtLink
+          >
+        </div>
+      </template>
     </div>
   </section>
 
   <section class="lecturers-section">
     <h2 class="lecturers-title">Наши лекторы</h2>
     <div class="lecturers-grid">
-      <NuxtLink
-        v-for="(lecturer, idx) in lecturers"
-        :key="lecturer.login"
-        :to="`/profiles/${lecturer.login}`"
-        class="lecturer-card"
-        :class="{
-          yellow: idx % 4 === 0 || idx % 4 === 3,
-          pink: idx % 4 === 1 || idx % 4 === 2,
-        }"
-      >
-        <div class="lecturer-bg-cloud" />
-        <img
-          :src="lecturer.avatarUrl"
-          :alt="lecturer.name"
-          class="lecturer-avatar"
-        />
-        <div class="lecturer-name">{{ lecturer.name }}</div>
-      </NuxtLink>
+      <template v-if="isLoading || !lecturers.length">
+        <div v-for="i in 8" :key="i" class="lecturer-card skeleton">
+          <div class="lecturer-avatar skeleton-image" />
+          <div class="lecturer-name skeleton-text" />
+        </div>
+      </template>
+      <template v-else>
+        <NuxtLink
+          v-for="(lecturer, idx) in lecturers"
+          :key="lecturer.login"
+          :to="`/profiles/${lecturer.login}`"
+          class="lecturer-card"
+          :class="{
+            yellow: idx % 4 === 0 || idx % 4 === 3,
+            pink: idx % 4 === 1 || idx % 4 === 2,
+          }"
+        >
+          <div class="lecturer-bg-cloud" />
+          <img
+            :src="lecturer.avatarUrl"
+            :alt="lecturer.name"
+            class="lecturer-avatar"
+          />
+          <div class="lecturer-name">{{ lecturer.name }}</div>
+        </NuxtLink>
+      </template>
     </div>
   </section>
 </template>
@@ -374,6 +398,111 @@ const lecturers = computed(() => {
   .lecturer-name {
     font-size: 24px;
     margin-left: 4px;
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.skeleton {
+  position: relative;
+  overflow: hidden;
+}
+
+.skeleton::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.2) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  animation: shimmer 1.5s infinite;
+  background-size: 200% 100%;
+}
+
+.skeleton-image {
+  background-color: rgba(142, 111, 248, 0.1);
+  border-radius: 16px;
+}
+
+.skeleton-text {
+  background-color: rgba(142, 111, 248, 0.1);
+  height: 24px;
+  border-radius: 4px;
+  margin-bottom: 16px;
+  width: 80%;
+}
+
+.skeleton-button {
+  background-color: rgba(142, 111, 248, 0.1);
+  height: 48px;
+  border-radius: 16px;
+  width: 100%;
+  margin-top: auto;
+}
+
+.course-card.skeleton .course-image {
+  height: 200px;
+  margin-bottom: 24px;
+}
+
+.course-card.skeleton .course-title {
+  height: 32px;
+  margin-bottom: 16px;
+}
+
+.course-card.skeleton .course-description {
+  height: 72px;
+}
+
+.lecturer-card.skeleton {
+  background: rgba(142, 111, 248, 0.1);
+}
+
+.lecturer-card.skeleton .lecturer-avatar {
+  background-color: rgba(255, 255, 255, 0.2);
+  border: none;
+  box-shadow: none;
+}
+
+.lecturer-card.skeleton .lecturer-name {
+  height: 36px;
+  width: 60%;
+}
+
+@media (max-width: 900px) {
+  .course-card.skeleton .course-image {
+    height: 160px;
+    margin-bottom: 16px;
+  }
+
+  .course-card.skeleton .course-title {
+    height: 24px;
+  }
+
+  .course-card.skeleton .course-description {
+    height: 48px;
+  }
+
+  .lecturer-card.skeleton .lecturer-avatar {
+    width: 120px;
+    height: 120px;
+  }
+
+  .lecturer-card.skeleton .lecturer-name {
+    height: 24px;
   }
 }
 </style>
