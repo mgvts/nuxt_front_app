@@ -192,6 +192,12 @@ const formatDate = (date: string) => {
 </template>
 
 <style scoped>
+/* Add global transition for all color properties */
+.semester-container * {
+  transition: background-color 0.3s ease, color 0.3s ease,
+    border-color 0.3s ease, opacity 0.3s ease;
+}
+
 .semester-container {
   padding: 2rem;
   width: 100%;
@@ -225,11 +231,11 @@ const formatDate = (date: string) => {
   text-align: center;
   padding: 2rem;
   font-size: var(--text-lg);
-  color: var(--text-primary, #003049);
+  color: rgb(var(--v-theme-on-background));
 }
 
 .semester-header-card {
-  background: var(--violet-bg, #f5eaff);
+  background: rgb(var(--v-theme-primary-2));
   border-radius: 16px;
   padding: 2rem;
   margin-bottom: 2rem;
@@ -271,7 +277,7 @@ const formatDate = (date: string) => {
 
 .semester-title {
   font-size: var(--text-5xl);
-  color: var(--violet, #8e6ff8);
+  color: rgb(var(--v-theme-on-primary-2));
   line-height: var(--leading-tight);
   font-weight: var(--font-bold);
   margin: 0;
@@ -279,7 +285,7 @@ const formatDate = (date: string) => {
 
 .semester-description {
   font-size: var(--text-lg);
-  color: var(--violet, #8e6ff8);
+  color: rgb(var(--v-theme-on-primary-2));
   opacity: 0.8;
   max-width: 800px;
   margin: 0;
@@ -295,7 +301,7 @@ const formatDate = (date: string) => {
 .lecture-card {
   flex: 1 1 calc(25% - 2rem);
   min-width: 280px;
-  background: var(--violet-bg, #f5eaff);
+  background: rgb(var(--v-theme-primary-2));
   border-radius: 16px;
   padding: 1.5rem;
   text-decoration: none !important;
@@ -304,7 +310,8 @@ const formatDate = (date: string) => {
 }
 
 .lecture-card:hover {
-  background: var(--violet-bg-hover, #f0e0ff);
+  background: rgb(var(--v-theme-primary-2));
+  opacity: 0.9;
   transform: translateY(-2px);
   text-decoration: none !important;
 }
@@ -324,7 +331,7 @@ const formatDate = (date: string) => {
 
 .lecture-date {
   font-size: var(--text-base);
-  color: var(--violet, #8e6ff8);
+  color: rgb(var(--v-theme-on-primary-2));
   opacity: 0.8;
   white-space: nowrap;
 }
@@ -337,22 +344,22 @@ const formatDate = (date: string) => {
 
 .lecture-tag {
   font-size: var(--text-sm);
-  color: var(--violet, #8e6ff8);
-  background: rgba(255, 255, 255, 0.5);
+  color: rgb(var(--v-theme-on-primary-2));
+  background: rgba(255, 255, 255, 0.2);
   padding: 0.25rem 0.75rem;
   border-radius: 1rem;
 }
 
 .lecture-title {
   font-size: var(--text-2xl);
-  color: var(--violet, #8e6ff8);
+  color: rgb(var(--v-theme-on-primary-2));
   margin: 0;
   font-weight: var(--font-bold);
 }
 
 .lecture-description {
   font-size: var(--text-base);
-  color: var(--violet, #8e6ff8);
+  color: rgb(var(--v-theme-on-primary-2));
   opacity: 0.8;
 }
 
@@ -367,7 +374,7 @@ const formatDate = (date: string) => {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  background: rgba(255, 255, 255, 0.5);
+  background: rgba(255, 255, 255, 0.2);
   padding: 0.25rem 0.75rem;
   border-radius: 1rem;
 }
@@ -381,7 +388,7 @@ const formatDate = (date: string) => {
 
 .lecturer-name {
   font-size: var(--text-sm);
-  color: var(--violet, #8e6ff8);
+  color: rgb(var(--v-theme-on-primary-2));
 }
 
 .semester-progress {
@@ -394,21 +401,21 @@ const formatDate = (date: string) => {
 .progress-bar {
   flex: 1;
   height: 8px;
-  background: rgba(142, 111, 248, 0.1);
+  background: rgba(255, 255, 255, 0.2);
   border-radius: 4px;
   overflow: hidden;
 }
 
 .progress-fill {
   height: 100%;
-  background: var(--violet, #8e6ff8);
+  background: rgb(var(--v-theme-on-primary-2));
   border-radius: 4px;
   transition: width 0.3s ease;
 }
 
 .progress-text {
   font-size: var(--text-sm);
-  color: var(--violet, #8e6ff8);
+  color: rgb(var(--v-theme-on-primary-2));
   font-weight: var(--font-medium);
   min-width: 48px;
   text-align: right;
@@ -416,7 +423,7 @@ const formatDate = (date: string) => {
 
 .progress-pending {
   font-size: var(--text-base);
-  color: var(--violet, #8e6ff8);
+  color: rgb(var(--v-theme-on-primary-2));
   opacity: 0.8;
   font-style: italic;
 }
@@ -424,14 +431,14 @@ const formatDate = (date: string) => {
 .tag-filter {
   margin-bottom: 2rem;
   padding: 1rem;
-  background: var(--violet-bg, #f5eaff);
+  background: rgb(var(--v-theme-primary-2));
   border-radius: 16px;
   box-shadow: 0 4px 24px rgba(142, 111, 248, 0.08);
 }
 
 .tag-filter-label {
   font-size: var(--text-lg);
-  color: var(--violet, #8e6ff8);
+  color: rgb(var(--v-theme-on-primary-2));
   margin-bottom: 0.75rem;
   font-weight: var(--font-medium);
 }
@@ -444,22 +451,22 @@ const formatDate = (date: string) => {
 
 .tag-filter-button {
   padding: 0.5rem 1rem;
-  border: 2px solid var(--violet, #8e6ff8);
+  border: 2px solid rgb(var(--v-theme-on-primary-2));
   border-radius: 1rem;
   background: transparent;
-  color: var(--violet, #8e6ff8);
+  color: rgb(var(--v-theme-on-primary-2));
   font-size: var(--text-base);
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
 .tag-filter-button:hover {
-  background: rgba(142, 111, 248, 0.1);
+  background: rgba(255, 255, 255, 0.2);
 }
 
 .tag-filter-button.active {
-  background: var(--violet, #8e6ff8);
-  color: white;
+  background: rgb(var(--v-theme-on-primary-2));
+  color: rgb(var(--v-theme-primary-2));
 }
 
 @media (max-width: 1024px) {
