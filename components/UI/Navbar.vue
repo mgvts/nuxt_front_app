@@ -15,7 +15,7 @@
         <Logo />
         <div class="d-flex ga-4">
           <UIIcon icon="mdi-account" to="/auth" />
-          <UIIcon icon="mdi-translate" />
+          <I18nSwitch />
           <ThemeToggle />
         </div>
       </div>

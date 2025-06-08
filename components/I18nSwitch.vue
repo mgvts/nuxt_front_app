@@ -1,25 +1,22 @@
 <script setup lang="ts">
-import type { LocaleKey } from '~/i18n/locales';
-import { locales } from '~/i18n/locales'
-const { getLocale, setLocale } = useI18nCookie()
+import { LocaleKey } from '~/i18n/locales';
+const { locale, setLocale } = useI18nCookie()
 
+const getNextLocale = computed((): LocaleKey => {
+    if (locale.value === LocaleKey.RU) {
+        return LocaleKey.EN
+    }
+    return LocaleKey.RU
+})
 
-const currentLocale: LocaleKey = computed<LocaleKey>(getLocale)
-const updateLocale = async (locale: LocaleKey) => {
-    setLocale(locale)
+const updateLocale = async () => {
+    setLocale(getNextLocale.value)
     await window.location.reload()
 }
 </script>
 
 
+
 <template>
-    <VBtnToggle 
-        :value="currentLocale"
-        mandatory 
-        @update:model-value="updateLocale"
-    >
-        <VBtn v-for="locale of locales" :key="locale.key" :value="locale.key">
-            {{ locale.label }}
-        </VBtn>
-    </VBtnToggle>
+    <UIIcon class="cursor-pointer" icon="mdi-translate" @click="updateLocale"/>
 </template>

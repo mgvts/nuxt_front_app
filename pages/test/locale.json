@@ -1,0 +1,10 @@
+{
+    "ru": {
+        "тайтл": "Какой-то текст",
+        "текст": "Курс по базовому JavaScript познакомит вас с основами программирования: переменными, функциями, условиями, циклами и работой с DOM, чтобы вы могли создавать интерактивные и динамические веб-страницы."
+    },
+    "en": {
+        "тайтл": "Some title",
+        "текст": "The Basic JavaScript course will introduce you to the fundamentals of programming: variables, functions, conditions, loops, and working with the DOM so you can create interactive and dynamic web pages."
+    }
+}
