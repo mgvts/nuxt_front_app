@@ -103,6 +103,7 @@ const fields = ref<FiledMap>({
       label: t("Подтвердите пароль"),
       rules: [lenRule],
       isPassword: true,
+      showed: false,
     },
   },
   login: {
@@ -142,7 +143,9 @@ const submit = async () => {
 </script>
 
 <template>
-  <UIButton @click="isRegister = !isRegister"> change form </UIButton>
+  <UIButton @click="isRegister = !isRegister">
+    {{ isRegister ? t("Создать аккаунт") : t("Войти") }}
+  </UIButton>
   <div class="py-10" />
 
   <UIForm>
