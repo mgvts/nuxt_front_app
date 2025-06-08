@@ -136,7 +136,7 @@ const submit = async () => {
     } else {
       account = await login(payload);
     }
-    if (account!) {
+        if (account!) {
         router.push("/");
     }
   } catch (e) {

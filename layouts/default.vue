@@ -10,7 +10,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <VLayout class="flex-column bg-background">
+  <VLayout class="flex-column bg-background" style="min-height: 100vh;">
     <UINavbar />
     <main class="main-layout">
       <slot />
@@ -20,7 +20,7 @@ onMounted(() => {
 
 <style scoped lang="css">
 .main-layout {
-  padding-top: 240px;
+  padding-top: 166px;
   margin: auto;
 }
 
