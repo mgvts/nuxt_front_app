@@ -19,7 +19,6 @@ const isEngLocale = computed(() => locale.value === LocaleKey.EN);
     style="min-height: 100vh"
     :class="{ 'eng-font': isEngLocale, 'ru-font': !isEngLocale }"
   >
-    <UIAppLoader />
     <UINavbar />
     <main class="main-layout">
       <slot />
