@@ -61,6 +61,12 @@ const lecturers = computed(() => {
         :class="{ alt: semester.id % 2 === 0 }"
       >
         <div class="course-card-content">
+          <img
+            v-if="semester.imageUrl"
+            :src="semester.imageUrl"
+            :alt="semester.title"
+            class="course-image"
+          />
           <div class="course-title">{{ semester.title }}</div>
           <div class="course-description">{{ semester.description }}</div>
         </div>
@@ -74,9 +80,10 @@ const lecturers = computed(() => {
   <section class="lecturers-section">
     <h2 class="lecturers-title">Наши лекторы</h2>
     <div class="lecturers-grid">
-      <div
+      <NuxtLink
         v-for="(lecturer, idx) in lecturers"
         :key="lecturer.login"
+        :to="`/profiles/${lecturer.login}`"
         class="lecturer-card"
         :class="{
           yellow: idx % 4 === 0 || idx % 4 === 3,
@@ -90,7 +97,7 @@ const lecturers = computed(() => {
           class="lecturer-avatar"
         />
         <div class="lecturer-name">{{ lecturer.name }}</div>
-      </div>
+      </NuxtLink>
     </div>
   </section>
 </template>
@@ -196,9 +203,26 @@ const lecturers = computed(() => {
   background: #faf8ee;
 }
 
+.course-card-content {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+}
+
+.course-image {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 16px;
+  margin-bottom: 24px;
+}
+
 .course-title {
   font-family: var(--font-lato), sans-serif;
   font-size: 32px;
+  line-height: 32px;
   font-weight: 700;
   color: #8e6ff8;
   margin-bottom: 16px;
@@ -244,6 +268,10 @@ const lecturers = computed(() => {
     min-width: 220px;
     max-width: 100vw;
   }
+  .course-image {
+    height: 160px;
+    margin-bottom: 16px;
+  }
   .course-title {
     font-size: 22px;
   }
@@ -287,7 +315,15 @@ const lecturers = computed(() => {
   min-width: 0;
   min-height: 0;
   border: 1px solid rgba(142, 111, 248, 0.2);
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform 0.2s ease;
 }
+
+.lecturer-card:hover {
+  transform: translateY(-4px);
+}
+
 .lecturer-card.yellow {
   background: url("~/assets/img/lecturer_yellow.png") center/cover no-repeat;
 }
@@ -303,6 +339,7 @@ const lecturers = computed(() => {
   margin-bottom: 24px;
   margin-left: 8px;
   box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+  pointer-events: none;
 }
 .lecturer-name {
   font-family: var(--font-lato), sans-serif;
@@ -312,6 +349,7 @@ const lecturers = computed(() => {
   margin-left: 8px;
   margin-top: 0;
   text-align: left;
+  pointer-events: none;
 }
 @media (max-width: 900px) {
   .lecturers-grid {
