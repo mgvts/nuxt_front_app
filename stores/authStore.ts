@@ -5,7 +5,7 @@ import type { AuthResponse } from '~/types/auth'
 import type { LoginPayload, RegisterPayload } from '~/types/auth'
 
 export const useAuthStore = defineStore('auth', () => {
-  const {jwt, getJWT, setJWT} = useI18nCookie()
+  const {setJWT} = useI18nCookie()
   const loginRef = ref<AuthResponse['login'] | null>(null)
   const loading = ref<boolean>(false)
   const error = ref<string | null>(null)
@@ -14,9 +14,10 @@ export const useAuthStore = defineStore('auth', () => {
     loading.value = true
     error.value = null
     try {
-      const res = await api.auth.register(payload)
-      setJWT(res.jwtToken)
-      loginRef.value = res.login
+      const account = await api.auth.register(payload)
+      setJWT(account.jwtToken)
+      loginRef.value = account.login
+      return account
     } catch (e: unknown) {
       error.value = e?.message || 'Ошибка при регистрации'
     } finally { 
@@ -28,9 +29,10 @@ export const useAuthStore = defineStore('auth', () => {
     loading.value = true
     error.value = null
     try {
-      const res = await api.auth.login(payload)
-      setJWT(res.jwtToken)
-      loginRef.value = res.login
+      const account = await api.auth.login(payload)
+      setJWT(account.jwtToken)
+      loginRef.value = account.login
+      return account
     } catch (e: unknown) {
       error.value = e.message || 'Ошибка при входе'
     } finally {

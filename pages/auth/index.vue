@@ -28,7 +28,7 @@ interface FiledMap {
 }
 
 const isRegister = ref(false);
-const getAction = computed(() => (isRegister.value ? "login" : "register"));
+const getAction = computed(() => (isRegister.value ? "register" : "login"));
 const getFieldType = (field: Field) =>
   field.isPassword && !field.showed ? "password" : "text";
 const getFieldShowedToggle = (field: Field) =>
@@ -39,8 +39,8 @@ const headerLabelMap = {
   register: t("Создать аккаунт"),
 };
 const footerLabelMap = {
-  login: t("войти"),
-  register: t("зарегистрироваться"),
+  login: t("Войти"),
+  register: t("Зарегистрироваться"),
 };
 
 const getHeaderLabel = computed(() => {
@@ -59,14 +59,14 @@ const getApiPayload = (): RegisterPayload | LoginPayload => {
   }
   return {
     login: fields.value.login.login.value,
-    password: fields.value.login.login.value,
+    password: fields.value.login.password.value,
   };
 };
 
 const lenRule = (v: string) =>
   (v && 2 < v.length && v.length < 100) || t("неверная длина");
-// TODO: это плохо, тут по хорошему нужна мапа а не списки, но переделывать впадлу
-const fields = ref<FiledMap>({
+
+  const fields = ref<FiledMap>({
   register: {
     name: {
       value: "",
@@ -129,13 +129,16 @@ const fields = ref<FiledMap>({
 const submit = async () => {
   const router = useRouter();
   const payload = getApiPayload();
+  let account
   try {
     if (isRegister.value) {
-      await register(payload as RegisterPayload);
+      account = await register(payload as RegisterPayload);
     } else {
-      await login(payload);
+      account = await login(payload);
     }
-    router.push("/");
+    if (account!) {
+        router.push("/");
+    }
   } catch (e) {
     console.error(e);
   }
