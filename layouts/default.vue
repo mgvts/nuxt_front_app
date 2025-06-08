@@ -23,6 +23,9 @@ const isEngLocale = computed(() => locale.value === LocaleKey.EN);
     <main class="main-layout">
       <slot />
     </main>
+    <footer class="footer-hackathon">
+      Создано в рамках Хакатона, 2025 год
+    </footer>
   </VLayout>
 </template>
 
@@ -69,7 +72,19 @@ const isEngLocale = computed(() => locale.value === LocaleKey.EN);
   .main-layout {
     min-width: 600px;
     width: 100%;
-    padding: 0 1rem;
+    padding: 8rem 1rem 0 1rem;
   }
+}
+
+.footer-hackathon {
+  width: 100%;
+  background: rgb(var(--v-theme-primary-2));
+  color: rgb(var(--v-theme-primary));
+  text-align: center;
+  font-size: 2rem;
+  padding: 1.5rem 0 1.5rem 0;
+  font-family: var(--font-lato), sans-serif;
+  font-weight: 400;
+  margin-top: 100px;
 }
 </style>
