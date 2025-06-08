@@ -42,7 +42,7 @@ const lecturers = computed(() => {
 
 <template>
   <div class="hello-container">
-    <img class="hello-img" src="~/assets/img/hello-img.jpg" alt="Hello" />
+    <img class="hello-img" src="~/assets/img/main-bg.jpg" alt="Hello" />
     <h1 class="hello-text">
       Курсы<br />по фронтенд-разработке<br />
       от студентов ИТМО<br />
@@ -102,6 +102,7 @@ const lecturers = computed(() => {
   max-width: 1200px;
   width: 100%;
   margin: 0 auto;
+  margin-top: 70px;
   gap: 40px;
 }
 
@@ -267,76 +268,73 @@ const lecturers = computed(() => {
 }
 .lecturers-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  grid-template-rows: repeat(2, 1fr);
-  gap: 24px;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(4, 1fr);
+  gap: 0;
   width: 100%;
   max-width: 1200px;
 }
 .lecturer-card {
   position: relative;
-  border-radius: 32px;
-  min-height: 320px;
+  border-radius: 0;
+  aspect-ratio: 1/1;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   justify-content: flex-start;
-  padding: 32px 24px 24px 24px;
+  padding: 48px 32px 32px 32px;
   overflow: hidden;
+  min-width: 0;
+  min-height: 0;
+  border: 1px solid rgba(142, 111, 248, 0.2);
 }
 .lecturer-card.yellow {
-  background: #faf8ee;
+  background: url("~/assets/img/lecturer_yellow.png") center/cover no-repeat;
 }
 .lecturer-card.pink {
-  background: #f5eaff;
+  background: url("~/assets/img/lecturer_pink.png") center/cover no-repeat;
 }
 .lecturer-avatar {
-  width: 160px;
-  height: 160px;
+  width: 240px;
+  height: 240px;
   border-radius: 50%;
   object-fit: cover;
   border: 4px solid #fff;
-  margin-bottom: 16px;
+  margin-bottom: 24px;
   margin-left: 8px;
   box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
 }
 .lecturer-name {
   font-family: var(--font-lato), sans-serif;
-  font-size: 28px;
+  font-size: 36px;
   font-weight: 700;
   color: #8e6ff8;
   margin-left: 8px;
   margin-top: 0;
   text-align: left;
 }
-@media (max-width: 1100px) {
-  .lecturers-grid {
-    grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: repeat(4, 1fr);
-  }
-}
-@media (max-width: 700px) {
-  .lecturers-title {
-    font-size: 36px;
-    margin-bottom: 24px;
-  }
+@media (max-width: 900px) {
   .lecturers-grid {
     grid-template-columns: 1fr;
     grid-template-rows: repeat(8, 1fr);
-    gap: 16px;
+    gap: 0;
+    max-width: 100vw;
   }
   .lecturer-card {
-    min-height: 180px;
-    padding: 16px 8px 12px 8px;
+    border-radius: 0;
+    aspect-ratio: 1/1;
+    min-height: 280px;
+    padding: 24px 16px 16px 16px;
+    border: 1px solid rgba(142, 111, 248, 0.2);
   }
   .lecturer-avatar {
-    width: 80px;
-    height: 80px;
-    margin-bottom: 8px;
+    width: 120px;
+    height: 120px;
+    margin-bottom: 16px;
     margin-left: 4px;
   }
   .lecturer-name {
-    font-size: 18px;
+    font-size: 24px;
     margin-left: 4px;
   }
 }
