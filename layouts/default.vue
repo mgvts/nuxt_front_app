@@ -14,7 +14,7 @@ const isEngLocale = computed(() => locale.value === LocaleKey.EN)
 </script>
 
 <template>
-  <VLayout class="flex-column bg-background" style="min-height: 100vh;" :class="{'eng-font':isEngLocale}">
+  <VLayout class="flex-column bg-background" style="min-height: 100vh;" :class="{'eng-font':isEngLocale, 'ru-font':!isEngLocale}">
     <UINavbar />
     <main class="main-layout">
       <slot />
@@ -33,7 +33,11 @@ const isEngLocale = computed(() => locale.value === LocaleKey.EN)
 }
 
 .eng-font {
-  font-family: 'Times New Roman', Times, serif;
+  font-family: var(--font-lato);
+}
+
+.ru-font {
+  font-family: var(--font-lato);
 }
 
 @media (width > 1920px) {

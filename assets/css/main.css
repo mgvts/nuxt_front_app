@@ -20,7 +20,6 @@ body {
   width: 100%;
   min-width: 320px;
   min-height: 100vh;
-  font-family: var(--font-lato);
   letter-spacing: 0.2px;
   line-height: 24px;
   font-size: 16px;
