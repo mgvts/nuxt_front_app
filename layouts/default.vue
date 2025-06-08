@@ -1,21 +1,21 @@
 <script setup lang="ts">
-onMounted(()=> {
-  const {themeCookie, setTheme} = useI18nCookie();
-  const theme = useTheme()
+onMounted(() => {
+  const { themeCookie, setTheme } = useI18nCookie();
+  const theme = useTheme();
   if (themeCookie.value) {
-    setTheme(themeCookie.value)
-    theme.global.name.value = themeCookie.value
+    setTheme(themeCookie.value);
+    theme.global.name.value = themeCookie.value;
   }
-})
+});
 </script>
 
 <template>
-    <VLayout class="flex-column bg-background" >
-      <UINavbar />
-      <main class="main-layout">
-        <slot />
-      </main>
-    </VLayout>
+  <VLayout class="flex-column bg-background">
+    <UINavbar />
+    <main class="main-layout">
+      <slot />
+    </main>
+  </VLayout>
 </template>
 
 <style scoped lang="css">
@@ -54,6 +54,7 @@ onMounted(()=> {
 
 @media (width <=940px) {
   .main-layout {
+    min-width: 468px;
     width: 100%;
     margin: 0 20px;
   }

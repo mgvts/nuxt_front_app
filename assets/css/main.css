@@ -7,6 +7,7 @@
   --font-kantumruy: "Kantumruy Pro";
   --font-katari: "Cormorant Garamond";
   --font-grover: "Irish Grover";
+  --font-lato: "Lato";
   --yellow: #dbff00;
   --violet: #8e6ff8;
   --white: #ffffff;
@@ -19,7 +20,7 @@ body {
   width: 100%;
   min-width: 320px;
   min-height: 100vh;
-  font-family: var(--font-kantumruy);
+  font-family: var(--font-lato);
   letter-spacing: 0.2px;
   line-height: 24px;
   font-size: 16px;
@@ -49,5 +50,5 @@ img {
 
 .animate-spin {
   transform: rotate(360deg);
-  transition: 'transform 0.5s ease';
+  transition: "transform 0.5s ease";
 }

@@ -27,59 +27,74 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="main-visual">
-    <div class="main-bg" />
-    <img
-      class="main-flower"
-      src="~/assets/img/flower-with-hands.png"
-      alt="flower"
-    />
+  <div class="hello-container">
+    <img class="hello-img" src="~/assets/img/hello-img.jpg" alt="Hello" />
+    <h1 class="hello-text">
+      Курсы<br />по фронтенд-разработке<br />
+      от студентов ИТМО<br />
+      под руководством<br />
+      Олега Мохова
+    </h1>
   </div>
 </template>
 
 <style scoped>
-.main-visual {
-  position: relative;
-  width: 100vw;
-  min-height: 400px;
-  height: 60vh;
-  overflow: hidden;
-  background: #f8e9f6;
+.hello-container {
   display: flex;
-  align-items: flex-end;
-  justify-content: flex-end;
+  align-items: stretch;
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+  gap: 40px;
 }
 
-.main-bg {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100vw;
+.hello-img {
+  width: 100%;
   height: 100%;
-  background: url("~/assets/img/upper-main-img.png") center top/cover no-repeat;
-  z-index: 1;
+  object-fit: contain;
+  border-radius: 32px;
+  flex: 1 1 0;
+  min-width: 0;
+  min-height: 0;
+  max-width: none;
+  max-height: none;
 }
 
-.main-flower {
-  position: absolute;
-  right: 4vw;
-  bottom: 0;
-  width: 420px;
-  max-width: 40vw;
-  z-index: 2;
-  pointer-events: none;
-  user-select: none;
+.hello-text {
+  display: flex;
+  align-items: center;
+  font-family: var(--font-lato), sans-serif;
+  font-weight: 700;
+  font-size: 30px;
+  line-height: 40px;
+  letter-spacing: 0.2px;
+  text-align: center;
+  min-width: 0;
+  flex: 0 1 auto;
+  max-width: 400px;
 }
 
 @media (max-width: 900px) {
-  .main-flower {
-    width: 220px;
-    max-width: 60vw;
-    right: 2vw;
+  .hello-container {
+    flex-direction: column;
+    gap: 24px;
+    max-width: 100vw;
+    align-items: center;
   }
-  .main-visual {
-    min-height: 220px;
-    height: 32vh;
+  .hello-img {
+    width: 100%;
+    max-width: 360px;
+    flex: none;
+    height: auto;
+    object-fit: contain;
+  }
+  .hello-text {
+    font-size: 32px;
+    line-height: 40px;
+    text-align: center;
+    max-width: 100vw;
+    flex: none;
+    align-items: flex-start;
   }
 }
 </style>
