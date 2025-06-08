@@ -199,11 +199,11 @@ const formatDate = (date: string) => {
 }
 
 .semester-container {
-  padding: 2rem;
   width: 100%;
   max-width: 1400px;
   margin: 0 auto;
   font-family: var(--font-lato);
+  box-sizing: border-box;
 }
 
 .semester-content {
@@ -469,78 +469,37 @@ const formatDate = (date: string) => {
   color: rgb(var(--v-theme-primary-2));
 }
 
-@media (max-width: 1024px) {
+@media (min-width: 941px) {
   .semester-container {
-    padding: 1.5rem;
+    padding: 2rem;
+  }
+}
+
+@media (max-width: 940px) {
+  .semester-container {
+    padding: 1.5rem 1rem;
+  }
+
+  .semester-header-card {
+    padding: 1.5rem 1rem;
   }
 
   .lecture-card {
-    flex: 1 1 calc(33.333% - 1.5rem);
+    flex: 1 1 calc(50% - 1rem);
   }
 }
 
 @media (max-width: 768px) {
   .semester-container {
-    padding: 1rem;
+    padding: 1rem 0.75rem;
   }
 
   .semester-header-card {
-    padding: 1.5rem;
-  }
-
-  .card-content {
-    gap: 1rem;
-  }
-
-  .number {
-    font-size: var(--text-5xl);
-  }
-
-  .semester-title {
-    font-size: var(--text-3xl);
+    padding: 1.25rem 0.75rem;
   }
 
   .lecture-card {
     flex: 1 1 100%;
-  }
-
-  .lecture-header {
-    flex-direction: column;
-    gap: 0.5rem;
-  }
-
-  .tag-filter {
-    padding: 0.75rem;
-  }
-
-  .tag-filter-label {
-    font-size: var(--text-base);
-  }
-
-  .tag-filter-button {
-    padding: 0.375rem 0.75rem;
-    font-size: var(--text-sm);
-  }
-
-  .semester-title-skeleton {
-    height: 2rem;
-    width: 80%;
-  }
-
-  .semester-description-skeleton {
-    width: 90%;
-  }
-
-  .tag-skeleton {
-    width: 80px;
-  }
-
-  .lecture-title-skeleton {
-    width: 90%;
-  }
-
-  .lecture-description-skeleton {
-    width: 100%;
   }
 }
 </style>

@@ -65,11 +65,11 @@ const isEngLocale = computed(() => locale.value === LocaleKey.EN);
   }
 }
 
-@media (width <=940px) {
+@media (width <= 940px) {
   .main-layout {
-    min-width: 468px;
+    min-width: 600px;
     width: 100%;
-    margin: 0 20px;
+    padding: 0 1rem;
   }
 }
 </style>
