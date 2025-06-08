@@ -13,7 +13,7 @@ useHead({
 const { t } = useI18n({ messages });
 const semesterStore = useSemesterStore();
 const profileStore = useProfileStore();
-const { sortedSemesters, loading, error } = storeToRefs(semesterStore);
+const { sortedSemesters } = storeToRefs(semesterStore);
 
 const isLoading = ref(true);
 
@@ -46,17 +46,14 @@ const lecturers = computed(() => {
 
 <template>
   <div class="hello-container">
-    <img class="hello-img" src="~/assets/img/main-bg.jpg" alt="Hello" />
+    <img class="hello-img" src="~/assets/img/main-bg.jpg" alt="Hello" >
     <h1 class="hello-text">
-      Курсы<br />по фронтенд-разработке<br />
-      от студентов ИТМО<br />
-      под руководством<br />
-      Олега Мохова
+      {{ t('Курс...') }}
     </h1>
   </div>
 
   <section class="courses-section">
-    <h2 class="courses-title">Наши курсы</h2>
+    <h2 class="courses-title">{{ t('Наши курсы') }}</h2>
     <div class="courses-list">
       <template v-if="isLoading || !sortedSemesters.length">
         <div v-for="i in 4" :key="i" class="course-card skeleton">
@@ -81,36 +78,36 @@ const lecturers = computed(() => {
               :src="semester.imageUrl"
               :alt="semester.title"
               class="course-image"
-            />
+            >
             <div class="course-title">{{ semester.title }}</div>
             <div class="course-description">{{ semester.description }}</div>
           </div>
-          <NuxtLink :to="`/semesters/${semester.id}`" class="course-link"
-            >перейти</NuxtLink
-          >
+          <UILink :to="`/semesters/${semester.id}`" class="course-link">
+            {{ t('перейти') }}
+          </UILink>
         </div>
       </template>
     </div>
   </section>
 
   <section class="lecturers-section">
-    <h2 class="lecturers-title">Наши лекторы</h2>
-    <div class="lecturers-grid">
+    <h2 class="lecturers-title">{{ t('Наши лекторы') }}</h2>
+    <div class="lecturers-grid bg-transpanent">
       <template v-if="isLoading || !lecturers.length">
         <div v-for="i in 8" :key="i" class="lecturer-card skeleton">
           <div class="lecturer-avatar skeleton-image" />
           <div class="lecturer-name skeleton-text" />
         </div>
       </template>
-      <template v-else>
-        <NuxtLink
+      <template v-else >
+        <UILink
           v-for="(lecturer, idx) in lecturers"
           :key="lecturer.login"
           :to="`/profiles/${lecturer.login}`"
           class="lecturer-card"
           :class="{
-            yellow: idx % 4 === 0 || idx % 4 === 3,
-            pink: idx % 4 === 1 || idx % 4 === 2,
+            'bg-secondary': idx % 4 === 0 || idx % 4 === 3,
+            'bg-primary-2': idx % 4 === 1 || idx % 4 === 2,
           }"
         >
           <div class="lecturer-bg-cloud" />
@@ -118,9 +115,9 @@ const lecturers = computed(() => {
             :src="lecturer.avatarUrl"
             :alt="lecturer.name"
             class="lecturer-avatar"
-          />
+          >
           <div class="lecturer-name">{{ lecturer.name }}</div>
-        </NuxtLink>
+        </UILink>
       </template>
     </div>
   </section>
@@ -152,7 +149,6 @@ const lecturers = computed(() => {
 .hello-text {
   display: flex;
   align-items: center;
-  font-family: var(--font-lato), sans-serif;
   font-weight: 700;
   font-size: 30px;
   line-height: 40px;
@@ -195,7 +191,6 @@ const lecturers = computed(() => {
   align-items: center;
 }
 .courses-title {
-  font-family: var(--font-lato), sans-serif;
   font-size: 64px;
   font-weight: 700;
   margin-bottom: 80px;
@@ -209,6 +204,7 @@ const lecturers = computed(() => {
   width: 100%;
   max-width: 1400px;
 }
+
 .course-card {
   background: #f5eaff;
   border-radius: 32px;
@@ -338,22 +334,18 @@ const lecturers = computed(() => {
   overflow: hidden;
   min-width: 0;
   min-height: 0;
-  border: 1px solid rgba(142, 111, 248, 0.2);
   text-decoration: none;
   cursor: pointer;
-  transition: transform 0.2s ease;
+  transition: all 0.2s ease;
+
+  background: url("~/assets/img/lecturer-img.svg") center/cover no-repeat;
 }
 
 .lecturer-card:hover {
-  transform: translateY(-4px);
+  transform: scaleY(1.01);
+  z-index: 100;
 }
 
-.lecturer-card.yellow {
-  background: url("~/assets/img/lecturer_yellow.png") center/cover no-repeat;
-}
-.lecturer-card.pink {
-  background: url("~/assets/img/lecturer_pink.png") center/cover no-repeat;
-}
 .lecturer-avatar {
   width: 240px;
   height: 240px;
@@ -369,7 +361,6 @@ const lecturers = computed(() => {
   font-family: var(--font-lato), sans-serif;
   font-size: 36px;
   font-weight: 700;
-  color: #8e6ff8;
   margin-left: 8px;
   margin-top: 0;
   text-align: left;

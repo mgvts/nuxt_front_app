@@ -24,6 +24,7 @@ const props = defineProps({
 		<UIText 
 			:color="props.color"
 			size="link"
+			class="bg-transparent"
 			v-bind="$attrs"
 		>
 			<slot />
@@ -34,8 +35,5 @@ const props = defineProps({
 <style scoped lang="css">
 .link {
   text-decoration: none;
-}
-.link:hover {
-	text-decoration: underline;
 }
 </style>

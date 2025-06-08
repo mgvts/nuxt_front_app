@@ -34,9 +34,9 @@ const light = {
     'on-primary-2': lightColors.primary1,
 
     secondary: lightColors.secondary1,
-    'on-secondary': WHITE,
+    'on-secondary': lightColors.primary1,
     'secondary-1': lightColors.secondary1,
-    'on-secondary-1': WHITE,
+    'on-secondary-1': lightColors.primary1,
 
     background: lightColors.background,
     'on-background': lightColors.primary1,
@@ -64,9 +64,9 @@ const dark = {
     'on-primary-2': darkColors.primary1,
 
     secondary: darkColors.secondary1,
-    'on-secondary': WHITE,
+    'on-secondary': darkColors.primary1,
     'secondary-1': darkColors.secondary1,
-    'on-secondary-1': WHITE,
+    'on-secondary-1': darkColors.primary1,
 
     background: darkColors.background,
     'on-background': darkColors.primary1,
