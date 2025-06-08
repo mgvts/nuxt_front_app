@@ -1,14 +1,14 @@
 {
-    "ru": {
-        "перейти": "перейти",
-        "Наши лекторы":"Наши лекторы",
-        "Курс...":"Курс Курсы\nпо\u00a0фронтенд-разработке\nот\u00a0студентов ИТМО\nпод руководством\nОлега Мохова",
-        "Наши курсы": "Наши курсы"
-    },
-    "en": {
-        "перейти": "go to course",
-        "Наши лекторы":"Lecturers",
-        "Курс...": "Course Courses\non frontend development\nfrom ITMO students\nunder the guidance of\nOleg Mokhov",
-        "Наши курсы": "Our classes"
-    }
+  "ru": {
+    "перейти": "перейти",
+    "Наши лекторы": "Наши лекторы",
+    "Курс...": "Курсы\nпо\u00a0фронтенд-разработке\nот\u00a0студентов ИТМО\nпод руководством\nОлега Мохова",
+    "Наши курсы": "Наши курсы"
+  },
+  "en": {
+    "перейти": "go to course",
+    "Наши лекторы": "Lecturers",
+    "Курс...": "Courses\non frontend development\nfrom ITMO students\nunder the guidance of\nOleg Mokhov",
+    "Наши курсы": "Our classes"
+  }
 }
