@@ -1,78 +1,131 @@
 <script setup lang="ts">
-import { useProfileStore } from '~/stores/profileStore'
-import { storeToRefs } from 'pinia'
-import { useRoute, useHead } from '#app'
+import { useHead, useRoute } from "#app";
+import { storeToRefs } from "pinia";
+import { ref } from "vue";
+import { useProfileStore } from "~/stores/profileStore";
 
-const route = useRoute()
-const login = route.params.login as string
+const route = useRoute();
+const login = route.params.login as string;
 
-const profileStore = useProfileStore()
-const { currentProfile, loading, error } = storeToRefs(profileStore)
+const profileStore = useProfileStore();
+const { currentProfile, loading, error } = storeToRefs(profileStore);
+
+interface ApiError {
+  message?: string;
+  status?: number;
+  statusText?: string;
+  data?: unknown;
+}
+
+// Состояние избранного (локально, для примера)
+const isFavorite = ref(false);
+function toggleFavorite() {
+  isFavorite.value = !isFavorite.value;
+}
 
 onMounted(async () => {
+  console.log("Loading profile for login:", login);
+  console.log("Initial loading state:", loading.value);
   try {
-    await profileStore.loadProfile(login)
-  } catch (e) {
-    console.error('Failed to load profile:', e)
+    await profileStore.loadProfile(login);
+    console.log("Profile loaded:", currentProfile.value);
+    console.log("Loading state after load:", loading.value);
+  } catch (e: unknown) {
+    const error = e as ApiError;
+    console.error("Failed to load profile:", e);
+    console.error("Error details:", {
+      message: error?.message,
+      status: error?.status,
+      statusText: error?.statusText,
+      data: error?.data,
+    });
+    console.log("Loading state after error:", loading.value);
   }
-})
+});
 
 useHead(() => ({
-  title: currentProfile.value?.name || 'Профиль',
+  title: currentProfile.value?.name || "Профиль",
   meta: [
     {
       name: "description",
-      content: `Профиль пользователя ${currentProfile.value?.name || ''}`,
+      content: `Профиль пользователя ${currentProfile.value?.name || ""}`,
     },
   ],
-}))
+}));
 </script>
 
 <template>
-  <div class="profile-container">
-    <div v-if="loading" class="loading">
-      Загрузка профиля...
-    </div>
-    <div v-else-if="error" class="error">
-      {{ error }}
-    </div>
+  <div class="profile-page">
+    <div v-if="loading" class="loading">Загрузка профиля...</div>
+    <div v-else-if="error" class="error">{{ error }}</div>
     <template v-else-if="currentProfile">
-      <div class="profile-content">
-        <div class="profile-avatar">
-          <img 
-            :src="currentProfile.avatarUrl" 
-            :alt="currentProfile.name"
-            class="avatar-image"
-          />
-        </div>
-        <div class="profile-info">
-          <h1 class="profile-name">{{ currentProfile.name }}</h1>
-          <div class="profile-login">@{{ currentProfile.login }}</div>
-          <div v-if="currentProfile.contacts.length > 0" class="contact-info">
-            <div v-for="contact in currentProfile.contacts" :key="contact" class="contact-item">
-              <div class="text">{{ contact }}</div>
+      <div class="profile-main">
+        <div class="profile-header-row">
+          <div class="profile-avatar-block">
+            <div class="profile-avatar">
+              <img :src="currentProfile.avatarUrl" :alt="currentProfile.name" />
+            </div>
+            <button
+              class="profile-fav-btn"
+              :aria-pressed="isFavorite"
+              @click="toggleFavorite"
+            >
+              <UIIcon
+                :icon="
+                  isFavorite
+                    ? 'mdi-star-four-points'
+                    : 'mdi-star-four-points-outline'
+                "
+              />
+              <span>Избранное</span>
+            </button>
+          </div>
+          <div class="profile-info-block">
+            <h1 class="profile-name">{{ currentProfile.name }}</h1>
+            <div class="profile-login">@{{ currentProfile.login }}</div>
+            <div
+              v-if="currentProfile.contacts?.length"
+              class="profile-contacts"
+            >
+              <div
+                v-for="contact in currentProfile.contacts"
+                :key="contact"
+                class="contact-item"
+              >
+                <UIIcon
+                  v-if="contact.includes('telegram')"
+                  icon="mdi-telegram"
+                />
+                <UIIcon v-else-if="contact.includes('+')" icon="mdi-phone" />
+                <UIIcon v-else-if="contact.includes('@')" icon="mdi-email" />
+                <span>{{ contact }}</span>
+              </div>
             </div>
           </div>
         </div>
-        <div class="additional-info">
-          <div class="info-card">
-            <template v-if="currentProfile.education.length > 0">
-              <div class="info-section">
-                <div class="info-title">{{ currentProfile.education[0].name }}</div>
-                <div v-if="currentProfile.education[0].degree !== '-'" class="info-subtitle">
-                  {{ currentProfile.education[0].degree }}
-                </div>
-              </div>
-            </template>
-            <template v-if="currentProfile.workExperience.length > 0">
-              <div class="info-divider"></div>
-              <div class="info-section">
-                <div class="info-title">{{ currentProfile.workExperience[0].companyName }}</div>
-                <div v-if="currentProfile.workExperience[0].jobName !== '-'" class="info-subtitle">
-                  {{ currentProfile.workExperience[0].jobName }}
-                </div>
-              </div>
-            </template>
+        <div class="profile-card-block">
+          <div class="profile-card">
+            <div class="profile-card-title">
+              {{ currentProfile.education?.[0]?.name || "—"
+              }}<span
+                v-if="
+                  currentProfile.education?.[0]?.degree &&
+                  currentProfile.education[0].degree !== '-'
+                "
+                >, {{ currentProfile.education[0].degree }}</span
+              >
+            </div>
+            <div class="profile-card-divider" />
+            <div class="profile-card-title">
+              {{ currentProfile.workExperience?.[0]?.companyName || "—"
+              }}<span
+                v-if="
+                  currentProfile.workExperience?.[0]?.jobName &&
+                  currentProfile.workExperience[0].jobName !== '-'
+                "
+                >, {{ currentProfile.workExperience[0].jobName }}</span
+              >
+            </div>
           </div>
         </div>
       </div>
@@ -81,211 +134,227 @@ useHead(() => ({
 </template>
 
 <style scoped>
-.profile-container {
-  padding: 2rem;
-  width: 100%;
-  max-width: 1400px;
-  margin: 0 auto;
+.profile-page {
+  min-height: 100vh;
+  background: var(--bg);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  font-family: var(--font-lato), sans-serif;
+  color: var(--text, var(--black));
 }
-
-.loading, .error {
-  text-align: center;
-  padding: 2rem;
-  font-size: 1.2rem;
-  color: #003049;
+.profile-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--violet-bg, #f5eaff);
+  border-radius: 2rem;
+  margin: 2rem 2rem 0 2rem;
+  padding: 1rem 2rem;
 }
-
-.error {
-  color: #dc3545;
+.profile-logo {
+  font-family: var(--font-grover);
+  font-size: 3rem;
+  color: var(--violet);
 }
-
-.profile-content {
-  display: grid;
-  grid-template-columns: auto 1fr auto;
+.profile-actions {
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+  font-size: 2rem;
+  color: var(--violet);
+}
+.profile-main {
+  display: flex;
+  flex-direction: row;
   gap: 2rem;
-  align-items: start;
+  margin: 2rem auto;
+  max-width: 1200px;
+  width: 100%;
+  align-items: flex-start;
 }
-
+.profile-header-row {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 2.5rem;
+  width: 100%;
+  margin-bottom: 2rem;
+}
+.profile-avatar-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+}
+.profile-info-block {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  align-items: flex-start;
+  justify-content: center;
+  min-width: 0;
+}
+.profile-name {
+  font-size: var(--text-5xl);
+  color: var(--violet);
+  margin: 0;
+  line-height: var(--leading-tight);
+  font-weight: var(--font-bold);
+}
 .profile-avatar {
-  width: 200px;
-  height: 200px;
+  width: 260px;
+  height: 260px;
   border-radius: 50%;
-  border: 2px solid #003049;
+  background: repeating-conic-gradient(var(--white) 0% 25%, #e9e9e9 0% 50%) 50% /
+    20px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   overflow: hidden;
-  background: #fff;
 }
-
-.avatar-image {
+.profile-avatar img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  border-radius: 50%;
 }
-
-.profile-info {
+.profile-fav-btn {
   display: flex;
-  flex-direction: column;
-  gap: 1rem;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--violet);
+  font-size: var(--text-xl);
+  font-weight: var(--font-semibold);
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: color 0.2s;
+  padding: 0.5rem 1.2rem;
+  border-radius: 1rem;
 }
-
-.profile-name {
-  font-family: var(--font-grover);
-  font-size: 4rem;
-  color: #003049;
-  margin: 0;
-  line-height: 1;
-}
-
 .profile-login {
-  font-family: var(--font-kantumruy);
-  font-size: 2rem;
-  color: #003049;
+  font-size: var(--text-xl);
+  color: var(--violet);
   opacity: 0.8;
+  margin-bottom: 0.7rem;
+  margin-top: 0;
 }
-
-.contact-info {
+.profile-contacts {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
-  margin-top: 0.75rem;
+  gap: 0.5rem;
+  margin-top: 1rem;
 }
-
 .contact-item {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  font-family: var(--font-kantumruy);
-  font-size: 1.4rem;
-  color: #003049;
+  gap: 0.7rem;
+  font-size: var(--text-lg);
+  color: var(--violet);
 }
-
-.additional-info {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
+.profile-card-block {
+  margin-left: 2rem;
+  margin-top: 2rem;
+}
+.profile-card {
+  background: var(--card-bg, #faf8ee);
+  border-radius: 1.5rem;
+  padding: 2rem 2.5rem;
   min-width: 320px;
-}
-
-.info-card {
-  background: #A0D6FF8A;
-  border: 2px solid #003049;
-  border-radius: 16px;
-  padding: 2rem;
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  min-height: 180px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  text-align: center;
+  box-shadow: 0 4px 24px rgba(142, 111, 248, 0.08);
 }
-
-.info-section {
-  width: 100%;
-  padding: 0.75rem;
+.profile-card-title {
+  font-size: var(--text-2xl);
+  color: var(--violet);
+  font-weight: var(--font-medium);
+  margin-bottom: 0.5rem;
 }
-
-.info-divider {
+.profile-card-divider {
   width: 100%;
   height: 2px;
-  background-color: #003049;
+  background: var(--violet);
   margin: 1rem 0;
+  border-radius: 1px;
+  opacity: 0.3;
 }
-
-.info-title {
+.profile-footer {
+  background: var(--violet-bg, #f5eaff);
+  color: var(--violet);
+  text-align: center;
   font-family: var(--font-kantumruy);
-  font-size: 1.6rem;
-  color: #003049;
-  font-weight: 500;
+  font-size: var(--text-lg);
+  padding: 1.2rem 0;
+  margin-top: 2rem;
+  border-radius: 1.5rem 1.5rem 0 0;
 }
-
-.info-subtitle {
-  font-family: var(--font-kantumruy);
-  font-size: 1.3rem;
-  color: #003049;
-  opacity: 0.8;
-  margin-top: 0.5rem;
-}
-
-@media (max-width: 1400px) {
-  .profile-avatar {
-    width: 160px;
-    height: 160px;
-  }
-
-  .profile-name {
-    font-size: 3rem;
-  }
-
-  .profile-login {
-    font-size: 1.5rem;
-  }
-
-  .contact-item {
-    font-size: 1.1rem;
-  }
-
-  .info-title {
-    font-size: 1.2rem;
-  }
-
-  .info-subtitle {
-    font-size: 1rem;
-  }
-
-  .additional-info {
-    min-width: 280px;
-  }
-}
-
-@media (max-width: 1024px) {
-  .profile-container {
-    padding: 1.5rem;
-  }
-
-  .profile-content {
+@media (max-width: 1100px) {
+  .profile-main {
+    flex-direction: column;
+    align-items: center;
     gap: 1.5rem;
   }
-
-  .profile-avatar {
-    width: 140px;
-    height: 140px;
-  }
-
-  .profile-name {
-    font-size: 2.5rem;
+  .profile-card-block {
+    margin-left: 0;
+    margin-top: 1.5rem;
   }
 }
-
-@media (max-width: 768px) {
-  .profile-container {
+@media (max-width: 700px) {
+  .profile-header {
+    flex-direction: column;
+    gap: 1rem;
     padding: 1rem;
+    margin: 1rem 0 0 0;
   }
-
-  .profile-content {
-    grid-template-columns: 1fr;
-    gap: 1.5rem;
+  .profile-main {
+    flex-direction: column;
+    gap: 1rem;
+    margin: 1rem 0;
   }
-
   .profile-avatar {
     width: 120px;
     height: 120px;
-    margin: 0 auto;
   }
-
-  .profile-info {
-    text-align: center;
-  }
-
-  .contact-info {
-    align-items: center;
-  }
-
-  .additional-info {
+  .profile-card {
+    min-width: 0;
     width: 100%;
-  }
-
-  .info-card {
-    max-width: 400px;
-    margin: 0 auto;
+    padding: 1rem;
   }
 }
+@media (max-width: 900px) {
+  .profile-header-row {
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+  }
+  .profile-info-block {
+    align-items: center;
+    text-align: center;
+  }
+}
+.profile-logo,
+.profile-fav-btn,
+.profile-info-block,
+.profile-name,
+.profile-login,
+.profile-contacts,
+.contact-item,
+.profile-card-title,
+.profile-footer {
+  font-family: var(--font-lato), sans-serif !important;
+}
+.loading,
+.error {
+  text-align: center;
+  padding: 2rem;
+  font-size: var(--text-lg);
+}
+.error {
+  color: var(--error, #dc3545);
+}
 </style>
-
