@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { LocaleKey } from '~/i18n/locales';
+import { LocaleKey } from "~/i18n/locales";
 
 onMounted(() => {
   const { themeCookie, setTheme } = useI18nCookie();
@@ -9,12 +9,17 @@ onMounted(() => {
     theme.global.name.value = themeCookie.value;
   }
 });
-const {locale} = useI18nCookie()
-const isEngLocale = computed(() => locale.value === LocaleKey.EN)
+const { locale } = useI18nCookie();
+const isEngLocale = computed(() => locale.value === LocaleKey.EN);
 </script>
 
 <template>
-  <VLayout class="flex-column bg-background" style="min-height: 100vh;" :class="{'eng-font':isEngLocale, 'ru-font':!isEngLocale}">
+  <VLayout
+    class="flex-column bg-background"
+    style="min-height: 100vh"
+    :class="{ 'eng-font': isEngLocale, 'ru-font': !isEngLocale }"
+  >
+    <UIAppLoader />
     <UINavbar />
     <main class="main-layout">
       <slot />
@@ -26,10 +31,7 @@ const isEngLocale = computed(() => locale.value === LocaleKey.EN)
 .main-layout {
   padding-top: 166px;
   margin: auto;
-}
-
-.main-layout {
-  width: 1900;
+  width: 1900px;
 }
 
 .eng-font {

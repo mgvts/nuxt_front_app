@@ -1,0 +1,42 @@
+{
+  "ru": {
+    "semester": "семестр",
+    "loading": "Загрузка семестра...",
+    "lecturesPending": "Лекции ожидаются",
+    "filterByTags": "Категории",
+    "months": {
+      "january": "январь",
+      "february": "февраль",
+      "march": "март",
+      "april": "апрель",
+      "may": "май",
+      "june": "июнь",
+      "july": "июль",
+      "august": "август",
+      "september": "сентябрь",
+      "october": "октябрь",
+      "november": "ноябрь",
+      "december": "декабрь"
+    }
+  },
+  "en": {
+    "semester": "semester",
+    "loading": "Loading semester...",
+    "lecturesPending": "Lectures pending",
+    "filterByTags": "Tags",
+    "months": {
+      "january": "January",
+      "february": "February",
+      "march": "March",
+      "april": "April",
+      "may": "May",
+      "june": "June",
+      "july": "July",
+      "august": "August",
+      "september": "September",
+      "october": "October",
+      "november": "November",
+      "december": "December"
+    }
+  }
+}
