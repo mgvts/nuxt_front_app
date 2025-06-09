@@ -56,9 +56,9 @@ const dark = {
   dark: true,
   colors: {
     primary: darkColors.primary1,
-    'on-primary': WHITE,
+    'on-primary': darkColors.background,
     'primary-1': darkColors.primary1,
-    'on-primary-1': WHITE,
+    'on-primary-1': darkColors.background,
 
     'primary-2': darkColors.primary2,
     'on-primary-2': darkColors.primary1,

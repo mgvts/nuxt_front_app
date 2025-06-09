@@ -17,6 +17,16 @@ interface Education {
   endDate: string
 }
 
+export enum ProfileContactType {
+  TG='TELEGRAM',
+  EMAIL='EMAIL',
+  PHONE='PHONE'
+}
+
+export interface ProfileContact {
+  type: ProfileContactType
+  contact: string
+}
 export interface Profile {
   login: string
   avatarUrl: base64str
@@ -24,7 +34,7 @@ export interface Profile {
   skills: string[]
   workExperience: WorkExperience[]
   education: Education[]
-  contacts: string[]
+  contacts: ProfileContact[]
   isEditable: boolean
 }
 

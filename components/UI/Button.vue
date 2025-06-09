@@ -15,22 +15,6 @@ const props = defineProps({
         default: undefined,
     }
 })
-
-const emit = defineEmits(['click'])
-
-const buttonClass = computed(() => {
-    return [
-        'btn',
-        `btn--${props.variant}`,
-        { 'btn--disabled': props.disabled },
-    ]
-})
-
-const handleClick = (event: MouseEvent) => {
-    if (!props.disabled) {
-        emit('click', event)
-    }
-}
 </script>
 
 <template>
@@ -40,7 +24,6 @@ const handleClick = (event: MouseEvent) => {
         color="primary"
 
         v-bind="$attrs"
-        @click="handleClick" 
     >
         <slot class="text-white">{{ props.text }}</slot>
     </VBtn>

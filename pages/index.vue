@@ -14,7 +14,6 @@ const { t } = useI18n({ messages });
 const semesterStore = useSemesterStore();
 const profileStore = useProfileStore();
 const { sortedSemesters } = storeToRefs(semesterStore);
-
 const isLoading = ref(true);
 
 onMounted(async () => {
@@ -36,7 +35,7 @@ const lecturers = computed(() => {
     .flatMap((s) => s.lectures)
     .flatMap((l) => l.profiles)
     .filter((p) => {
-      if (seen.has(p.login)) return false;
+      if (seen.has(p.login) || !p.avatarUrl) return false;
       seen.add(p.login);
       return true;
     });
@@ -46,7 +45,7 @@ const lecturers = computed(() => {
 
 <template>
   <div class="hello-container">
-    <img class="hello-img" src="~/assets/img/main-bg.jpg" alt="Hello" >
+    <img class="hello-img" src="~/assets/img/main-bg.jpg" alt="Hello">
     <h1 class="hello-text">
       {{ t('Курс...') }}
     </h1>
@@ -69,22 +68,37 @@ const lecturers = computed(() => {
         <div
           v-for="semester in sortedSemesters"
           :key="semester.id"
-          class="course-card"
-          :class="{ alt: semester.id % 2 === 0 }"
+          class="course-card box-shadow-hover"
+          :class="{ 
+            'bg-secondary': semester.id % 2 === 0,
+            'bg-primary-2': semester.id % 2 === 1,
+           }"
         >
           <div class="course-card-content">
             <img
               v-if="semester.imageUrl"
               :src="semester.imageUrl"
+              height="200"
               :alt="semester.title"
               class="course-image"
             >
             <div class="course-title">{{ semester.title }}</div>
             <div class="course-description">{{ semester.description }}</div>
           </div>
-          <UILink :to="`/semesters/${semester.id}`" class="course-link">
-            {{ t('перейти') }}
-          </UILink>
+          <v-hover>
+            <template #default="{ isHovering, props }">
+            <UIButton 
+              :to="`/semesters/${semester.id}`"  
+              v-bind="props"
+              class="text-h4 w-100 rounded-pill"
+              height="65px"
+              :color="isHovering ? 'primary' : 'background'"
+            >
+                {{ t('перейти') }}
+              </UIButton>
+            </template>
+          </v-hover>
+
         </div>
       </template>
     </div>
@@ -92,7 +106,7 @@ const lecturers = computed(() => {
 
   <section class="lecturers-section">
     <h2 class="lecturers-title">{{ t('Наши лекторы') }}</h2>
-    <div class="lecturers-grid bg-transpanent">
+    <div class="lecturers-grid">
       <template v-if="isLoading || !lecturers.length">
         <div v-for="i in 8" :key="i" class="lecturer-card skeleton">
           <div class="lecturer-avatar skeleton-image" />
@@ -206,7 +220,6 @@ const lecturers = computed(() => {
 }
 
 .course-card {
-  background: #f5eaff;
   border-radius: 32px;
   padding: 32px 24px 24px 24px;
   min-width: 280px;
@@ -215,13 +228,12 @@ const lecturers = computed(() => {
   display: flex;
   flex-direction: column;
   align-items: center;
-  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
   transition: box-shadow 0.2s;
+  &:hover {
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+  }
 }
 
-.course-card.alt {
-  background: #faf8ee;
-}
 
 .course-card-content {
   width: 100%;
@@ -232,11 +244,7 @@ const lecturers = computed(() => {
 }
 
 .course-image {
-  width: 100%;
-  height: 200px;
-  object-fit: cover;
-  border-radius: 16px;
-  margin-bottom: 24px;
+  width: auto;
 }
 
 .course-title {
@@ -244,22 +252,19 @@ const lecturers = computed(() => {
   font-size: 32px;
   line-height: 32px;
   font-weight: 700;
-  color: #8e6ff8;
   margin-bottom: 16px;
   text-align: center;
 }
 .course-description {
   font-family: var(--font-lato), sans-serif;
   font-size: 16px;
-  color: #6b5ca5;
   margin-bottom: 32px;
-  text-align: center;
 }
+
 .course-link {
   display: block;
   width: 100%;
   background: #fff;
-  color: #8e6ff8;
   font-family: var(--font-lato), sans-serif;
   font-size: 28px;
   font-weight: 700;

@@ -3,6 +3,7 @@ import { useHead, useRoute } from "#app";
 import { storeToRefs } from "pinia";
 import { ref } from "vue";
 import { useProfileStore } from "~/stores/profileStore";
+import { ContactType, ProfileContactType, type ProfileContact } from "~/types/profile";
 
 const route = useRoute();
 const login = route.params.login as string;
@@ -52,6 +53,22 @@ useHead(() => ({
     },
   ],
 }));
+
+const wrapContacts = (contacts: ProfileContact[]) => {
+  const mapa = {
+    [ProfileContactType.TG]: {icon: 'mdi-telegram', link: (contact:string) => `https://t.me/${contact.substring(1)}`},
+    [ProfileContactType.PHONE]: {icon: 'mdi-phone', link: (contact:string) =>`tel:${contact}`},
+    [ProfileContactType.EMAIL]: {icon: 'mdi-email', link: (contact:string) => `mailto:${contact}`},
+  }
+  return contacts.map(({type, contact}) => {
+    const {icon, link} = mapa[type]
+    return {
+      icon,
+      contact,
+      link: link(contact),
+    }
+  })
+}
 </script>
 
 <template>
@@ -88,17 +105,15 @@ useHead(() => ({
               class="profile-contacts"
             >
               <div
-                v-for="contact in currentProfile.contacts"
-                :key="contact"
+                v-for="contact in wrapContacts(currentProfile.contacts)"
+                :key="contact.icon"
                 class="contact-item"
               >
                 <UIIcon
-                  v-if="contact.includes('telegram')"
-                  icon="mdi-telegram"
+                  :icon="contact.icon"
+                  :to="contact.link"
                 />
-                <UIIcon v-else-if="contact.includes('+')" icon="mdi-phone" />
-                <UIIcon v-else-if="contact.includes('@')" icon="mdi-email" />
-                <span>{{ contact }}</span>
+                <span>{{ contact.contact }}</span>
               </div>
             </div>
           </div>
