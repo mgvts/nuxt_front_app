@@ -47,12 +47,12 @@ const lecturers = computed(() => {
   <div class="hello-container">
     <img class="hello-img" src="~/assets/img/main-bg.jpg" alt="Hello">
     <h1 class="hello-text">
-      {{ t('Курс...') }}
+      {{ t("Курс...") }}
     </h1>
   </div>
 
   <section class="courses-section">
-    <h2 class="courses-title">{{ t('Наши курсы') }}</h2>
+    <h2 class="courses-title">{{ t("Наши курсы") }}</h2>
     <div class="courses-list">
       <template v-if="isLoading || !sortedSemesters.length">
         <div v-for="i in 4" :key="i" class="course-card skeleton">
@@ -81,7 +81,7 @@ const lecturers = computed(() => {
               height="200"
               :alt="semester.title"
               class="course-image"
-            >
+            />
             <div class="course-title">{{ semester.title }}</div>
             <div class="course-description">{{ semester.description }}</div>
           </div>
@@ -113,7 +113,7 @@ const lecturers = computed(() => {
           <div class="lecturer-name skeleton-text" />
         </div>
       </template>
-      <template v-else >
+      <template v-else>
         <UILink
           v-for="(lecturer, idx) in lecturers"
           :key="lecturer.login"
@@ -129,12 +129,25 @@ const lecturers = computed(() => {
             :src="lecturer.avatarUrl"
             :alt="lecturer.name"
             class="lecturer-avatar"
-          >
+          />
           <div class="lecturer-name">{{ lecturer.name }}</div>
         </UILink>
       </template>
     </div>
   </section>
+
+  <div class="lecturers-footer">
+    И множество других, не менее крутых лекторов
+  </div>
+
+  <div class="stars-main-row">
+    <img
+      src="~/assets/img/stars-main.png"
+      class="stars-main flipped"
+      alt="stars"
+    />
+    <img src="~/assets/img/stars-main.png" class="stars-main" alt="stars" />
+  </div>
 </template>
 
 <style scoped>
@@ -254,6 +267,7 @@ const lecturers = computed(() => {
   font-weight: 700;
   margin-bottom: 16px;
   text-align: center;
+  transition: color 0.3s;
 }
 .course-description {
   font-family: var(--font-lato), sans-serif;
@@ -301,7 +315,7 @@ const lecturers = computed(() => {
     font-size: 22px;
   }
   .course-link {
-    font-size: 20px;
+    font-size: 12px;
   }
 }
 
@@ -370,7 +384,10 @@ const lecturers = computed(() => {
   margin-top: 0;
   text-align: left;
   pointer-events: none;
+  text-shadow: 0 2px 4px rgba(59, 18, 120, 0.4),
+    0 2px 8px rgba(255, 192, 203, 0.3);
 }
+
 @media (max-width: 900px) {
   .lecturers-grid {
     grid-template-columns: 1fr;
@@ -394,6 +411,12 @@ const lecturers = computed(() => {
   .lecturer-name {
     font-size: 24px;
     margin-left: 4px;
+    text-shadow: none;
+  }
+
+  :root[data-theme="dark"] .lecturer-name {
+    text-shadow: 0 1px 2px rgba(255, 255, 255, 0.4),
+      0 1px 4px rgba(255, 192, 203, 0.3);
   }
 }
 
@@ -500,5 +523,38 @@ const lecturers = computed(() => {
   .lecturer-card.skeleton .lecturer-name {
     height: 24px;
   }
+}
+
+.lecturers-footer {
+  margin-top: 32px;
+  font-size: 3rem;
+  text-align: center;
+  color: rgb(var(--v-theme-primary));
+  font-weight: 800;
+  line-height: 1.1;
+}
+
+.stars-main-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100vw;
+  max-width: 100vw;
+  margin: 48px calc(-1 * ((100vw - 100%) / 2)) 0 calc(-1 * ((100vw - 100%) / 2));
+  gap: 0;
+}
+
+.stars-main {
+  width: 50vw;
+  height: auto;
+  max-width: none;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  object-fit: contain;
+}
+
+.stars-main.flipped {
+  transform: scaleX(-1);
 }
 </style>

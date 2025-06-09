@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { LocaleKey } from '~/i18n/locales';
+import { LocaleKey } from "~/i18n/locales";
 
 onMounted(() => {
   const { themeCookie, setTheme } = useI18nCookie();
@@ -9,16 +9,23 @@ onMounted(() => {
     theme.global.name.value = themeCookie.value;
   }
 });
-const {locale} = useI18nCookie()
-const isEngLocale = computed(() => locale.value === LocaleKey.EN)
+const { locale } = useI18nCookie();
+const isEngLocale = computed(() => locale.value === LocaleKey.EN);
 </script>
 
 <template>
-  <VLayout class="flex-column bg-background" style="min-height: 100vh;" :class="{'eng-font':isEngLocale, 'ru-font':!isEngLocale}">
+  <VLayout
+    class="flex-column bg-background"
+    style="min-height: 100vh"
+    :class="{ 'eng-font': isEngLocale, 'ru-font': !isEngLocale }"
+  >
     <UINavbar />
     <main class="main-layout">
       <slot />
     </main>
+    <footer class="footer-hackathon">
+      Создано в рамках Хакатона, 2025 год
+    </footer>
   </VLayout>
 </template>
 
@@ -26,10 +33,7 @@ const isEngLocale = computed(() => locale.value === LocaleKey.EN)
 .main-layout {
   padding-top: 166px;
   margin: auto;
-}
-
-.main-layout {
-  width: 1900;
+  width: 1900px;
 }
 
 .eng-font {
@@ -64,11 +68,23 @@ const isEngLocale = computed(() => locale.value === LocaleKey.EN)
   }
 }
 
-@media (width <=940px) {
+@media (width <= 940px) {
   .main-layout {
-    min-width: 468px;
+    min-width: 600px;
     width: 100%;
-    margin: 0 20px;
+    padding: 8rem 1rem 0 1rem;
   }
+}
+
+.footer-hackathon {
+  width: 100%;
+  background: rgb(var(--v-theme-primary-2));
+  color: rgb(var(--v-theme-primary));
+  text-align: center;
+  font-size: 2rem;
+  padding: 1.5rem 0 1.5rem 0;
+  font-family: var(--font-lato), sans-serif;
+  font-weight: 400;
+  margin-top: 100px;
 }
 </style>

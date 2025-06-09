@@ -8,4 +8,5 @@ export interface Semester {
   position: number;
   imageUrl?: base64str;
   lectures: Lecture[];
+  percentOfView: number;
 }
