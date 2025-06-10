@@ -1,9 +1,11 @@
 <script setup lang="ts">
+import { useToast } from "vue-toast-notification";
 import CustomButton from "~/components/UI/CustomButton.vue";
 import CustomInput from "~/components/UI/CustomInput.vue";
 import type { LoginPayload, RegisterPayload } from "~/types/auth";
 import messages from "./locale.json";
 
+const toast = useToast();
 const { t } = useI18n({ messages });
 const { register, login } = useAuthStore();
 
@@ -165,14 +167,49 @@ const submit = async () => {
   try {
     if (isRegister.value) {
       account = await register(payload as RegisterPayload);
+      if (account) {
+        toast.success(t("Регистрация успешно завершена!"), {
+          position: "top-right",
+          duration: 3000,
+        });
+        router.push("/");
+      }
     } else {
       account = await login(payload);
+      if (account) {
+        toast.success(t("Вход выполнен успешно!"), {
+          position: "top-right",
+          duration: 3000,
+        });
+        router.push("/");
+      }
     }
-    if (account!) {
-      router.push("/");
-    }
-  } catch (e) {
+  } catch (e: unknown) {
     console.error(e);
+    let errorMessage = t("Произошла ошибка. Пожалуйста, попробуйте снова.");
+
+    if (e && typeof e === "object") {
+      const error = e as {
+        statusCode?: number;
+        statusMessage?: string;
+        data?: { message?: string };
+      };
+
+      if (error.statusCode === 401) {
+        errorMessage = t("Неверный логин или пароль");
+      } else if (error.statusCode === 409) {
+        errorMessage = t("Пользователь с таким логином уже существует");
+      } else if (error.statusCode === 400) {
+        errorMessage = error.data?.message || t("Неверные данные");
+      } else if (error.statusCode && error.statusCode >= 500) {
+        errorMessage = t("Сервер временно недоступен. Попробуйте позже");
+      }
+    }
+
+    toast.error(errorMessage, {
+      position: "top-right",
+      duration: 5000,
+    });
   }
 };
 </script>
