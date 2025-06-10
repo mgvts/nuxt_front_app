@@ -155,6 +155,7 @@ useHead(() => ({
           class="lecture-card"
         >
           <LectureCard
+            :is-login="isLogin"
             :lecture="lecture" 
             :is-favorite="favoriteStore.isLectureFavorite(lecture)" 
             :when-change-favorite="() => favoriteStore.changeFavorite(lecture)"

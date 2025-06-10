@@ -152,6 +152,7 @@ const loading = computed(() => profileLoading.value || favoriteLoading.value)
             v-for="lecture of favoriteLectures"
             :key="lecture.id"
             :lecture="lecture" 
+            :is-login="isCurrentUser"
             :is-favorite="favoriteStore.isLectureFavorite(lecture)" 
             :when-change-favorite="() => favoriteStore.changeFavorite(lecture)"
           />

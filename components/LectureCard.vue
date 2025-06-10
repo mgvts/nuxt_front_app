@@ -17,6 +17,10 @@ const { lecture, isFavorite, whenChangeFavorite } = defineProps({
     whenChangeFavorite: {
         type: Function as PropType<() => void | Promise<void>>,
         required: true
+    },
+    isLogin: {
+        type: Boolean,
+        default: false,
     }
 })
 
@@ -39,7 +43,7 @@ const formatDate = (date: string) => {
                         {{ tag }}
                     </span>
                 </div>
-                <div>
+                <div v-if="isLogin">
                     <UIIcon 
                         :icon="isFavorite ? 'mdi-star' : 'mdi-star-outline'"
                         @click="whenChangeFavorite"
