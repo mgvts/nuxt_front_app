@@ -1,0 +1,71 @@
+.Vue-Toastification__toast {
+  background: rgb(var(--v-theme-primary-2)) !important;
+  color: rgb(var(--v-theme-primary)) !important;
+  border-radius: 16px !important;
+  box-shadow: 0 4px 24px rgba(142, 111, 248, 0.12) !important;
+  padding: 16px 20px !important;
+  font-family: var(--font-lato), sans-serif !important;
+  font-size: 1.1rem !important;
+  font-weight: 600 !important;
+  min-height: auto !important;
+  margin-bottom: 12px !important;
+  border: 2px solid rgb(var(--v-theme-primary)) !important;
+}
+
+.Vue-Toastification__toast--success {
+  background: rgba(142, 111, 248, 0.1) !important;
+  border-color: rgb(var(--v-theme-primary)) !important;
+}
+
+.Vue-Toastification__toast--error {
+  background: rgba(255, 77, 79, 0.1) !important;
+  border-color: #ff4d4f !important;
+  color: #ff4d4f !important;
+}
+
+.Vue-Toastification__close-button {
+  color: rgb(var(--v-theme-primary)) !important;
+  opacity: 0.7 !important;
+  font-size: 1.2rem !important;
+  padding: 4px !important;
+  margin-left: 8px !important;
+}
+
+.Vue-Toastification__close-button:hover {
+  opacity: 1 !important;
+}
+
+.Vue-Toastification__toast--error .Vue-Toastification__close-button {
+  color: #ff4d4f !important;
+}
+
+/* Анимации */
+.Vue-Toastification__toast-enter-active,
+.Vue-Toastification__toast-leave-active {
+  transition: all 0.3s ease !important;
+}
+
+.Vue-Toastification__toast-enter-from {
+  transform: translateX(100%) !important;
+  opacity: 0 !important;
+}
+
+.Vue-Toastification__toast-leave-to {
+  transform: translateX(100%) !important;
+  opacity: 0 !important;
+}
+
+/* Темная тема */
+:root[data-theme="dark"] .Vue-Toastification__toast {
+  background: rgba(var(--v-theme-primary-2), 0.2) !important;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2),
+    0 0 4px rgba(var(--v-theme-primary), 0.2) !important;
+}
+
+:root[data-theme="dark"] .Vue-Toastification__toast--success {
+  background: rgba(var(--v-theme-primary-2), 0.15) !important;
+}
+
+:root[data-theme="dark"] .Vue-Toastification__toast--error {
+  background: rgba(255, 77, 79, 0.15) !important;
+}

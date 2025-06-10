@@ -10,6 +10,7 @@ export const useAuthStore = defineStore('auth', () => {
   const loading = ref<boolean>(false)
   const error = ref<string | null>(null)
 
+
   onMounted(() => {
     if (loginCookie.value) {
       loginRef.value = loginCookie.value
@@ -17,34 +18,36 @@ export const useAuthStore = defineStore('auth', () => {
   })
 
   async function register(payload: RegisterPayload) {
-    loading.value = true
-    error.value = null
+    loading.value = true;
+    error.value = null;
     try {
-      const account = await api.auth.register(payload)
-      setJWT(account.jwtToken)
-      loginRef.value = account.login
-      setLogin(account.login)
-      return account
+      const account = await api.auth.register(payload);
+      setJWT(account.jwtToken);
+      loginRef.value = account.login;
+      setLogin(account.login);
+      return account;
     } catch (e: unknown) {
-      error.value = e?.message || 'Ошибка при регистрации'
-    } finally { 
-      loading.value = false
+      error.value = e instanceof Error ? e.message : "Ошибка при регистрации";
+      throw e;
+    } finally {
+      loading.value = false;
     }
   }
 
   async function login(payload: LoginPayload) {
-    loading.value = true
-    error.value = null
+    loading.value = true;
+    error.value = null;
     try {
-      const account = await api.auth.login(payload)
-      setJWT(account.jwtToken)
-      loginRef.value = account.login
-      setLogin(account.login)
-      return account
+      const account = await api.auth.login(payload);
+      setJWT(account.jwtToken);
+      loginRef.value = account.login;
+      setLogin(account.login);
+      return account;
     } catch (e: unknown) {
-      error.value = e.message || 'Ошибка при входе'
+      error.value = e instanceof Error ? e.message : "Ошибка при входе";
+      throw e;
     } finally {
-      loading.value = false
+      loading.value = false;
     }
   }
 
