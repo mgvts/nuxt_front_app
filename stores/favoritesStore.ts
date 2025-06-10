@@ -28,11 +28,8 @@ export const useFavoriteStore = defineStore('favorite', () => {
     loading.value = true
     error.value = null
     try {
-      const val = await api.favorites.remove(lecture.id)
+      await api.favorites.remove(lecture.id)
       removeElement(favoriteLectures.value, lecture)
-      console.log(val)
-      // toast remove
-      //
     } finally {
       loading.value = false
     }
@@ -43,8 +40,6 @@ export const useFavoriteStore = defineStore('favorite', () => {
     error.value = null
     try {
       favoriteLectures.value = await api.favorites.getAll(login)
-      console.log(favoriteLectures.value)
-      return favoriteLectures.value 
     } finally {
       loading.value = false
     }
@@ -56,10 +51,8 @@ export const useFavoriteStore = defineStore('favorite', () => {
 
   const changeFavorite = debounce(async (lecture: Lecture) => {
     if (favoriteLectures.value.some(lec => lec.id === lecture.id)) {
-      console.log('remove')
       await remove(lecture)
     }else {
-      console.log('add')
       await add(lecture)
     }
   }, 100)
