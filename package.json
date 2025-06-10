@@ -17,6 +17,8 @@
     "@nuxtjs/i18n": "^9.5.4",
     "@pinia/nuxt": "^0.11.0",
     "axios": "^1.8.4",
+    "lodash": "^4.17.21",
+    "lodash.debounce": "^4.0.8",
     "nuxt": "^3.16.1",
     "pinia": "^3.0.2",
     "vee-validate": "^4.15.0",
@@ -25,6 +27,7 @@
     "vuetify-nuxt-module": "^0.18.5"
   },
   "devDependencies": {
+    "@types/lodash.debounce": "^4.0.9",
     "@types/node": "^22.13.14",
     "husky": "^9.1.7",
     "lint-staged": "^15.5.0"

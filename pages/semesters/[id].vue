@@ -3,6 +3,8 @@ import { useHead, useRoute } from "#app";
 import { storeToRefs } from "pinia";
 import { computed, ref } from "vue";
 import messages from "../semesters/locale.json";
+import { useAuthStore } from "~/stores/authStore";
+import { useFavoriteStore } from "~/stores/favoritesStore";
 
 const route = useRoute();
 const semesterId = route.params.id as string;
@@ -15,6 +17,9 @@ const {
   error,
 } = storeToRefs(semesterStore);
 
+const favoriteStore = useFavoriteStore();
+const authStore = useAuthStore();
+const {loginRef, isLogin} = storeToRefs(authStore)
 // Add local loading state
 const isLoading = ref(true);
 
@@ -54,6 +59,9 @@ const toggleTag = (tag: string) => {
 onMounted(async () => {
   try {
     await semesterStore.loadSemester(semesterId);
+    if (isLogin.value && loginRef.value) {
+      await favoriteStore.getAll(loginRef.value)
+    }
   } catch (e) {
     console.error("Failed to load semester:", e);
   } finally {
@@ -70,12 +78,6 @@ useHead(() => ({
     },
   ],
 }));
-
-const formatDate = (date: string) => {
-  const d = new Date(date);
-  const month = d.toLocaleString("en-US", { month: "long" }).toLowerCase();
-  return `${d.getDate()} ${t(`months.${month}`)}`;
-};
 </script>
 
 <template>
@@ -94,7 +96,7 @@ const formatDate = (date: string) => {
     <div v-else-if="currentSemester">
       <div class="semester-header-card">
         <div v-if="currentSemester.imageUrl" class="header-image">
-          <img :src="currentSemester.imageUrl" :alt="currentSemester.title" />
+          <img :src="currentSemester.imageUrl" :alt="currentSemester.title" >
         </div>
         <div class="card-content">
           <div class="text-content">
@@ -146,46 +148,18 @@ const formatDate = (date: string) => {
       </div>
 
       <div class="lectures-grid">
-        <UILink
+        <div
           v-for="lecture in filteredLectures"
           :key="lecture.id"
           :to="`/lectures/${lecture.id}`"
           class="lecture-card"
         >
-          <div class="lecture-content">
-            <div class="lecture-header">
-              <div class="lecture-date">
-                {{ formatDate(lecture.date) }}
-              </div>
-              <div v-if="lecture.tags?.length" class="lecture-tags">
-                <span
-                  v-for="tag in lecture.tags"
-                  :key="tag"
-                  class="lecture-tag"
-                >
-                  {{ tag }}
-                </span>
-              </div>
-            </div>
-            <h3 class="lecture-title">{{ lecture.title }}</h3>
-            <div class="lecture-description">{{ lecture.description }}</div>
-            <div class="lecture-lecturers">
-              <div
-                v-for="profile in lecture.profiles"
-                :key="profile.login"
-                class="lecturer"
-              >
-                <img
-                  v-if="profile.avatarUrl"
-                  :src="profile.avatarUrl"
-                  :alt="profile.name"
-                  class="lecturer-avatar"
-                />
-                <span class="lecturer-name">{{ profile.name }}</span>
-              </div>
-            </div>
-          </div>
-        </UILink>
+          <LectureCard
+            :lecture="lecture" 
+            :is-favorite="favoriteStore.isLectureFavorite(lecture)" 
+            :when-change-favorite="() => favoriteStore.changeFavorite(lecture)"
+          />
+        </div>
       </div>
     </div>
   </div>
@@ -296,99 +270,6 @@ const formatDate = (date: string) => {
   flex-wrap: wrap;
   gap: 2rem;
   width: 100%;
-}
-
-.lecture-card {
-  flex: 1 1 calc(25% - 2rem);
-  min-width: 280px;
-  background: rgb(var(--v-theme-primary-2));
-  border-radius: 16px;
-  padding: 1.5rem;
-  text-decoration: none !important;
-  box-shadow: 0 4px 24px rgba(142, 111, 248, 0.08);
-  transition: all 0.3s ease;
-}
-
-.lecture-card:hover {
-  background: rgb(var(--v-theme-primary-2));
-  opacity: 0.9;
-  transform: translateY(-2px);
-  text-decoration: none !important;
-}
-
-.lecture-content {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-}
-
-.lecture-header {
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.lecture-date {
-  font-size: var(--text-base);
-  color: rgb(var(--v-theme-on-primary-2));
-  opacity: 0.8;
-  white-space: nowrap;
-}
-
-.lecture-tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.25rem;
-}
-
-.lecture-tag {
-  font-size: var(--text-sm);
-  color: rgb(var(--v-theme-on-primary-2));
-  background: rgba(255, 255, 255, 0.2);
-  padding: 0.25rem 0.75rem;
-  border-radius: 1rem;
-}
-
-.lecture-title {
-  font-size: var(--text-2xl);
-  color: rgb(var(--v-theme-on-primary-2));
-  margin: 0;
-  font-weight: var(--font-bold);
-}
-
-.lecture-description {
-  font-size: var(--text-base);
-  color: rgb(var(--v-theme-on-primary-2));
-  opacity: 0.8;
-}
-
-.lecture-lecturers {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.75rem;
-  margin-top: 0.5rem;
-}
-
-.lecturer {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  background: rgba(255, 255, 255, 0.2);
-  padding: 0.25rem 0.75rem;
-  border-radius: 1rem;
-}
-
-.lecturer-avatar {
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  object-fit: cover;
-}
-
-.lecturer-name {
-  font-size: var(--text-sm);
-  color: rgb(var(--v-theme-on-primary-2));
 }
 
 .semester-progress {

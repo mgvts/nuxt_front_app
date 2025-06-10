@@ -11,18 +11,19 @@ export const useI18nCookie = () => {
         return locale.value
     }
 
-    const setLocale = (lang: LocaleKey) => {
+    const setLocale = (lang?: LocaleKey) => {
         locale.value = lang
     }
 
-    const setJWT = (token: JWT)  => {
+    const setJWT = (token?: JWT)  => {
         jwt.value = token
     }
+
     const getJWT = () => {
         return jwt.value
     }
 
-    const setLogin = (newLogin: string) => {
+    const setLogin = (newLogin?: string) => {
         login.value = newLogin
     }
 

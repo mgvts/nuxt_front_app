@@ -1,36 +1,33 @@
 <script setup lang="ts">
 import { useHead, useRoute } from "#app";
 import { storeToRefs } from "pinia";
-import { ref } from "vue";
 import { useProfileStore } from "~/stores/profileStore";
-import { ContactType, ProfileContactType, type ProfileContact } from "~/types/profile";
+import { ProfileContactType, type ProfileContact } from "~/types/profile";
+import messages from './locale.json'
 
 const route = useRoute();
 const login = route.params.login as string;
 
 const profileStore = useProfileStore();
-const { currentProfile, loading, error } = storeToRefs(profileStore);
-
+const { currentProfile, loading: profileLoading, error } = storeToRefs(profileStore);
+const {t} = useI18n({messages})
 interface ApiError {
   message?: string;
   status?: number;
   statusText?: string;
   data?: unknown;
 }
-
-// Состояние избранного (локально, для примера)
-const isFavorite = ref(false);
-function toggleFavorite() {
-  isFavorite.value = !isFavorite.value;
-}
+const favoriteStore = useFavoriteStore()
+const {favoriteLectures, loading: favoriteLoading} = storeToRefs(favoriteStore)
+const authStore = useAuthStore()
+const {loginRef} = storeToRefs(authStore)
 
 onMounted(async () => {
   console.log("Loading profile for login:", login);
   console.log("Initial loading state:", loading.value);
   try {
     await profileStore.loadProfile(login);
-    console.log("Profile loaded:", currentProfile.value);
-    console.log("Loading state after load:", loading.value);
+    await favoriteStore.getAll(login)
   } catch (e: unknown) {
     const error = e as ApiError;
     console.error("Failed to load profile:", e);
@@ -54,14 +51,15 @@ useHead(() => ({
   ],
 }));
 
+const ContactMap = {
+  [ProfileContactType.TG]: {icon: 'mdi-telegram', link: (contact:string) => `https://t.me/${contact.substring(1)}`},
+  [ProfileContactType.PHONE]: {icon: 'mdi-phone', link: (contact:string) =>`tel:${contact}`},
+  [ProfileContactType.EMAIL]: {icon: 'mdi-email', link: (contact:string) => `mailto:${contact}`},
+}
+
 const wrapContacts = (contacts: ProfileContact[]) => {
-  const mapa = {
-    [ProfileContactType.TG]: {icon: 'mdi-telegram', link: (contact:string) => `https://t.me/${contact.substring(1)}`},
-    [ProfileContactType.PHONE]: {icon: 'mdi-phone', link: (contact:string) =>`tel:${contact}`},
-    [ProfileContactType.EMAIL]: {icon: 'mdi-email', link: (contact:string) => `mailto:${contact}`},
-  }
   return contacts.map(({type, contact}) => {
-    const {icon, link} = mapa[type]
+    const {icon, link} = ContactMap[type]
     return {
       icon,
       contact,
@@ -69,6 +67,15 @@ const wrapContacts = (contacts: ProfileContact[]) => {
     }
   })
 }
+const isCurrentUser = computed(() => {
+  return currentProfile.value?.login === loginRef.value
+})
+
+const logout = () => {
+  authStore.logout()
+  window.location.reload()
+}
+const loading = computed(() => profileLoading.value || favoriteLoading.value)
 </script>
 
 <template>
@@ -80,22 +87,8 @@ const wrapContacts = (contacts: ProfileContact[]) => {
         <div class="profile-header-row">
           <div class="profile-avatar-block">
             <div class="profile-avatar">
-              <img :src="currentProfile.avatarUrl" :alt="currentProfile.name" />
+              <img :src="currentProfile.avatarUrl" :alt="currentProfile.name" >
             </div>
-            <button
-              class="profile-fav-btn"
-              :aria-pressed="isFavorite"
-              @click="toggleFavorite"
-            >
-              <UIIcon
-                :icon="
-                  isFavorite
-                    ? 'mdi-star-four-points'
-                    : 'mdi-star-four-points-outline'
-                "
-              />
-              <span>Избранное</span>
-            </button>
           </div>
           <div class="profile-info-block">
             <h1 class="profile-name">{{ currentProfile.name }}</h1>
@@ -119,6 +112,12 @@ const wrapContacts = (contacts: ProfileContact[]) => {
           </div>
         </div>
         <div class="profile-card-block">
+          <div v-if="isCurrentUser">
+            <UIButton
+              :text="t('выйти')"
+              @click="logout"
+            />
+          </div>
           <div class="profile-card">
             <div class="profile-card-title">
               {{ currentProfile.education?.[0]?.name || "—"
@@ -144,20 +143,25 @@ const wrapContacts = (contacts: ProfileContact[]) => {
           </div>
         </div>
       </div>
+      <div class="d-flex flex-column ga-5">
+        <div class="text-h3">
+          {{ t('Избранные лекции') }}
+        </div>
+        <div class="list-lectures">
+          <LectureCard
+            v-for="lecture of favoriteLectures"
+            :key="lecture.id"
+            :lecture="lecture" 
+            :is-favorite="favoriteStore.isLectureFavorite(lecture)" 
+            :when-change-favorite="() => favoriteStore.changeFavorite(lecture)"
+          />
+        </div>
+      </div>
     </template>
   </div>
 </template>
 
 <style scoped>
-.profile-page {
-  min-height: 100vh;
-  background: var(--bg);
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  font-family: var(--font-lato), sans-serif;
-  color: var(--text, var(--black));
-}
 .profile-header {
   display: flex;
   justify-content: space-between;

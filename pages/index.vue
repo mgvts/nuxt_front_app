@@ -55,7 +55,12 @@ const lecturers = computed(() => {
     <h2 class="courses-title">{{ t("Наши курсы") }}</h2>
     <div class="courses-list">
       <template v-if="isLoading || !sortedSemesters.length">
-        <div v-for="i in 4" :key="i" class="course-card skeleton">
+        <div v-for="i in 4" :key="i" class="course-card skeleton"
+        :class="{ 
+            'bg-secondary': !(i % 2),
+            'bg-primary-2': i % 2,
+           }"
+        >
           <div class="course-card-content">
             <div class="course-image skeleton-image" />
             <div class="course-title skeleton-text" />
@@ -69,9 +74,9 @@ const lecturers = computed(() => {
           v-for="semester in sortedSemesters"
           :key="semester.id"
           class="course-card box-shadow-hover"
-          :class="{ 
-            'bg-secondary': semester.id % 2 === 0,
-            'bg-primary-2': semester.id % 2 === 1,
+          :class="{
+            'bg-secondary': !(semester.id % 2),
+            'bg-primary-2': (semester.id % 2),
            }"
         >
           <div class="course-card-content">
@@ -81,24 +86,14 @@ const lecturers = computed(() => {
               height="200"
               :alt="semester.title"
               class="course-image"
-            />
+            >
             <div class="course-title">{{ semester.title }}</div>
             <div class="course-description">{{ semester.description }}</div>
           </div>
-          <v-hover>
-            <template #default="{ isHovering, props }">
-            <UIButton 
-              :to="`/semesters/${semester.id}`"  
-              v-bind="props"
-              class="text-h4 w-100 rounded-pill"
-              height="65px"
-              :color="isHovering ? 'primary' : 'background'"
-            >
-                {{ t('перейти') }}
-              </UIButton>
-            </template>
-          </v-hover>
-
+          <UIButton
+            :to="`/semesters/${semester.id}`"  
+            :text="t('перейти')"
+          />
         </div>
       </template>
     </div>
@@ -129,7 +124,7 @@ const lecturers = computed(() => {
             :src="lecturer.avatarUrl"
             :alt="lecturer.name"
             class="lecturer-avatar"
-          />
+          >
           <div class="lecturer-name">{{ lecturer.name }}</div>
         </UILink>
       </template>
@@ -145,8 +140,8 @@ const lecturers = computed(() => {
       src="~/assets/img/stars-main.png"
       class="stars-main flipped"
       alt="stars"
-    />
-    <img src="~/assets/img/stars-main.png" class="stars-main" alt="stars" />
+    >
+    <img src="~/assets/img/stars-main.png" class="stars-main" alt="stars" >
   </div>
 </template>
 

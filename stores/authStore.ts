@@ -1,14 +1,20 @@
 // stores/authStore.ts
 import { defineStore } from 'pinia'
 import { api } from '~/composables/api'
-import type { AuthResponse } from '~/types/auth'
-import type { LoginPayload, RegisterPayload } from '~/types/auth'
+import type { AuthResponse, LoginPayload, RegisterPayload  } from '~/types/auth'
+
 
 export const useAuthStore = defineStore('auth', () => {
-  const {setJWT, setLogin} = useI18nCookie()
+  const {setJWT, setLogin, login:loginCookie, jwt} = useI18nCookie()
   const loginRef = ref<AuthResponse['login'] | null>(null)
   const loading = ref<boolean>(false)
   const error = ref<string | null>(null)
+
+  onMounted(() => {
+    if (loginCookie.value) {
+      loginRef.value = loginCookie.value
+    }
+  })
 
   async function register(payload: RegisterPayload) {
     loading.value = true
@@ -42,6 +48,16 @@ export const useAuthStore = defineStore('auth', () => {
     }
   }
 
+  function logout() {
+    console.log('logout')
+    setJWT(undefined)
+    setLogin(undefined)
+  }
+
+  const isLogin = computed(() => {
+    return loginCookie.value && jwt.value && loginRef.value
+  })
+
 
   return {
     loginRef,
@@ -49,5 +65,7 @@ export const useAuthStore = defineStore('auth', () => {
     error,
     register,
     login,
+    logout,
+    isLogin,
   }
 })

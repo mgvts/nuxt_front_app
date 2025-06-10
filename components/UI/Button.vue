@@ -1,55 +1,46 @@
 <script setup lang="ts">
-import { defineProps, defineEmits, computed } from 'vue'
+import { defineProps, Fragment } from 'vue'
 
 const props = defineProps({
-    variant: {
+    color: {
         type: String,
-        default: 'primary',
-    },
-    disabled: {
-        type: Boolean,
-        default: false,
+        default: 'background',
     },
     text: {
         type: String,
         default: undefined,
+    },
+    hoverable: {
+        type: Boolean,
+        default: true
+    },
+    hoverColor: {
+        type: String,
+        default: 'primary'
     }
 })
+const computedColor = (isHovering: boolean | null) => {
+    if (!props.hoverable) return props.color
+
+    const hover = props.hoverColor || props.color
+    return isHovering ? hover : props.color
+}
 </script>
 
 <template>
-    <VBtn
-        class="font-weight-bold"
-        variant="flat"
-        color="primary"
-
-        v-bind="$attrs"
-    >
-        <slot class="text-white">{{ props.text }}</slot>
-    </VBtn>
+    <v-hover v-slot="{isHovering, props: hoverProps}">
+        <div v-bind="hoverProps" class="w-100">
+            <VBtn 
+                v-bind="$attrs"
+                :color="computedColor(isHovering)"
+                class="text-h4 w-100 rounded-pill"
+                height="65px"
+            >
+                <slot>
+                    {{ text }}
+                </slot>
+            </VBtn>
+        </div>
+    </v-hover>
 </template>
 
-
-<style scoped>
-.btn {
-    padding: 0.5rem 1rem;
-    border: none;
-    cursor: pointer;
-    border-radius: 4px;
-    transition: background-color 0.3s;
-}
-
-.btn--primary {
-    background-color: #007bff;
-    color: white;
-}
-
-.btn--primary:hover {
-    background-color: #0069d9;
-}
-
-.btn--disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-}
-</style>

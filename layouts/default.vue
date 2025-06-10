@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { LocaleKey } from "~/i18n/locales";
+import messages from './locale.json'
 
 onMounted(() => {
   const { themeCookie, setTheme } = useI18nCookie();
@@ -11,6 +12,7 @@ onMounted(() => {
 });
 const { locale } = useI18nCookie();
 const isEngLocale = computed(() => locale.value === LocaleKey.EN);
+const {t} = useI18n({messages})
 </script>
 
 <template>
@@ -23,16 +25,17 @@ const isEngLocale = computed(() => locale.value === LocaleKey.EN);
     <main class="main-layout">
       <slot />
     </main>
-    <footer class="footer-hackathon">
-      Создано в рамках Хакатона, 2025 год
+    <footer class="bg-primary-2 text-h4 py-4 text-center">
+      {{ t('Создано в рамках Хакатона, 2025 год') }}
     </footer>
   </VLayout>
 </template>
 
 <style scoped lang="css">
 .main-layout {
+  min-height: calc(100vh - 72px);
   padding-top: 166px;
-  margin: auto;
+  margin: 0 auto;
   width: 1900px;
 }
 
@@ -74,17 +77,5 @@ const isEngLocale = computed(() => locale.value === LocaleKey.EN);
     width: 100%;
     padding: 8rem 1rem 0 1rem;
   }
-}
-
-.footer-hackathon {
-  width: 100%;
-  background: rgb(var(--v-theme-primary-2));
-  color: rgb(var(--v-theme-primary));
-  text-align: center;
-  font-size: 2rem;
-  padding: 1.5rem 0 1.5rem 0;
-  font-family: var(--font-lato), sans-serif;
-  font-weight: 400;
-  margin-top: 100px;
 }
 </style>
