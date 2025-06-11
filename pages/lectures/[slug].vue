@@ -19,7 +19,9 @@ const {
 const authStore = useAuthStore()
 const { isLogin } = storeToRefs(authStore)
 
-onMounted(async () => {
+// todo here must pass onBeforeMount or loading ref with default false to component
+// to prevent artifact while one lecture have comments but another havent
+onBeforeMount(async () => {
   await lectureStore.loadLecture(slug)
   await commentsStore.getComments(slug)
 })
