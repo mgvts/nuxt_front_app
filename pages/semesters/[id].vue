@@ -1,106 +1,128 @@
 <script setup lang="ts">
-import { useHead, useRoute } from "#app";
-import { storeToRefs } from "pinia";
-import { computed, ref } from "vue";
-import messages from "../semesters/locale.json";
-import { useAuthStore } from "~/stores/authStore";
-import { useFavoriteStore } from "~/stores/favoritesStore";
+import { storeToRefs } from 'pinia'
+import { computed, ref } from 'vue'
+import messages from '../semesters/locale.json'
+import { useHead, useRoute } from '#app'
+import { useAuthStore } from '~/stores/authStore'
+import { useFavoriteStore } from '~/stores/favoritesStore'
 
-const route = useRoute();
-const semesterId = route.params.id as string;
-const { t } = useI18n({ messages });
+const route = useRoute()
+const semesterId = route.params.id as string
+const { t } = useI18n({ messages })
 
-const semesterStore = useSemesterStore();
+const semesterStore = useSemesterStore()
 const {
   currentSemester,
   loading: storeLoading,
   error,
-} = storeToRefs(semesterStore);
+} = storeToRefs(semesterStore)
 
-const favoriteStore = useFavoriteStore();
-const authStore = useAuthStore();
-const {loginRef, isLogin} = storeToRefs(authStore)
+const favoriteStore = useFavoriteStore()
+const authStore = useAuthStore()
+const { loginRef, isLogin } = storeToRefs(authStore)
 // Add local loading state
-const isLoading = ref(true);
+const isLoading = ref(true)
 
 // Add selected tags state
-const selectedTags = ref<string[]>([]);
+const selectedTags = ref<string[]>([])
 
 // Compute all unique tags from lectures
 const allTags = computed(() => {
-  if (!currentSemester.value?.lectures) return [];
-  const tags = new Set<string>();
+  if (!currentSemester.value?.lectures) return []
+  const tags = new Set<string>()
   currentSemester.value.lectures.forEach((lecture) => {
-    lecture.tags?.forEach((tag) => tags.add(tag));
-  });
-  return Array.from(tags).sort();
-});
+    lecture.tags?.forEach(tag => tags.add(tag))
+  })
+  return Array.from(tags).sort()
+})
 
 // Compute filtered lectures based on selected tags
 const filteredLectures = computed(() => {
-  if (!currentSemester.value?.lectures) return [];
-  if (selectedTags.value.length === 0) return currentSemester.value.lectures;
+  if (!currentSemester.value?.lectures) return []
+  if (selectedTags.value.length === 0) return currentSemester.value.lectures
 
-  return currentSemester.value.lectures.filter((lecture) =>
-    selectedTags.value.every((tag) => lecture.tags?.includes(tag))
-  );
-});
+  return currentSemester.value.lectures.filter(lecture =>
+    selectedTags.value.every(tag => lecture.tags?.includes(tag)),
+  )
+})
 
 // Toggle tag selection
 const toggleTag = (tag: string) => {
-  const index = selectedTags.value.indexOf(tag);
+  const index = selectedTags.value.indexOf(tag)
   if (index === -1) {
-    selectedTags.value.push(tag);
-  } else {
-    selectedTags.value.splice(index, 1);
+    selectedTags.value.push(tag)
   }
-};
+  else {
+    selectedTags.value.splice(index, 1)
+  }
+}
 
 onMounted(async () => {
   try {
-    await semesterStore.loadSemester(semesterId);
+    await semesterStore.loadSemester(semesterId)
     if (isLogin.value && loginRef.value) {
       await favoriteStore.getAll(loginRef.value)
     }
-  } catch (e) {
-    console.error("Failed to load semester:", e);
-  } finally {
-    isLoading.value = false;
   }
-});
+  catch (e) {
+    console.error('Failed to load semester:', e)
+  }
+  finally {
+    isLoading.value = false
+  }
+})
 
 useHead(() => ({
-  title: currentSemester.value?.title + " " + t("semester") || t("semester"),
+  title: currentSemester.value?.title + ' ' + t('semester') || t('semester'),
   meta: [
     {
-      name: "description",
-      content: currentSemester.value?.description || t("semester"),
+      name: 'description',
+      content: currentSemester.value?.description || t('semester'),
     },
   ],
-}));
+}))
 </script>
 
 <template>
   <div class="semester-container">
     <!-- Vuetify loader -->
-    <div v-if="isLoading || storeLoading" class="loading-container">
-      <v-progress-linear indeterminate color="primary" height="4" width="300" />
+    <div
+      v-if="isLoading || storeLoading"
+      class="loading-container"
+    >
+      <v-progress-linear
+        indeterminate
+        color="primary"
+        height="4"
+        width="300"
+      />
     </div>
 
     <!-- Error state -->
-    <div v-else-if="error" class="error">
+    <div
+      v-else-if="error"
+      class="error"
+    >
       {{ error }}
     </div>
 
     <!-- Actual content -->
     <div v-else-if="currentSemester">
       <div class="semester-header-card">
-        <div v-if="currentSemester.imageUrl" class="header-image">
-          <img :src="currentSemester.imageUrl" :alt="currentSemester.title" >
+        <div
+          v-if="currentSemester.imageUrl"
+          class="header-image"
+        >
+          <img
+            :src="currentSemester.imageUrl"
+            :alt="currentSemester.title"
+          >
         </div>
         <div class="card-content">
           <div class="text-content">
-            <div class="semester-title">{{ currentSemester.title }}</div>
+            <div class="semester-title">
+              {{ currentSemester.title }}
+            </div>
             <div class="semester-description">
               {{ currentSemester.description }}
             </div>
@@ -114,7 +136,7 @@ useHead(() => ({
                     class="progress-fill"
                     :style="{
                       width: `${Math.trunc(
-                        currentSemester.percentOfView * 100
+                        currentSemester.percentOfView * 100,
                       )}%`,
                     }"
                   />
@@ -123,7 +145,10 @@ useHead(() => ({
                   {{ Math.trunc(currentSemester.percentOfView * 100) }}%
                 </div>
               </template>
-              <div v-else class="progress-pending">
+              <div
+                v-else
+                class="progress-pending"
+              >
                 {{ t("lecturesPending") }}
               </div>
             </div>
@@ -132,8 +157,13 @@ useHead(() => ({
       </div>
 
       <!-- Add tag filter UI -->
-      <div v-if="allTags.length > 0" class="tag-filter">
-        <div class="tag-filter-label">{{ t("filterByTags") }}:</div>
+      <div
+        v-if="allTags.length > 0"
+        class="tag-filter"
+      >
+        <div class="tag-filter-label">
+          {{ t("filterByTags") }}:
+        </div>
         <div class="tag-filter-tags">
           <button
             v-for="tag in allTags"
@@ -156,8 +186,8 @@ useHead(() => ({
         >
           <LectureCard
             :is-login="!!isLogin"
-            :lecture="lecture" 
-            :is-favorite="favoriteStore.isLectureFavorite(lecture)" 
+            :lecture="lecture"
+            :is-favorite="favoriteStore.isLectureFavorite(lecture)"
             :when-change-favorite="() => favoriteStore.changeFavorite(lecture)"
           />
         </div>

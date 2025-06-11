@@ -12,11 +12,15 @@ const props = defineProps({
     type: String,
     default: undefined,
   },
-});
+})
 </script>
 
 <template>
-  <NuxtLink :to="props.to" :target="props.target" class="link">
+  <NuxtLink
+    :to="props.to"
+    :target="props.target"
+    class="link"
+  >
     <UIText
       :color="props.color"
       size="link"

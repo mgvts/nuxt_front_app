@@ -11,15 +11,14 @@ export const useFavoriteStore = defineStore('favorite', () => {
   const favoriteLectures = ref<Lecture[]>([])
 
   async function add(lecture: Lecture) {
-    console.log('add', lecture)
     loading.value = true
     error.value = null
     try {
-      const val = await api.favorites.add(lecture.id)
+      await api.favorites.add(lecture.id)
       favoriteLectures.value.push(lecture)
-      console.log(val)
       // toast add
-    } finally { 
+    }
+    finally {
       loading.value = false
     }
   }
@@ -30,33 +29,35 @@ export const useFavoriteStore = defineStore('favorite', () => {
     try {
       await api.favorites.remove(lecture.id)
       removeElement(favoriteLectures.value, lecture)
-    } finally {
+    }
+    finally {
       loading.value = false
     }
   }
 
-    async function getAll(login: Profile['login']) {
+  async function getAll(login: Profile['login']) {
     loading.value = true
     error.value = null
     try {
       favoriteLectures.value = await api.favorites.getAll(login)
-    } finally {
+    }
+    finally {
       loading.value = false
     }
   }
 
-  const isLectureFavorite = ({id}: {id: Lecture['id']}) => {
-    return favoriteLectures.value.some((lec:Lecture) => lec.id === id)
+  const isLectureFavorite = ({ id }: { id: Lecture['id'] }) => {
+    return favoriteLectures.value.some((lec: Lecture) => lec.id === id)
   }
 
   const changeFavorite = debounce(async (lecture: Lecture) => {
     if (favoriteLectures.value.some(lec => lec.id === lecture.id)) {
       await remove(lecture)
-    }else {
+    }
+    else {
       await add(lecture)
     }
   }, 100)
-
 
   return {
     favoriteLectures,

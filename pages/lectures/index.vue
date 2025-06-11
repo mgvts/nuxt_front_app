@@ -1,44 +1,65 @@
 <script setup lang="ts">
-
 const lectureStore = useLectureStore()
 
 const {
-    lectures
+  lectures,
 } = storeToRefs(lectureStore)
 
 onMounted(async () => {
-    if (!lectures.value?.length) {
-        await lectureStore.loadLectures()
-    }
+  if (!lectures.value?.length) {
+    await lectureStore.loadLectures()
+  }
 })
 </script>
 
 <template>
-    <div class="d-flex flex-column ga-15">
-        <div v-for="lecture of lectures" :key="lecture.slug" class="d-flex flex-row ga-16 card">
-            <UILink v-if="lecture.presentationId" :to="getPresentationExternalUrl(lecture.presentationId)"
-                target="_blank">
-                <ClientOnly>
-                    <img :src="getPresentationPreviewUrl(lecture.presentationId)" class="lecture-thumbnail" width="420"
-                        height="300" alt="Превью презентации">
-                </ClientOnly>
-            </UILink>
-            <div v-else class="placeholder">
-                Нет изображения
-            </div>
-            <div class="d-flex flex-column ga-3 justify-space-around">
-                <UILink :to="`./${lecture.slug}`" class="title">
-                    {{ lecture.title }}
-                </UILink>
-                <div>
-                    <UILink v-for="profile of lecture.profiles" :key="profile.login" :to="`/profiles/${profile.login}`"
-                        class="profile">
-                        {{ profile.name }}
-                    </UILink>
-                </div>
-            </div>
+  <div class="d-flex flex-column ga-15">
+    <div
+      v-for="lecture of lectures"
+      :key="lecture.slug"
+      class="d-flex flex-row ga-16 card"
+    >
+      <UILink
+        v-if="lecture.presentationId"
+        :to="getPresentationExternalUrl(lecture.presentationId)"
+        target="_blank"
+      >
+        <ClientOnly>
+          <img
+            :src="getPresentationPreviewUrl(lecture.presentationId)"
+            class="lecture-thumbnail"
+            width="420"
+            height="300"
+            alt="Превью презентации"
+          >
+        </ClientOnly>
+      </UILink>
+      <div
+        v-else
+        class="placeholder"
+      >
+        Нет изображения
+      </div>
+      <div class="d-flex flex-column ga-3 justify-space-around">
+        <UILink
+          :to="`./${lecture.slug}`"
+          class="title"
+        >
+          {{ lecture.title }}
+        </UILink>
+        <div>
+          <UILink
+            v-for="profile of lecture.profiles"
+            :key="profile.login"
+            :to="`/profiles/${profile.login}`"
+            class="profile"
+          >
+            {{ profile.name }}
+          </UILink>
         </div>
+      </div>
     </div>
+  </div>
 </template>
 
 <style lang="css" scoped>

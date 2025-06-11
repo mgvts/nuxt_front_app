@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const {login} = useI18nCookie()
+const { login } = useCookies()
 
 const isAuth = computed(() => !!login.value)
 
@@ -8,5 +8,8 @@ const getPath = computed(() => isAuth.value ? `/profiles/${login.value}` : '/aut
 </script>
 
 <template>
-    <UIIcon :icon="getIcon" :to="getPath" />
+  <UIIcon
+    :icon="getIcon"
+    :to="getPath"
+  />
 </template>

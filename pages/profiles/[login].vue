@@ -1,65 +1,63 @@
 <script setup lang="ts">
-import { useHead, useRoute } from "#app";
-import { storeToRefs } from "pinia";
-import { useProfileStore } from "~/stores/profileStore";
-import { ProfileContactType, type ProfileContact } from "~/types/profile";
+import { storeToRefs } from 'pinia'
 import messages from './locale.json'
+import { useHead, useRoute } from '#app'
+import { useProfileStore } from '~/stores/profileStore'
+import { ProfileContactType, type ProfileContact } from '~/types/profile'
 
-const route = useRoute();
-const login = route.params.login as string;
+const route = useRoute()
+const login = route.params.login as string
 
-const profileStore = useProfileStore();
-const { currentProfile, loading: profileLoading, error } = storeToRefs(profileStore);
-const {t} = useI18n({messages})
+const profileStore = useProfileStore()
+const { currentProfile, loading: profileLoading, error } = storeToRefs(profileStore)
+const { t } = useI18n({ messages })
 interface ApiError {
-  message?: string;
-  status?: number;
-  statusText?: string;
-  data?: unknown;
+  message?: string
+  status?: number
+  statusText?: string
+  data?: unknown
 }
 const favoriteStore = useFavoriteStore()
-const {favoriteLectures, loading: favoriteLoading} = storeToRefs(favoriteStore)
+const { favoriteLectures, loading: favoriteLoading } = storeToRefs(favoriteStore)
 const authStore = useAuthStore()
-const {loginRef} = storeToRefs(authStore)
+const { loginRef } = storeToRefs(authStore)
 
 onMounted(async () => {
-  console.log("Loading profile for login:", login);
-  console.log("Initial loading state:", loading.value);
   try {
-    await profileStore.loadProfile(login);
+    await profileStore.loadProfile(login)
     await favoriteStore.getAll(login)
-  } catch (e: unknown) {
-    const error = e as ApiError;
-    console.error("Failed to load profile:", e);
-    console.error("Error details:", {
+  }
+  catch (e: unknown) {
+    const error = e as ApiError
+    console.error('Failed to load profile:', e)
+    console.error('Error details:', {
       message: error?.message,
       status: error?.status,
       statusText: error?.statusText,
       data: error?.data,
-    });
-    console.log("Loading state after error:", loading.value);
+    })
   }
-});
+})
 
 useHead(() => ({
-  title: currentProfile.value?.name || "Профиль",
+  title: currentProfile.value?.name || 'Профиль',
   meta: [
     {
-      name: "description",
-      content: `Профиль пользователя ${currentProfile.value?.name || ""}`,
+      name: 'description',
+      content: `Профиль пользователя ${currentProfile.value?.name || ''}`,
     },
   ],
-}));
+}))
 
 const ContactMap = {
-  [ProfileContactType.TG]: {icon: 'mdi-telegram', link: (contact:string) => `https://t.me/${contact.substring(1)}`},
-  [ProfileContactType.PHONE]: {icon: 'mdi-phone', link: (contact:string) =>`tel:${contact}`},
-  [ProfileContactType.EMAIL]: {icon: 'mdi-email', link: (contact:string) => `mailto:${contact}`},
+  [ProfileContactType.TG]: { icon: 'mdi-telegram', link: (contact: string) => `https://t.me/${contact.substring(1)}` },
+  [ProfileContactType.PHONE]: { icon: 'mdi-phone', link: (contact: string) => `tel:${contact}` },
+  [ProfileContactType.EMAIL]: { icon: 'mdi-email', link: (contact: string) => `mailto:${contact}` },
 }
 
 const wrapContacts = (contacts: ProfileContact[]) => {
-  return contacts.map(({type, contact}) => {
-    const {icon, link} = ContactMap[type]
+  return contacts.map(({ type, contact }) => {
+    const { icon, link } = ContactMap[type]
     return {
       icon,
       contact,
@@ -80,19 +78,36 @@ const loading = computed(() => profileLoading.value || favoriteLoading.value)
 
 <template>
   <div class="profile-page">
-    <div v-if="loading" class="loading">Загрузка профиля...</div>
-    <div v-else-if="error" class="error">{{ error }}</div>
+    <div
+      v-if="loading"
+      class="loading"
+    >
+      Загрузка профиля...
+    </div>
+    <div
+      v-else-if="error"
+      class="error"
+    >
+      {{ error }}
+    </div>
     <template v-else-if="currentProfile">
       <div class="profile-main">
         <div class="profile-header-row">
           <div class="profile-avatar-block">
             <div class="profile-avatar">
-              <img :src="currentProfile.avatarUrl" :alt="currentProfile.name" >
+              <img
+                :src="currentProfile.avatarUrl"
+                :alt="currentProfile.name"
+              >
             </div>
           </div>
           <div class="profile-info-block">
-            <h1 class="profile-name">{{ currentProfile.name }}</h1>
-            <div class="profile-login">@{{ currentProfile.login }}</div>
+            <h1 class="profile-name">
+              {{ currentProfile.name }}
+            </h1>
+            <div class="profile-login">
+              @{{ currentProfile.login }}
+            </div>
             <div
               v-if="currentProfile.contacts?.length"
               class="profile-contacts"
@@ -123,22 +138,20 @@ const loading = computed(() => profileLoading.value || favoriteLoading.value)
               {{ currentProfile.education?.[0]?.name || "—"
               }}<span
                 v-if="
-                  currentProfile.education?.[0]?.degree &&
-                  currentProfile.education[0].degree !== '-'
+                  currentProfile.education?.[0]?.degree
+                    && currentProfile.education[0].degree !== '-'
                 "
-                >, {{ currentProfile.education[0].degree }}</span
-              >
+              >, {{ currentProfile.education[0].degree }}</span>
             </div>
             <div class="profile-card-divider" />
             <div class="profile-card-title">
               {{ currentProfile.workExperience?.[0]?.companyName || "—"
               }}<span
                 v-if="
-                  currentProfile.workExperience?.[0]?.jobName &&
-                  currentProfile.workExperience[0].jobName !== '-'
+                  currentProfile.workExperience?.[0]?.jobName
+                    && currentProfile.workExperience[0].jobName !== '-'
                 "
-                >, {{ currentProfile.workExperience[0].jobName }}</span
-              >
+              >, {{ currentProfile.workExperience[0].jobName }}</span>
             </div>
           </div>
         </div>
@@ -151,9 +164,9 @@ const loading = computed(() => profileLoading.value || favoriteLoading.value)
           <LectureCard
             v-for="lecture of favoriteLectures"
             :key="lecture.id"
-            :lecture="lecture" 
+            :lecture="lecture"
             :is-login="isCurrentUser"
-            :is-favorite="favoriteStore.isLectureFavorite(lecture)" 
+            :is-favorite="favoriteStore.isLectureFavorite(lecture)"
             :when-change-favorite="() => favoriteStore.changeFavorite(lecture)"
           />
         </div>

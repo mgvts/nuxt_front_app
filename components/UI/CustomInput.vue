@@ -1,41 +1,51 @@
 <script setup lang="ts">
-import { defineEmits, defineProps } from "vue";
-const props = defineProps({
-  label: String,
-  type: { type: String, default: "text" },
-  modelValue: String,
-  placeholder: String,
-  error: String,
-});
-const emit = defineEmits(["update:modelValue"]);
+const model = defineModel<string>({ required: true })
+const { label, type } = defineProps({
+  label: {
+    type: String,
+    required: true,
+  },
+  type: { type: String, default: 'text' },
+  placeholder: { type: String, required: true },
+  error: { type: String, required: true },
+})
 </script>
+
 <template>
   <div class="custom-input-block">
-    <label v-if="label" class="custom-label">{{ label }}</label>
+    <label
+      v-if="label"
+      class="custom-label"
+    >{{ label }}</label>
     <input
+      v-model="model"
       :type="type"
-      :value="modelValue"
       :placeholder="placeholder"
       :class="['custom-input', { error: !!error }]"
-      @input="
-        $emit('update:modelValue', ($event.target as HTMLInputElement).value)
-      "
-    />
-    <div v-if="error" class="custom-error">{{ error }}</div>
+    >
+    <div
+      v-if="error"
+      class="custom-error"
+    >
+      {{ error }}
+    </div>
   </div>
 </template>
+
 <style scoped>
 .custom-input-block {
   display: flex;
   flex-direction: column;
   gap: 6px;
 }
+
 .custom-label {
   font-size: 1.1rem;
   color: rgb(var(--v-theme-primary));
   font-weight: 600;
   margin-bottom: 2px;
 }
+
 .custom-input {
   width: 100%;
   border-radius: 16px;
@@ -48,19 +58,23 @@ const emit = defineEmits(["update:modelValue"]);
   outline: none;
   transition: box-shadow 0.2s, border-color 0.2s, background 0.2s;
 }
+
 .custom-input:focus {
   box-shadow: 0 0 0 2px rgb(var(--v-theme-primary));
   border-color: rgb(var(--v-theme-primary));
   background: rgb(var(--v-theme-primary-2));
 }
+
 .custom-input.error {
   border-color: #ff4d4f;
 }
+
 .custom-error {
   color: #ff4d4f;
   font-size: 0.95rem;
   margin-top: 2px;
 }
+
 /* Autofill fix */
 .custom-input:-webkit-autofill,
 .custom-input:-webkit-autofill:focus,

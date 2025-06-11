@@ -1,15 +1,18 @@
 <script setup lang="ts">
-import { defineEmits, defineProps } from "vue";
-const props = defineProps({
-  text: String,
+const { text, type } = defineProps({
+  text: {
+    type: String,
+    required: true,
+  },
   type: {
-    type: String as () => "button" | "submit" | "reset",
-    default: "button",
+    type: String as () => 'button' | 'submit' | 'reset',
+    default: 'button',
   },
   disabled: Boolean,
-});
-const emit = defineEmits(["click"]);
+})
+defineEmits(['click'])
 </script>
+
 <template>
   <button
     :type="type"
@@ -20,6 +23,7 @@ const emit = defineEmits(["click"]);
     <span>{{ text }}<slot /></span>
   </button>
 </template>
+
 <style scoped>
 .custom-btn {
   width: 100%;

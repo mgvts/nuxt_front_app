@@ -14,13 +14,15 @@ export const useProfileStore = defineStore('profile', () => {
     error.value = null
     try {
       profiles.value = await api.profile.getProfiles()
-    } catch (e) {
+    }
+    catch (e) {
       if (e instanceof Error) {
         console.error(e.message)
         error.value = e.message || `Ошибка при загрузке профилей`
       }
       throw e
-    } finally {
+    }
+    finally {
       loading.value = false
     }
   }
@@ -30,13 +32,15 @@ export const useProfileStore = defineStore('profile', () => {
     error.value = null
     try {
       currentProfile.value = await api.profile.getProfile(login)
-    } catch (e) {
+    }
+    catch (e) {
       if (e instanceof Error) {
         console.error(e.message)
         error.value = e.message || `Ошибка при загрузке профиля ${login}`
       }
       throw e
-    } finally {
+    }
+    finally {
       loading.value = false
     }
   }

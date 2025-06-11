@@ -1,66 +1,88 @@
 <script setup lang="ts">
-import type { Lecture } from '~/types/lecture';
+import type { PropType } from 'vue'
 import messages from './locale.json'
-import type { PropType } from 'vue';
+import type { Lecture } from '~/types/lecture'
 
 const { t } = useI18n({ messages })
 
 const { lecture, isFavorite, whenChangeFavorite } = defineProps({
-    lecture: {
-        type: Object as PropType<Lecture>,
-        required: true
-    },
-    isFavorite: {
-        type: Boolean,
-        required: true
-    },
-    whenChangeFavorite: {
-        type: Function as PropType<() => void | Promise<void>>,
-        required: true
-    },
-    isLogin: {
-        type: Boolean,
-        default: false,
-    }
+  lecture: {
+    type: Object as PropType<Lecture>,
+    required: true,
+  },
+  isFavorite: {
+    type: Boolean,
+    required: true,
+  },
+  whenChangeFavorite: {
+    type: Function as PropType<() => void | Promise<void>>,
+    required: true,
+  },
+  isLogin: {
+    type: Boolean,
+    default: false,
+  },
 })
 
 const formatDate = (date: string) => {
-    const d = new Date(date);
-    const month = d.toLocaleString("en-US", { month: "long" }).toLowerCase();
-    return `${d.getDate()} ${t(`months.${month}`)}`;
-};
+  const d = new Date(date)
+  const month = d.toLocaleString('en-US', { month: 'long' }).toLowerCase()
+  return `${d.getDate()} ${t(`months.${month}`)}`
+}
 </script>
 
 <template>
-    <div v-if="lecture" class="lecture-card">
-        <div class="lecture-content">
-            <div class="lecture-header">
-                <div class="lecture-date">
-                    {{ formatDate(lecture.date) }}
-                </div>
-                <div v-if="lecture.tags?.length" class="lecture-tags">
-                    <span v-for="tag in lecture.tags" :key="tag" class="lecture-tag">
-                        {{ tag }}
-                    </span>
-                </div>
-                <div v-if="isLogin">
-                    <UIIcon 
-                        :icon="isFavorite ? 'mdi-star' : 'mdi-star-outline'"
-                        @click="whenChangeFavorite"
-                    />
-                </div>
-            </div>
-            <h3 class="lecture-title">{{ lecture.title }}</h3>
-            <div class="lecture-description">{{ lecture.description }}</div>
-            <div class="lecture-lecturers">
-                <div v-for="profile in lecture.profiles" :key="profile.login" class="lecturer">
-                    <img v-if="profile.avatarUrl" :src="profile.avatarUrl" :alt="profile.name" class="lecturer-avatar">
-                    <span class="lecturer-name">{{ profile.name }}</span>
-                </div>
-            </div>
+  <div
+    v-if="lecture"
+    class="lecture-card"
+  >
+    <div class="lecture-content">
+      <div class="lecture-header">
+        <div class="lecture-date">
+          {{ formatDate(lecture.date) }}
         </div>
+        <div
+          v-if="lecture.tags?.length"
+          class="lecture-tags"
+        >
+          <span
+            v-for="tag in lecture.tags"
+            :key="tag"
+            class="lecture-tag"
+          >
+            {{ tag }}
+          </span>
+        </div>
+        <div v-if="isLogin">
+          <UIIcon
+            :icon="isFavorite ? 'mdi-star' : 'mdi-star-outline'"
+            @click="whenChangeFavorite"
+          />
+        </div>
+      </div>
+      <h3 class="lecture-title">
+        {{ lecture.title }}
+      </h3>
+      <div class="lecture-description">
+        {{ lecture.description }}
+      </div>
+      <div class="lecture-lecturers">
+        <div
+          v-for="profile in lecture.profiles"
+          :key="profile.login"
+          class="lecturer"
+        >
+          <img
+            v-if="profile.avatarUrl"
+            :src="profile.avatarUrl"
+            :alt="profile.name"
+            class="lecturer-avatar"
+          >
+          <span class="lecturer-name">{{ profile.name }}</span>
+        </div>
+      </div>
     </div>
-
+  </div>
 </template>
 
 <style scoped lang="css">

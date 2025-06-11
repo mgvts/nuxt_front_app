@@ -1,69 +1,91 @@
 <script setup lang="ts">
-
 const route = useRoute()
 const slug = route.params.slug as string
 
 const lectureStore = useLectureStore()
 
 const {
-    lecture,
-    loading,
-    error
+  lecture,
+  loading,
+  error,
 } = storeToRefs(lectureStore)
 
 onMounted(async () => {
-    if (!(lecture.value && lecture.value.slug === slug)) {
-        await lectureStore.loadLecture(slug)
-    }
+  if (!(lecture.value && lecture.value.slug === slug)) {
+    await lectureStore.loadLecture(slug)
+  }
 })
 </script>
 
 <template>
-    <div>
-        <div v-if="loading" class="loading">
-            Загрузка семестра...
-        </div>
-        <div v-else-if="error" class="error">
-            {{ error }}
-        </div>
-        <div v-if="lecture" class="d-flex flex-column ga-5">
-            <div class="d-flex flex-row ga-16">
-                <UILink v-if="lecture.presentationId" :to="getPresentationExternalUrl(lecture.presentationId)"
-                    target="_blank">
-                    <ClientOnly>
-                        <img :src="getPresentationPreviewUrl(lecture.presentationId)" class="lecture-thumbnail"
-                            width="420" height="300" alt="Превью презентации">
-                    </ClientOnly>
-                </UILink>
-                <div v-else class="placeholder">
-                    Нет изображения
-                </div>
-                <div class="d-flex flex-column ga-5">
-                    <div class="title">
-                        {{ lecture.title }}
-                    </div>
-                    <div class="description">
-                        {{ lecture.description }}
-                    </div>
-                    <div class="d-flex flex-row ga-4">
-                        <UILink v-for="profile of lecture.profiles" :key="profile.login"
-                            :to="`/profiles/${profile.login}`" style="text-decoration: none;">
-                            <span class="profile">
-                                {{ profile.name }}
-                            </span>
-                        </UILink>
-                    </div>
-                </div>
-            </div>
-            <div class="widget">
-                <span>Tут скоро будут комментарии</span>
-                <span>и пользватели смогут
-                    делиться своими впечатлениями</span>
-                <span>касаемо вышеуказанной лекции</span>
-            </div>
-        </div>
-
+  <div>
+    <div
+      v-if="loading"
+      class="loading"
+    >
+      Загрузка семестра...
     </div>
+    <div
+      v-else-if="error"
+      class="error"
+    >
+      {{ error }}
+    </div>
+    <div
+      v-if="lecture"
+      class="d-flex flex-column ga-5"
+    >
+      <div class="d-flex flex-row ga-16">
+        <UILink
+          v-if="lecture.presentationId"
+          :to="getPresentationExternalUrl(lecture.presentationId)"
+          target="_blank"
+        >
+          <ClientOnly>
+            <img
+              :src="getPresentationPreviewUrl(lecture.presentationId)"
+              class="lecture-thumbnail"
+              width="420"
+              height="300"
+              alt="Превью презентации"
+            >
+          </ClientOnly>
+        </UILink>
+        <div
+          v-else
+          class="placeholder"
+        >
+          Нет изображения
+        </div>
+        <div class="d-flex flex-column ga-5">
+          <div class="title">
+            {{ lecture.title }}
+          </div>
+          <div class="description">
+            {{ lecture.description }}
+          </div>
+          <div class="d-flex flex-row ga-4">
+            <UILink
+              v-for="profile of lecture.profiles"
+              :key="profile.login"
+              :to="`/profiles/${profile.login}`"
+              style="text-decoration: none;"
+            >
+              <span class="profile">
+                {{ profile.name }}
+              </span>
+            </UILink>
+          </div>
+        </div>
+      </div>
+      <div class="widget">
+        <span>Tут скоро будут комментарии</span>
+        <span>и пользватели смогут
+          делиться своими впечатлениями</span>
+        <span>касаемо вышеуказанной лекции</span>
+      </div>
+    </div>
+  </div>
 </template>
 
 <style lang="css" scoped>

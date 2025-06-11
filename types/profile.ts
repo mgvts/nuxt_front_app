@@ -1,4 +1,4 @@
-import type { base64str } from "."
+import type { base64str } from '.'
 
 interface WorkExperience {
   companyName: string
@@ -18,9 +18,9 @@ interface Education {
 }
 
 export enum ProfileContactType {
-  TG='TELEGRAM',
-  EMAIL='EMAIL',
-  PHONE='PHONE'
+  TG = 'TELEGRAM',
+  EMAIL = 'EMAIL',
+  PHONE = 'PHONE',
 }
 
 export interface ProfileContact {

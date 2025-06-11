@@ -1,17 +1,17 @@
 <script setup lang="ts">
-import type { NuxtError } from "#app";
-import { computed } from "vue";
+import { computed } from 'vue'
+import type { NuxtError } from '#app'
 
 const props = defineProps({
   error: {
     type: Object as PropType<NuxtError | undefined>,
     default: undefined,
   },
-});
+})
 
-const handleError = () => clearError({ redirect: "/" });
+const handleError = () => clearError({ redirect: '/' })
 
-const is404 = computed(() => props.error?.statusCode === 404);
+const is404 = computed(() => props.error?.statusCode === 404)
 </script>
 
 <template>
@@ -19,9 +19,17 @@ const is404 = computed(() => props.error?.statusCode === 404);
     <div class="error-container">
       <div class="error-content">
         <h1>{{ props.error?.statusCode || "Ошибка" }}</h1>
-        <p v-if="is404">Страница не найдена</p>
-        <p v-else>{{ props.error?.message || "Произошла ошибка" }}</p>
-        <NuxtLink to="/" class="home-link" @click="handleError">
+        <p v-if="is404">
+          Страница не найдена
+        </p>
+        <p v-else>
+          {{ props.error?.message || "Произошла ошибка" }}
+        </p>
+        <NuxtLink
+          to="/"
+          class="home-link"
+          @click="handleError"
+        >
           На главную
         </NuxtLink>
       </div>

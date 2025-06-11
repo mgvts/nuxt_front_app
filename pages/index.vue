@@ -1,65 +1,77 @@
 <script setup lang="ts">
-import { computed, ref } from "vue";
-import messages from "./locale.json";
+import { computed, ref } from 'vue'
+import messages from './locale.json'
+
 useHead({
-  title: "Главная",
+  title: 'Главная',
   meta: [
     {
-      name: "description",
+      name: 'description',
       content: 'Главная страница курса "Фронтенд 2024-2025, ИТМО"',
     },
   ],
-});
-const { t } = useI18n({ messages });
-const semesterStore = useSemesterStore();
-const profileStore = useProfileStore();
-const { sortedSemesters } = storeToRefs(semesterStore);
-const isLoading = ref(true);
+})
+const { t } = useI18n({ messages })
+const semesterStore = useSemesterStore()
+const profileStore = useProfileStore()
+const { sortedSemesters } = storeToRefs(semesterStore)
+const isLoading = ref(true)
 
 onMounted(async () => {
   try {
     await Promise.all([
       semesterStore.loadSemesters(),
       profileStore.loadProfiles(),
-    ]);
-  } catch (e) {
-    console.error("Failed to load semesters:", e);
-  } finally {
-    isLoading.value = false;
+    ])
   }
-});
+  catch (e) {
+    console.error('Failed to load semesters:', e)
+  }
+  finally {
+    isLoading.value = false
+  }
+})
 
 const lecturers = computed(() => {
-  const seen = new Set();
+  const seen = new Set()
   const all = sortedSemesters.value
-    .flatMap((s) => s.lectures)
-    .flatMap((l) => l.profiles)
+    .flatMap(s => s.lectures)
+    .flatMap(l => l.profiles)
     .filter((p) => {
-      if (seen.has(p.login) || !p.avatarUrl) return false;
-      seen.add(p.login);
-      return true;
-    });
-  return all.slice(0, 8);
-});
+      if (seen.has(p.login) || !p.avatarUrl) return false
+      seen.add(p.login)
+      return true
+    })
+  return all.slice(0, 8)
+})
 </script>
 
 <template>
   <div class="hello-container">
-    <img class="hello-img" src="~/assets/img/main-bg.jpg" alt="Hello">
+    <img
+      class="hello-img"
+      src="~/assets/img/main-bg.jpg"
+      alt="Hello"
+    >
     <h1 class="hello-text">
       {{ t("Курс...") }}
     </h1>
   </div>
 
   <section class="courses-section">
-    <h2 class="courses-title">{{ t("Наши курсы") }}</h2>
+    <h2 class="courses-title">
+      {{ t("Наши курсы") }}
+    </h2>
     <div class="courses-list">
       <template v-if="isLoading || !sortedSemesters.length">
-        <div v-for="i in 4" :key="i" class="course-card skeleton"
-        :class="{ 
+        <div
+          v-for="i in 4"
+          :key="i"
+          class="course-card skeleton"
+          :class="{
             'bg-secondary': !(i % 2),
             'bg-primary-2': i % 2,
-           }"
+          }"
         >
           <div class="course-card-content">
             <div class="course-image skeleton-image" />
@@ -77,7 +89,7 @@ const lecturers = computed(() => {
           :class="{
             'bg-secondary': !(semester.id % 2),
             'bg-primary-2': (semester.id % 2),
-           }"
+          }"
         >
           <div class="course-card-content">
             <img
@@ -87,11 +99,15 @@ const lecturers = computed(() => {
               :alt="semester.title"
               class="course-image"
             >
-            <div class="course-title">{{ semester.title }}</div>
-            <div class="course-description">{{ semester.description }}</div>
+            <div class="course-title">
+              {{ semester.title }}
+            </div>
+            <div class="course-description">
+              {{ semester.description }}
+            </div>
           </div>
           <UIButton
-            :to="`/semesters/${semester.id}`"  
+            :to="`/semesters/${semester.id}`"
             :text="t('перейти')"
           />
         </div>
@@ -100,10 +116,16 @@ const lecturers = computed(() => {
   </section>
 
   <section class="lecturers-section">
-    <h2 class="lecturers-title">{{ t('Наши лекторы') }}</h2>
+    <h2 class="lecturers-title">
+      {{ t('Наши лекторы') }}
+    </h2>
     <div class="lecturers-grid">
       <template v-if="isLoading || !lecturers.length">
-        <div v-for="i in 8" :key="i" class="lecturer-card skeleton">
+        <div
+          v-for="i in 8"
+          :key="i"
+          class="lecturer-card skeleton"
+        >
           <div class="lecturer-avatar skeleton-image" />
           <div class="lecturer-name skeleton-text" />
         </div>
@@ -125,7 +147,9 @@ const lecturers = computed(() => {
             :alt="lecturer.name"
             class="lecturer-avatar"
           >
-          <div class="lecturer-name">{{ lecturer.name }}</div>
+          <div class="lecturer-name">
+            {{ lecturer.name }}
+          </div>
         </UILink>
       </template>
     </div>
@@ -141,7 +165,11 @@ const lecturers = computed(() => {
       class="stars-main flipped"
       alt="stars"
     >
-    <img src="~/assets/img/stars-main.png" class="stars-main" alt="stars" >
+    <img
+      src="~/assets/img/stars-main.png"
+      class="stars-main"
+      alt="stars"
+    >
   </div>
 </template>
 
@@ -241,7 +269,6 @@ const lecturers = computed(() => {
     box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
   }
 }
-
 
 .course-card-content {
   width: 100%;

@@ -3,9 +3,9 @@
 </script>
 
 <template>
-<VCard variant="outlined">
+  <VCard variant="outlined">
     <slot />
-</VCard>
+  </VCard>
 </template>
 
 <style scoped lang="css">

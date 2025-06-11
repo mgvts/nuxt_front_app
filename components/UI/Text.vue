@@ -1,5 +1,5 @@
 <script setup lang="ts">
-export type SizeValues = "link" | "text" | "upper";
+export type SizeValues = 'link' | 'text' | 'upper'
 
 const props = defineProps({
   color: {
@@ -12,9 +12,9 @@ const props = defineProps({
   },
   size: {
     type: String as PropType<SizeValues>,
-    default: "text",
+    default: 'text',
   },
-});
+})
 </script>
 
 <template>

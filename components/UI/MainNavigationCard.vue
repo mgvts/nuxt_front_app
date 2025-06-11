@@ -1,9 +1,9 @@
 <script setup lang="ts">
 const props = defineProps({
   color: {
-		type: String,
-		default: undefined,
-	},
+    type: String,
+    default: undefined,
+  },
   textColor: {
     type: String,
     default: undefined,
@@ -12,10 +12,10 @@ const props = defineProps({
 </script>
 
 <template>
-  <div 
-    class="card" 
+  <div
+    class="card"
     :style="{
-      backgroundColor: props.color, 
+      backgroundColor: props.color,
       color: props.textColor,
     }"
   >

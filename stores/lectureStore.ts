@@ -14,13 +14,15 @@ export const useLectureStore = defineStore('lecture', () => {
     error.value = null
     try {
       lectures.value = await api.lecture.getLectures()
-    } catch (e) {
+    }
+    catch (e) {
       if (e instanceof Error) {
         console.error(e.message)
         error.value = e?.message || `Ошибка при загрузке лекций`
       }
       throw e
-    } finally {
+    }
+    finally {
       loading.value = false
     }
   }
@@ -30,13 +32,15 @@ export const useLectureStore = defineStore('lecture', () => {
     error.value = null
     try {
       lecture.value = await api.lecture.getLecture(slug)
-    } catch (e) {
+    }
+    catch (e) {
       if (e instanceof Error) {
         console.error(e.message)
         error.value = e?.message || `Ошибка при загрузке лекции ${slug}`
       }
       throw e
-    } finally {
+    }
+    finally {
       loading.value = false
     }
   }
@@ -46,7 +50,7 @@ export const useLectureStore = defineStore('lecture', () => {
     lectures,
     loading,
     error,
-    
+
     loadLecture,
     loadLectures,
   }
