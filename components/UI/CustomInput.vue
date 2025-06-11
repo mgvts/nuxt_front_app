@@ -6,7 +6,7 @@ const { label, type } = defineProps({
     required: true,
   },
   type: { type: String, default: 'text' },
-  placeholder: { type: String, required: true },
+  placeholder: { type: String, default: '' },
   error: { type: String, required: true },
 })
 </script>

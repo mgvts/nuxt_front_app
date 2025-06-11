@@ -5,6 +5,7 @@ import messages from '../semesters/locale.json'
 import { useHead, useRoute } from '#app'
 import { useAuthStore } from '~/stores/authStore'
 import { useFavoriteStore } from '~/stores/favoritesStore'
+import { lecture } from '~/composables/api/lecture'
 
 const route = useRoute()
 const semesterId = route.params.id as string

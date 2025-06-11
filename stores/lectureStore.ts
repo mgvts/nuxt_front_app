@@ -27,7 +27,7 @@ export const useLectureStore = defineStore('lecture', () => {
     }
   }
 
-  async function loadLecture(slug: string) {
+  async function loadLecture(slug: Lecture['id']) {
     loading.value = true
     error.value = null
     try {

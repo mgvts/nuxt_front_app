@@ -8,7 +8,7 @@ export const lecture = {
     return await get<Lecture[]>()
   },
 
-  async getLecture(slug: string): Promise<Lecture> {
+  async getLecture(slug: Lecture['id']): Promise<Lecture> {
     return await get<Lecture>(`/${slug}`)
   },
 }

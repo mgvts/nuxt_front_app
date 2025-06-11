@@ -60,9 +60,12 @@ const formatDate = (date: string) => {
           />
         </div>
       </div>
-      <h3 class="lecture-title">
+      <UILink
+        class="lecture-title"
+        :to="`/lectures/${lecture.id}`"
+      >
         {{ lecture.title }}
-      </h3>
+      </UILink>
       <div class="lecture-description">
         {{ lecture.description }}
       </div>
