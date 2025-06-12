@@ -1,232 +1,246 @@
 <script setup lang="ts">
-import { useToast } from 'vue-toast-notification'
-import messages from './locale.json'
-import { useHead } from '#app'
-import CustomButton from '~/components/UI/CustomButton.vue'
-import CustomInput from '~/components/UI/CustomInput.vue'
-import type { LoginPayload, RegisterPayload } from '~/types/auth'
+import { useHead } from "#app";
+import { useToast } from "vue-toast-notification";
+import CustomButton from "~/components/UI/CustomButton.vue";
+import CustomInput from "~/components/UI/CustomInput.vue";
+import type { LoginPayload, RegisterPayload } from "~/types/auth";
+import messages from "./locale.json";
 
-const toast = useToast()
-const { t } = useI18n({ messages })
-const { register, login } = useAuthStore()
+const toast = useToast();
+const { t } = useI18n({ messages });
+const { register, login } = useAuthStore();
 
-const pageTitle = computed(() => t('pageTitles.auth'))
+const pageTitle = computed(() => t("pageTitles.auth"));
 useHead({
   title: pageTitle,
   meta: [
     {
-      name: 'description',
+      name: "description",
       content: pageTitle,
     },
   ],
-})
+});
 
 interface Field {
-  value: string
-  label: string
-  rules: ((val: string) => boolean | string)[]
-  isPassword: boolean
-  showed: boolean
-  error: string
+  value: string;
+  label: string;
+  rules: ((val: string) => boolean | string)[];
+  isPassword: boolean;
+  showed: boolean;
+  error: string;
 }
 interface LoginMap {
-  login: Field
-  password: Field
+  login: Field;
+  password: Field;
 }
 interface RegisterMap {
-  name: Field
-  login: Field
-  password: Field
-  repeatPassword: Field
+  name: Field;
+  login: Field;
+  password: Field;
+  repeatPassword: Field;
 }
 interface FiledMap {
-  login: LoginMap
-  register: RegisterMap
+  login: LoginMap;
+  register: RegisterMap;
 }
 
-const isRegister = ref(false)
-const getAction = computed(() => (isRegister.value ? 'register' : 'login'))
+const isRegister = ref(false);
+const getAction = computed(() => (isRegister.value ? "register" : "login"));
 const getFieldType = (field: Field) =>
-  field.isPassword && !field.showed ? 'password' : 'text'
+  field.isPassword && !field.showed ? "password" : "text";
 
 const headerLabelMap = {
-  login: t('Войти'),
-  register: t('Создать аккаунт'),
-}
+  login: t("Войти"),
+  register: t("Создать аккаунт"),
+};
 const footerLabelMap = {
-  login: t('Войти'),
-  register: t('Зарегистрироваться'),
-}
+  login: t("Войти"),
+  register: t("Зарегистрироваться"),
+};
 
 const getHeaderLabel = computed(() => {
-  return headerLabelMap[getAction.value]
-})
+  return headerLabelMap[getAction.value];
+});
 const getFooterLabel = computed(() => {
-  return footerLabelMap[getAction.value]
-})
+  return footerLabelMap[getAction.value];
+});
 const getApiPayload = (): RegisterPayload | LoginPayload => {
   if (isRegister.value) {
     return {
       name: fields.value.register.name.value,
       login: fields.value.register.login.value,
       password: fields.value.register.password.value,
-    }
+    };
   }
   return {
     login: fields.value.login.login.value,
     password: fields.value.login.password.value,
-  }
-}
+  };
+};
 
 const lenRule = (v: string) =>
-  (v && 2 < v.length && v.length < 100) || t('неверная длина')
+  (v && 2 < v.length && v.length < 100) || t("неверная длина");
 
 const fields = ref<FiledMap>({
   register: {
     name: {
-      value: '',
-      label: t('ФИО'),
+      value: "",
+      label: t("ФИО"),
       rules: [
         lenRule,
         (v: string) =>
-          (v
-            && 6 < v.length
-            && v.length < 100
-            && 2 <= v.split(/\s/).length
-            && v.split(/\s/).length <= 5)
-          || t('неверное фио'),
+          (v &&
+            6 < v.length &&
+            v.length < 100 &&
+            2 <= v.split(/\s/).length &&
+            v.split(/\s/).length <= 5) ||
+          t("неверное фио"),
       ],
       isPassword: false,
       showed: true,
-      error: '',
+      error: "",
     },
     login: {
-      value: '',
-      label: t('Логин'),
+      value: "",
+      label: t("Логин"),
       rules: [lenRule],
       isPassword: false,
       showed: true,
-      error: '',
+      error: "",
     },
     password: {
-      value: '',
-      label: t('Пароль'),
+      value: "",
+      label: t("Пароль"),
       rules: [lenRule],
       isPassword: true,
       showed: false,
-      error: '',
+      error: "",
     },
     repeatPassword: {
-      value: '',
-      label: t('Подтвердите пароль'),
-      rules: [lenRule],
+      value: "",
+      label: t("Подтвердите пароль"),
+      rules: [
+        (v: string): boolean | string => {
+          const passwordField = fields.value.register.password;
+          return v === passwordField.value || t("Пароли не совпадают");
+        },
+      ],
       isPassword: true,
       showed: false,
-      error: '',
+      error: "",
     },
   },
   login: {
     login: {
-      value: '',
-      label: t('Логин'),
+      value: "",
+      label: t("Логин"),
       rules: [lenRule],
       isPassword: false,
       showed: true,
-      error: '',
+      error: "",
     },
     password: {
-      value: '',
-      label: t('Пароль'),
+      value: "",
+      label: t("Пароль"),
       rules: [lenRule],
       isPassword: true,
       showed: false,
-      error: '',
+      error: "",
     },
   },
-})
+});
 
 const validateField = (field: Field) => {
   for (const rule of field.rules) {
-    const result = rule(field.value)
+    const result = rule(field.value);
     if (result !== true) {
-      field.error = result as string
-      return false
+      field.error = result as string;
+      return false;
     }
   }
-  field.error = ''
-  return true
-}
+  field.error = "";
+  return true;
+};
 
-const validateForm = () => {
-  let isValid = true
+const validateForm = (): boolean => {
+  let isValid = true;
   for (const field of Object.values(fields.value[getAction.value])) {
-    if (!validateField(field)) {
-      isValid = false
+    if (!validateField(field as Field)) {
+      isValid = false;
     }
   }
-  return isValid
-}
+
+  // Проверка совпадения паролей при регистрации
+  if (isRegister.value) {
+    const { password, repeatPassword } = fields.value.register;
+    if (password.value !== repeatPassword.value) {
+      repeatPassword.error = t("Пароли не совпадают");
+      toast.error(t("Пароли не совпадают"), {
+        position: "top-right",
+        duration: 5000,
+      });
+      isValid = false;
+    }
+  }
+
+  return isValid;
+};
 
 const submit = async () => {
   if (!validateForm()) {
-    return
+    return;
   }
-  const router = useRouter()
-  const payload = getApiPayload()
-  let account
+  const router = useRouter();
+  const payload = getApiPayload();
+  let account;
   try {
     if (isRegister.value) {
-      account = await register(payload as RegisterPayload)
+      account = await register(payload as RegisterPayload);
       if (account) {
-        toast.success(t('Регистрация успешно завершена!'), {
-          position: 'top-right',
+        toast.success(t("Регистрация успешно завершена!"), {
+          position: "top-right",
           duration: 3000,
-        })
-        router.push('/')
+        });
+        router.push("/");
+      }
+    } else {
+      account = await login(payload);
+      if (account) {
+        toast.success(t("Вход выполнен успешно!"), {
+          position: "top-right",
+          duration: 3000,
+        });
+        router.push("/");
       }
     }
-    else {
-      account = await login(payload)
-      if (account) {
-        toast.success(t('Вход выполнен успешно!'), {
-          position: 'top-right',
-          duration: 3000,
-        })
-        router.push('/')
-      }
-    }
-  }
-  catch (e: unknown) {
-    console.error(e)
-    let errorMessage = t('Произошла ошибка. Пожалуйста, попробуйте снова.')
+  } catch (e: unknown) {
+    console.error(e);
+    let errorMessage = t("Произошла ошибка. Пожалуйста, попробуйте снова.");
 
-    if (e && typeof e === 'object') {
+    if (e && typeof e === "object") {
       const error = e as {
-        statusCode?: number
-        statusMessage?: string
-        data?: { message?: string }
-      }
+        statusCode?: number;
+        statusMessage?: string;
+        data?: { message?: string };
+      };
 
       if (error.statusCode === 401) {
-        errorMessage = t('Неверный логин или пароль')
-      }
-      else if (error.statusCode === 409) {
-        errorMessage = t('Пользователь с таким логином уже существует')
-      }
-      else if (error.statusCode === 400) {
-        errorMessage = error.data?.message || t('Неверные данные')
-      }
-      else if (error.statusCode && error.statusCode >= 500) {
-        errorMessage = t('Сервер временно недоступен. Попробуйте позже')
+        errorMessage = t("Неверный логин или пароль");
+      } else if (error.statusCode === 409) {
+        errorMessage = t("Пользователь с таким логином уже существует");
+      } else if (error.statusCode === 400) {
+        errorMessage = error.data?.message || t("Неверные данные");
+      } else if (error.statusCode && error.statusCode >= 500) {
+        errorMessage = t("Сервер временно недоступен. Попробуйте позже");
       }
     }
 
     toast.error(errorMessage, {
-      position: 'top-right',
+      position: "top-right",
       duration: 5000,
-    })
+    });
   }
-}
+};
 </script>
 
 <template>
@@ -234,10 +248,7 @@ const submit = async () => {
     <div class="auth-form-container">
       <div class="py-10" />
 
-      <form
-        class="auth-form"
-        @submit.prevent="submit"
-      >
+      <form class="auth-form" @submit.prevent="submit">
         <div class="auth-form-header">
           {{ getHeaderLabel }}
         </div>
@@ -255,10 +266,7 @@ const submit = async () => {
           </div>
         </div>
         <div class="auth-form-footer">
-          <CustomButton
-            :text="getFooterLabel"
-            type="submit"
-          />
+          <CustomButton :text="getFooterLabel" type="submit" />
         </div>
       </form>
       <div class="auth-divider" />
