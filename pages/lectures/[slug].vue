@@ -1,194 +1,245 @@
 <script setup lang="ts">
-import { useToast } from "vue-toast-notification";
-import CommentCard from "~/components/CommentCard.vue";
-import { useCommentsStore } from "~/stores/commentsStore";
-import { useFavoriteStore } from "~/stores/favoritesStore";
-import { useLikesStore } from "~/stores/likesStore";
-import { useProfileStore } from "~/stores/profileStore";
-import messages from "./locale.json";
+import { useToast } from 'vue-toast-notification'
+import messages from './locale.json'
+import { useHead } from '#app'
+import CommentCard from '~/components/CommentCard.vue'
+import { useCommentsStore } from '~/stores/commentsStore'
+import { useFavoriteStore } from '~/stores/favoritesStore'
+import { useLikesStore } from '~/stores/likesStore'
+import { useProfileStore } from '~/stores/profileStore'
 
-const { t } = useI18n({ messages });
+const { t } = useI18n({ messages })
 
-const route = useRoute();
-const slug = +route.params.slug;
-const lectureStore = useLectureStore();
+const route = useRoute()
+const slug = +route.params.slug
+const lectureStore = useLectureStore()
 const {
   lecture,
   loading: lectureLoading,
   error: lectureError,
-} = storeToRefs(lectureStore);
+} = storeToRefs(lectureStore)
 
-const commentsStore = useCommentsStore();
+const commentsStore = useCommentsStore()
 const {
   sortedComments,
   loading: commentsLoading,
   error: commentsError,
-} = storeToRefs(commentsStore);
-const authStore = useAuthStore();
-const { isLogin, loginRef } = storeToRefs(authStore);
+} = storeToRefs(commentsStore)
+const authStore = useAuthStore()
+const { isLogin, loginRef } = storeToRefs(authStore)
 
-const profileStore = useProfileStore();
-const { currentProfile } = storeToRefs(profileStore);
+const profileStore = useProfileStore()
+const { currentProfile } = storeToRefs(profileStore)
 
-const likesStore = useLikesStore();
-const { likesCount, isLiked } = storeToRefs(likesStore);
-const isLikeLoading = ref(false);
+const likesStore = useLikesStore()
+const { likesCount, isLiked } = storeToRefs(likesStore)
+const isLikeLoading = ref(false)
 
-const favoriteStore = useFavoriteStore();
-const isFavoriteLoading = ref(false);
+const favoriteStore = useFavoriteStore()
+const isFavoriteLoading = ref(false)
 
-const toast = useToast();
+const toast = useToast()
 
-const isLoading = computed(() => lectureLoading.value || commentsLoading.value);
-const hasError = computed(() => lectureError.value || commentsError.value);
+const isLoading = computed(() => lectureLoading.value || commentsLoading.value)
+const hasError = computed(() => lectureError.value || commentsError.value)
 
-const isInitialLoad = ref(true);
+const isInitialLoad = ref(true)
 
 const loadFavorites = async () => {
   if (isLogin.value && loginRef.value) {
     try {
-      await favoriteStore.getAll(loginRef.value);
-    } catch (e) {
-      console.error("Error loading favorites:", e);
+      await favoriteStore.getAll(loginRef.value)
     }
-  } else {
-    favoriteStore.favoriteLectures = [];
+    catch (e) {
+      console.error('Error loading favorites:', e)
+    }
   }
-};
+  else {
+    favoriteStore.favoriteLectures = []
+  }
+}
+
+// Load current user's profile during SSR if logged in
+const { data: profileData } = await useAsyncData(
+  'currentProfile',
+  async () => {
+    if (isLogin.value && loginRef.value) {
+      await profileStore.loadProfile(loginRef.value)
+      return profileStore.currentProfile
+    }
+    return null
+  },
+  {
+    server: true,
+    immediate: true,
+  },
+)
 
 onBeforeMount(async () => {
-  isInitialLoad.value = true;
+  isInitialLoad.value = true
   try {
     await Promise.all([
       lectureStore.loadLecture(slug),
       commentsStore.getComments(slug),
       likesStore.init(slug),
       loadFavorites(),
-    ]);
-  } catch (e) {
-    console.error("Error loading lecture data:", e);
-  } finally {
-    isInitialLoad.value = false;
+    ])
   }
-});
+  catch (e) {
+    console.error('Error loading lecture data:', e)
+  }
+  finally {
+    isInitialLoad.value = false
+  }
+})
 
 watch([isLogin, loginRef], async ([newIsLogin, newLoginRef]) => {
   if (newIsLogin && newLoginRef) {
-    await loadFavorites();
-  } else {
-    favoriteStore.favoriteLectures = [];
+    await Promise.all([loadFavorites(), profileStore.loadProfile(newLoginRef)])
   }
-});
+  else {
+    favoriteStore.favoriteLectures = []
+    profileStore.currentProfile = null
+  }
+})
 
-const currentCommentText = ref("");
-const isLastCommentImpl = ref(false);
+const currentCommentText = ref('')
+const isLastCommentImpl = ref(false)
 
 const sendComment = async (ev: KeyboardEvent) => {
   if (ev.ctrlKey) {
-    currentCommentText.value += "\n";
-    return;
+    currentCommentText.value += '\n'
+    return
   }
 
-  const trimmedText = currentCommentText.value.trim();
+  const trimmedText = currentCommentText.value.trim()
   if (!trimmedText) {
-    toast.error(t("Комментарий не может быть пустым"), {
-      position: "top-right",
+    toast.error(t('Комментарий не может быть пустым'), {
+      position: 'top-right',
       duration: 3000,
-    });
-    return;
+    })
+    return
   }
 
-  isLastCommentImpl.value = true;
+  isLastCommentImpl.value = true
   try {
-    await commentsStore.addComment(slug, trimmedText);
-    currentCommentText.value = "";
-    toast.success(t("Комментарий успешно добавлен"), {
-      position: "top-right",
+    await commentsStore.addComment(slug, trimmedText)
+    currentCommentText.value = ''
+    toast.success(t('Комментарий успешно добавлен'), {
+      position: 'top-right',
       duration: 3000,
-    });
-  } catch (e) {
-    console.error("Error adding comment:", e);
-    toast.error(t("Не удалось добавить комментарий. Попробуйте позже."), {
-      position: "top-right",
-      duration: 5000,
-    });
-  } finally {
-    isLastCommentImpl.value = false;
+    })
   }
-};
+  catch (e) {
+    console.error('Error adding comment:', e)
+    toast.error(t('Не удалось добавить комментарий. Попробуйте позже.'), {
+      position: 'top-right',
+      duration: 5000,
+    })
+  }
+  finally {
+    isLastCommentImpl.value = false
+  }
+}
 
 const handleLike = async () => {
   if (!isLogin.value) {
-    toast.error(t("Необходимо войти в систему"), {
-      position: "top-right",
+    toast.error(t('Необходимо войти в систему'), {
+      position: 'top-right',
       duration: 3000,
-    });
-    return;
+    })
+    return
   }
 
-  isLikeLoading.value = true;
+  isLikeLoading.value = true
   try {
     if (isLiked.value) {
-      await likesStore.unlike(slug);
-    } else {
-      await likesStore.like(slug);
+      await likesStore.unlike(slug)
     }
-  } catch (e) {
-    console.error("Error toggling like:", e);
-    toast.error(t("Не удалось поставить лайк. Попробуйте позже."), {
-      position: "top-right",
-      duration: 3000,
-    });
-  } finally {
-    isLikeLoading.value = false;
+    else {
+      await likesStore.like(slug)
+    }
   }
-};
+  catch (e) {
+    console.error('Error toggling like:', e)
+    toast.error(t('Не удалось поставить лайк. Попробуйте позже.'), {
+      position: 'top-right',
+      duration: 3000,
+    })
+  }
+  finally {
+    isLikeLoading.value = false
+  }
+}
 
 const handleFavorite = async () => {
   if (!isLogin.value) {
-    toast.error(t("Необходимо войти в систему"), {
-      position: "top-right",
+    toast.error(t('Необходимо войти в систему'), {
+      position: 'top-right',
       duration: 3000,
-    });
-    return;
+    })
+    return
   }
 
-  if (!lecture.value) return;
+  if (!lecture.value) return
 
-  isFavoriteLoading.value = true;
+  isFavoriteLoading.value = true
   try {
-    await favoriteStore.changeFavorite(lecture.value);
-  } catch (e) {
-    console.error("Error toggling favorite:", e);
-    toast.error(t("Не удалось добавить в избранное. Попробуйте позже."), {
-      position: "top-right",
-      duration: 3000,
-    });
-  } finally {
-    isFavoriteLoading.value = false;
+    await favoriteStore.changeFavorite(lecture.value)
   }
-};
+  catch (e) {
+    console.error('Error toggling favorite:', e)
+    toast.error(t('Не удалось добавить в избранное. Попробуйте позже.'), {
+      position: 'top-right',
+      duration: 3000,
+    })
+  }
+  finally {
+    isFavoriteLoading.value = false
+  }
+}
 
 function formatTime(dateStr: string) {
-  const d = new Date(dateStr);
-  return d.toLocaleTimeString("ru-RU", { hour: "2-digit", minute: "2-digit" });
+  const d = new Date(dateStr)
+  return d.toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' })
 }
 
 function formatDate(dateStr: string) {
-  const d = new Date(dateStr);
-  return d.toLocaleDateString("ru-RU");
+  const d = new Date(dateStr)
+  return d.toLocaleDateString('ru-RU')
 }
+
+useHead(() => ({
+  title: lecture.value
+    ? `${lecture.value.title} | ${t('pageTitles.lecture')}`
+    : t('pageTitles.lecture'),
+  meta: [
+    {
+      name: 'description',
+      content: lecture.value?.description || t('pageTitles.lecture'),
+    },
+  ],
+}))
 </script>
 
 <template>
   <div class="lecture-page">
-    <div v-if="hasError" class="error-state">
+    <div
+      v-if="hasError"
+      class="error-state"
+    >
       {{ lectureError || commentsError }}
     </div>
-    <div v-else-if="isLoading" class="loading-state">
+    <div
+      v-else-if="isLoading"
+      class="loading-state"
+    >
       {{ t("loading") }}
     </div>
-    <div v-else-if="lecture" class="d-flex flex-column ga-5">
+    <div
+      v-else-if="lecture"
+      class="d-flex flex-column ga-5"
+    >
       <div class="lecture-header">
         <div class="lecture-media">
           <UILink
@@ -201,10 +252,13 @@ function formatDate(dateStr: string) {
                 :src="lecture.presentationUrl"
                 class="lecture-thumbnail"
                 :alt="t('noImage')"
-              />
+              >
             </ClientOnly>
           </UILink>
-          <div v-else class="placeholder">
+          <div
+            v-else
+            class="placeholder"
+          >
             {{ t("noImage") }}
           </div>
         </div>
@@ -228,7 +282,7 @@ function formatDate(dateStr: string) {
                     :src="profile.avatarUrl"
                     :alt="profile.name"
                     class="lecturer-avatar"
-                  />
+                  >
                 </template>
                 <template v-else>
                   <div class="lecturer-avatar placeholder-avatar" />
@@ -295,8 +349,11 @@ function formatDate(dateStr: string) {
                 v-if="currentProfile?.avatarUrl"
                 :src="currentProfile.avatarUrl"
                 :alt="currentProfile.login"
+              >
+              <div
+                v-else
+                class="avatar-placeholder"
               />
-              <div v-else class="avatar-placeholder" />
             </div>
             <input
               v-model="currentCommentText"
@@ -304,7 +361,7 @@ function formatDate(dateStr: string) {
               :placeholder="t('Введите комментарий')"
               type="text"
               @keydown.enter="sendComment"
-            />
+            >
           </div>
           <div class="comment-input-actions">
             <UIButton
@@ -343,7 +400,10 @@ function formatDate(dateStr: string) {
               :text="comment.text"
             />
           </template>
-          <div v-else class="empty-state">
+          <div
+            v-else
+            class="empty-state"
+          >
             {{ t("noComments") }}
           </div>
         </section>

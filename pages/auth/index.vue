@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useToast } from 'vue-toast-notification'
 import messages from './locale.json'
+import { useHead } from '#app'
 import CustomButton from '~/components/UI/CustomButton.vue'
 import CustomInput from '~/components/UI/CustomInput.vue'
 import type { LoginPayload, RegisterPayload } from '~/types/auth'
@@ -8,6 +9,17 @@ import type { LoginPayload, RegisterPayload } from '~/types/auth'
 const toast = useToast()
 const { t } = useI18n({ messages })
 const { register, login } = useAuthStore()
+
+const pageTitle = computed(() => t('pageTitles.auth'))
+useHead({
+  title: pageTitle,
+  meta: [
+    {
+      name: 'description',
+      content: pageTitle,
+    },
+  ],
+})
 
 interface Field {
   value: string

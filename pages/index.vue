@@ -2,20 +2,24 @@
 import { computed, ref } from 'vue'
 import messages from './locale.json'
 
-useHead({
-  title: 'Главная',
-  meta: [
-    {
-      name: 'description',
-      content: 'Главная страница курса "Фронтенд 2024-2025, ИТМО"',
-    },
-  ],
-})
 const { t } = useI18n({ messages })
+
 const semesterStore = useSemesterStore()
 const profileStore = useProfileStore()
 const { sortedSemesters } = storeToRefs(semesterStore)
 const isLoading = ref(true)
+
+const pageTitle = computed(() => t('pageTitles.main'))
+
+useHead({
+  title: pageTitle,
+  meta: [
+    {
+      name: 'description',
+      content: pageTitle,
+    },
+  ],
+})
 
 onMounted(async () => {
   try {

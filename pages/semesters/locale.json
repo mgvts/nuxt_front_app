@@ -19,7 +19,10 @@
       "december": "декабрь"
     },
     "Прогресс просмотра": "Вы посмотрели {progress}% лекций",
-    "Нет лекций": "В этом семестре пока нет лекций"
+    "Нет лекций": "В этом семестре пока нет лекций",
+    "pageTitles": {
+      "semester": "Семестр"
+    }
   },
   "en": {
     "semester": "semester",
@@ -41,6 +44,9 @@
       "december": "December"
     },
     "Прогресс просмотра": "You've watched {progress}% of lectures",
-    "Нет лекций": "No lectures in this semester yet"
+    "Нет лекций": "No lectures in this semester yet",
+    "pageTitles": {
+      "semester": "Semester"
+    }
   }
 }

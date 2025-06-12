@@ -1,17 +1,22 @@
 <template>
   <div class="comment-card">
     <div class="comment-header">
-      <div class="comment-avatar">
-        <img
-          v-if="avatarUrl"
-          :src="avatarUrl"
-          :alt="author"
-        >
-        <div
-          v-else
-          class="avatar-placeholder"
-        />
-      </div>
+      <UILink
+        :to="`/profiles/${props.author.substring(1)}`"
+        class="comment-avatar-link"
+      >
+        <div class="comment-avatar">
+          <img
+            v-if="avatarUrl"
+            :src="avatarUrl"
+            :alt="author"
+          >
+          <div
+            v-else
+            class="avatar-placeholder"
+          />
+        </div>
+      </UILink>
       <div class="comment-meta">
         <div class="comment-meta-row">
           <span class="comment-author">{{ author }}</span>
@@ -35,6 +40,7 @@ const props = defineProps({
   time: { type: String, required: true },
   date: { type: String, required: true },
   text: { type: String, required: true },
+  login: { type: String, required: true },
 })
 </script>
 
@@ -89,11 +95,21 @@ const props = defineProps({
   margin-bottom: 0.5rem;
   flex-wrap: wrap;
 }
+.comment-author-link {
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+}
 .comment-author {
   color: rgb(var(--v-theme-primary));
   font-size: 1.25rem;
   font-weight: 500;
   white-space: nowrap;
+  transition: opacity 0.2s ease;
+  line-height: 1;
+}
+.comment-author-link:hover .comment-author {
+  opacity: 0.8;
 }
 .comment-time-info {
   display: flex;
@@ -134,5 +150,16 @@ const props = defineProps({
   .comment-text {
     font-size: 1.1rem;
   }
+}
+.comment-avatar-link {
+  text-decoration: none;
+  display: block;
+}
+.comment-avatar {
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+.comment-avatar-link:hover .comment-avatar {
+  transform: scale(1.05);
 }
 </style>

@@ -32,8 +32,9 @@ const formatDate = (date: string) => {
 </script>
 
 <template>
-  <div
+  <UILink
     v-if="lecture"
+    :to="`/lectures/${lecture.id}`"
     class="lecture-card"
   >
     <div class="lecture-image-container">
@@ -53,12 +54,17 @@ const formatDate = (date: string) => {
       <div
         v-if="isLogin"
         class="favorite-icon-container"
+        @click.prevent
       >
-        <UIIcon
-          :icon="isFavorite ? 'mdi-star' : 'mdi-star-outline'"
-          class="favorite-icon"
-          @click="whenChangeFavorite"
-        />
+        <div
+          class="favorite-icon-wrapper"
+          @click.prevent="whenChangeFavorite"
+        >
+          <UIIcon
+            :icon="isFavorite ? 'mdi-star' : 'mdi-star-outline'"
+            class="favorite-icon"
+          />
+        </div>
       </div>
     </div>
     <div class="lecture-content">
@@ -79,13 +85,9 @@ const formatDate = (date: string) => {
           </span>
         </div>
       </div>
-      <UILink
-        class="lecture-title"
-        :to="`/lectures/${lecture.id}`"
-        size="text-2xl"
-      >
+      <div class="lecture-title">
         {{ lecture.title }}
-      </UILink>
+      </div>
       <div class="lecture-description">
         {{ lecture.description }}
       </div>
@@ -95,6 +97,7 @@ const formatDate = (date: string) => {
           :key="profile.login"
           :to="`/profiles/${profile.login}`"
           class="lecturer-link"
+          @click.stop
         >
           <div class="lecturer">
             <template v-if="profile.avatarUrl">
@@ -112,7 +115,7 @@ const formatDate = (date: string) => {
         </UILink>
       </div>
     </div>
-  </div>
+  </UILink>
 </template>
 
 <style scoped lang="css">
@@ -127,6 +130,7 @@ const formatDate = (date: string) => {
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  cursor: pointer;
 }
 
 .lecture-image-container {
@@ -140,11 +144,6 @@ const formatDate = (date: string) => {
   object-fit: cover;
   display: block;
   margin: 0;
-  transition: transform 0.3s ease;
-}
-
-.lecture-image:hover {
-  transform: scale(1.02);
 }
 
 .lecture-image-placeholder {
@@ -199,6 +198,7 @@ const formatDate = (date: string) => {
   color: rgb(var(--v-theme-on-primary-2));
   margin: 0;
   font-weight: var(--font-bold);
+  font-size: var(--text-2xl);
 }
 
 .lecture-description {
@@ -242,13 +242,14 @@ const formatDate = (date: string) => {
   z-index: 1;
 }
 
-.favorite-icon {
+.favorite-icon-wrapper {
   cursor: pointer;
-  transition: all 0.2s ease;
+  padding: 0.5rem;
 }
 
-.favorite-icon:hover {
-  transform: scale(1.1);
+.favorite-icon {
+  font-size: 1.5rem;
+  color: rgb(var(--v-theme-primary));
 }
 
 .lecturer-link {

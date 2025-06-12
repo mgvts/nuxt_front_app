@@ -73,11 +73,13 @@ onMounted(async () => {
 })
 
 useHead(() => ({
-  title: currentSemester.value?.title + ' ' + t('semester') || t('semester'),
+  title: currentSemester.value
+    ? `${currentSemester.value.title} | ${t('pageTitles.semester')}`
+    : t('pageTitles.semester'),
   meta: [
     {
       name: 'description',
-      content: currentSemester.value?.description || t('semester'),
+      content: currentSemester.value?.description || t('pageTitles.semester'),
     },
   ],
 }))

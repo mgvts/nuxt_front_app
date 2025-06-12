@@ -45,11 +45,15 @@ onMounted(async () => {
 })
 
 useHead(() => ({
-  title: currentProfile.value?.name || 'Профиль',
+  title: currentProfile.value
+    ? `${currentProfile.value.name} | ${t('pageTitles.profile')}`
+    : t('pageTitles.profile'),
   meta: [
     {
       name: 'description',
-      content: `Профиль пользователя ${currentProfile.value?.name || ''}`,
+      content: currentProfile.value
+        ? `${t('pageTitles.profile')} ${currentProfile.value.name}`
+        : t('pageTitles.profile'),
     },
   ],
 }))
@@ -515,6 +519,8 @@ const loading = computed(() => profileLoading.value || favoriteLoading.value)
   padding: 3rem 0;
   font-family: var(--font-lato), sans-serif;
   transition: color 0.3s ease;
+  width: 100%;
+  grid-column: 1 / -1;
 }
 
 .logout-block :deep(.v-btn) {

@@ -1,9 +1,21 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
+import { useI18n } from 'vue-i18n'
+import messages from './locale.json'
 import { useProfileStore } from '~/stores/profileStore'
 import { useHead } from '#app'
 
-useHead({ title: 'Пользователи' })
+const { t } = useI18n({ messages })
+
+useHead({
+  title: t('pageTitles.profiles'),
+  meta: [
+    {
+      name: 'description',
+      content: t('pageTitles.profiles'),
+    },
+  ],
+})
 
 const profileStore = useProfileStore()
 const { profiles, loading, error } = storeToRefs(profileStore)
