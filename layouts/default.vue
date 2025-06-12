@@ -1,18 +1,18 @@
 <script setup lang="ts">
-import { LocaleKey } from "~/i18n/locales";
-import messages from "./locale.json";
+import messages from './locale.json'
+import { LocaleKey } from '~/i18n/locales'
 
-const { themeCookie, setTheme, locale } = useCookies();
+const { themeCookie, setTheme, locale } = useCookies()
 
 onMounted(() => {
-  const theme = useTheme();
+  const theme = useTheme()
   if (themeCookie.value) {
-    setTheme(themeCookie.value);
-    theme.global.name.value = themeCookie.value;
+    setTheme(themeCookie.value)
+    theme.global.name.value = themeCookie.value
   }
-});
-const isEngLocale = computed(() => locale.value === LocaleKey.EN);
-const { t } = useI18n({ messages });
+})
+const isEngLocale = computed(() => locale.value === LocaleKey.EN)
+const { t } = useI18n({ messages })
 </script>
 
 <template>
@@ -75,6 +75,12 @@ const { t } = useI18n({ messages });
   .main-layout {
     width: 100%;
     padding: 8rem 1rem 0 1rem;
+  }
+}
+
+@media (width <= 550px) {
+  .main-layout {
+    padding-top: 216px;
   }
 }
 </style>

@@ -1,52 +1,49 @@
 <script setup lang="ts">
-import { useCommentsStore } from '~/stores/commentsStore'
+import { useCommentsStore } from "~/stores/commentsStore";
 
-const route = useRoute()
-const slug = +route.params.slug
-const lectureStore = useLectureStore()
+const route = useRoute();
+const slug = +route.params.slug;
+const lectureStore = useLectureStore();
 const {
   lecture,
   loading: lectureLoading,
   error: lectureError,
-} = storeToRefs(lectureStore)
+} = storeToRefs(lectureStore);
 
-const commentsStore = useCommentsStore()
+const commentsStore = useCommentsStore();
 const {
   sortedComments,
   loading: commentsLoading,
   error: commentsError,
-} = storeToRefs(commentsStore)
-const authStore = useAuthStore()
-const { isLogin } = storeToRefs(authStore)
+} = storeToRefs(commentsStore);
+const authStore = useAuthStore();
+const { isLogin } = storeToRefs(authStore);
 
 // todo here must pass onBeforeMount or loading ref with default false to component
 // to prevent artifact while one lecture have comments but another havent
 onBeforeMount(async () => {
-  await lectureStore.loadLecture(slug)
-  await commentsStore.getComments(slug)
-})
-const currentCommentText = ref('')
-const isLastCommentImpl = ref(false)
+  await lectureStore.loadLecture(slug);
+  await commentsStore.getComments(slug);
+});
+const currentCommentText = ref("");
+const isLastCommentImpl = ref(false);
 
 const sendComment = async (ev: KeyboardEvent) => {
-  console.log(ev)
+  console.log(ev);
   if (ev.ctrlKey) {
-    currentCommentText.value += '\n'
-    return
+    currentCommentText.value += "\n";
+    return;
   }
-  isLastCommentImpl.value = true
-  await commentsStore.addComment(slug, currentCommentText.value.trim())
-  currentCommentText.value = ''
-  isLastCommentImpl.value = false
-}
+  isLastCommentImpl.value = true;
+  await commentsStore.addComment(slug, currentCommentText.value.trim());
+  currentCommentText.value = "";
+  isLastCommentImpl.value = false;
+};
 </script>
 
 <template>
   <div>
-    <div
-      v-if="lecture"
-      class="d-flex flex-column ga-5"
-    >
+    <div v-if="lecture" class="d-flex flex-column ga-5">
       <div class="d-flex flex-row ga-16">
         <UILink
           v-if="lecture.presentationId"
@@ -60,15 +57,10 @@ const sendComment = async (ev: KeyboardEvent) => {
               width="420"
               height="300"
               alt="Превью презентации"
-            >
+            />
           </ClientOnly>
         </UILink>
-        <div
-          v-else
-          class="placeholder"
-        >
-          Нет изображения
-        </div>
+        <div v-else class="placeholder">Нет изображения</div>
         <div class="d-flex flex-column ga-5">
           <div class="title">
             {{ lecture.title }}
@@ -81,7 +73,7 @@ const sendComment = async (ev: KeyboardEvent) => {
               v-for="profile of lecture.profiles"
               :key="profile.login"
               :to="`/profiles/${profile.login}`"
-              style="text-decoration: none;"
+              style="text-decoration: none"
             >
               <span class="profile">
                 {{ profile.name }}
@@ -97,10 +89,7 @@ const sendComment = async (ev: KeyboardEvent) => {
             v-model="currentCommentText"
             @keydown.enter="sendComment"
           />
-          <UIButton
-            text="Отправить"
-            @click="sendComment"
-          />
+          <UIButton text="Отправить" @click="sendComment" />
         </div>
         <div>
           <div
@@ -108,13 +97,8 @@ const sendComment = async (ev: KeyboardEvent) => {
             :key="comment.createdAt"
             class="comment pa-2 border"
           >
-            <div style="white-space: pre;">
-              text:
-              "{{ comment.text }}"
-            </div>
-            <div>
-              createdAt: {{ comment.createdAt }}
-            </div>
+            <div style="white-space: pre">text: "{{ comment.text }}"</div>
+            <div>createdAt: {{ comment.createdAt }}</div>
             <UILink :to="`/profiles/${comment.author.login}`">
               author.login: {{ comment.author.login }}
             </UILink>
@@ -150,7 +134,7 @@ const sendComment = async (ev: KeyboardEvent) => {
 }
 
 .card {
-  background: #A0D6FF8A;
+  background: #a0d6ff8a;
   border: 2px solid #003049;
   border-radius: 16px;
   padding: 2rem;
@@ -189,7 +173,7 @@ const sendComment = async (ev: KeyboardEvent) => {
   justify-content: center;
   width: 100%;
   height: 360px;
-  background: #A0D6FF8A;
+  background: #a0d6ff8a;
 
   font-family: var(--font-kantumruy);
   font-size: 1.5rem !important;

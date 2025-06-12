@@ -9,7 +9,11 @@ const route = useRoute()
 const login = route.params.login as string
 
 const profileStore = useProfileStore()
-const { currentProfile, loading: profileLoading, error } = storeToRefs(profileStore)
+const {
+  currentProfile,
+  loading: profileLoading,
+  error,
+} = storeToRefs(profileStore)
 const { t } = useI18n({ messages })
 interface ApiError {
   message?: string
@@ -18,7 +22,8 @@ interface ApiError {
   data?: unknown
 }
 const favoriteStore = useFavoriteStore()
-const { favoriteLectures, loading: favoriteLoading } = storeToRefs(favoriteStore)
+const { favoriteLectures, loading: favoriteLoading }
+  = storeToRefs(favoriteStore)
 const authStore = useAuthStore()
 const { loginRef } = storeToRefs(authStore)
 
@@ -50,9 +55,18 @@ useHead(() => ({
 }))
 
 const ContactMap = {
-  [ProfileContactType.TG]: { icon: 'mdi-telegram', link: (contact: string) => `https://t.me/${contact.substring(1)}` },
-  [ProfileContactType.PHONE]: { icon: 'mdi-phone', link: (contact: string) => `tel:${contact}` },
-  [ProfileContactType.EMAIL]: { icon: 'mdi-email', link: (contact: string) => `mailto:${contact}` },
+  [ProfileContactType.TG]: {
+    icon: 'mdi-telegram',
+    link: (contact: string) => `https://t.me/${contact.substring(1)}`,
+  },
+  [ProfileContactType.PHONE]: {
+    icon: 'mdi-phone',
+    link: (contact: string) => `tel:${contact}`,
+  },
+  [ProfileContactType.EMAIL]: {
+    icon: 'mdi-email',
+    link: (contact: string) => `mailto:${contact}`,
+  },
 }
 
 const wrapContacts = (contacts: ProfileContact[]) => {
@@ -121,7 +135,29 @@ const loading = computed(() => profileLoading.value || favoriteLoading.value)
                   :icon="contact.icon"
                   :to="contact.link"
                 />
-                <span>{{ contact.contact }}</span>
+                <address style="margin: 0">
+                  <template v-if="contact.icon === 'mdi-email'">
+                    <a :href="`mailto:${contact.contact}`">{{
+                      contact.contact
+                    }}</a>
+                  </template>
+                  <template v-else-if="contact.icon === 'mdi-phone'">
+                    <a :href="`tel:${contact.contact}`">{{
+                      contact.contact
+                    }}</a>
+                  </template>
+                  <template v-else-if="contact.icon === 'mdi-telegram'">
+                    <a
+                      :href="contact.link"
+                      target="_blank"
+                    >{{
+                      contact.contact
+                    }}</a>
+                  </template>
+                  <template v-else>
+                    {{ contact.contact }}
+                  </template>
+                </address>
               </div>
             </div>
           </div>
@@ -158,7 +194,7 @@ const loading = computed(() => profileLoading.value || favoriteLoading.value)
       </div>
       <div class="d-flex flex-column ga-5">
         <div class="text-h3">
-          {{ t('Избранные лекции') }}
+          {{ t("Избранные лекции") }}
         </div>
         <div class="list-lectures">
           <LectureCard
@@ -286,6 +322,13 @@ const loading = computed(() => profileLoading.value || favoriteLoading.value)
   gap: 0.7rem;
   font-size: var(--text-lg);
   color: var(--violet);
+}
+.contact-item address a {
+  text-decoration: none;
+  color: inherit;
+}
+.contact-item address a:hover {
+  text-decoration: underline;
 }
 .profile-card-block {
   margin-left: 2rem;

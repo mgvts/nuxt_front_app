@@ -88,7 +88,7 @@ const lecturers = computed(() => {
           class="course-card box-shadow-hover"
           :class="{
             'bg-secondary': !(semester.id % 2),
-            'bg-primary-2': (semester.id % 2),
+            'bg-primary-2': semester.id % 2,
           }"
         >
           <div class="course-card-content">
@@ -117,7 +117,7 @@ const lecturers = computed(() => {
 
   <section class="lecturers-section">
     <h2 class="lecturers-title">
-      {{ t('Наши лекторы') }}
+      {{ t("Наши лекторы") }}
     </h2>
     <div class="lecturers-grid">
       <template v-if="isLoading || !lecturers.length">
@@ -156,7 +156,7 @@ const lecturers = computed(() => {
   </section>
 
   <div class="lecturers-footer">
-    И множество других, не менее крутых лекторов
+    {{ t("И множество других, не менее крутых лекторов") }}
   </div>
 
   <div class="stars-main-row">
@@ -275,6 +275,7 @@ const lecturers = computed(() => {
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 16px;
   flex: 1;
 }
 

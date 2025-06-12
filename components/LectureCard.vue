@@ -90,75 +90,75 @@ const formatDate = (date: string) => {
 
 <style scoped lang="css">
 .lecture-card {
-    flex: 1 1 calc(25% - 2rem);
-    min-width: 280px;
-    background: rgb(var(--v-theme-primary-2));
-    border-radius: 16px;
-    padding: 1.5rem;
-    text-decoration: none !important;
-    box-shadow: 0 4px 24px rgba(142, 111, 248, 0.08);
-    transition: all 0.3s ease;
+  flex: 1 1 calc(25% - 2rem);
+  min-width: 280px;
+  background: rgb(var(--v-theme-primary-2));
+  border-radius: 16px;
+  padding: 1.5rem;
+  text-decoration: none !important;
+  box-shadow: 0 4px 24px rgba(142, 111, 248, 0.08);
+  transition: all 0.3s ease;
 }
 
 .lecture-card:hover {
-    background: rgb(var(--v-theme-primary-2));
-    opacity: 0.9;
-    transform: translateY(-2px);
-    text-decoration: none !important;
+  background: rgb(var(--v-theme-primary-2));
+  opacity: 0.9;
+  transform: translateY(-2px);
+  text-decoration: none !important;
 }
 
 .lecture-content {
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
 }
 
 .lecture-header {
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    gap: 0.5rem;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 .lecture-date {
-    font-size: var(--text-base);
-    color: rgb(var(--v-theme-on-primary-2));
-    opacity: 0.8;
-    white-space: nowrap;
+  font-size: var(--text-base);
+  color: rgb(var(--v-theme-on-primary-2));
+  opacity: 0.8;
+  white-space: nowrap;
 }
 
 .lecture-tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.25rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
 }
 
 .lecture-tag {
-    font-size: var(--text-sm);
-    color: rgb(var(--v-theme-on-primary-2));
-    background: rgba(255, 255, 255, 0.2);
-    padding: 0.25rem 0.75rem;
-    border-radius: 1rem;
+  font-size: var(--text-sm);
+  color: rgb(var(--v-theme-on-primary-2));
+  background: rgba(255, 255, 255, 0.2);
+  padding: 0.25rem 0.75rem;
+  border-radius: 1rem;
 }
 
 .lecture-title {
-    font-size: var(--text-2xl);
-    color: rgb(var(--v-theme-on-primary-2));
-    margin: 0;
-    font-weight: var(--font-bold);
+  font-size: var(--text-2xl);
+  color: rgb(var(--v-theme-on-primary-2));
+  margin: 0;
+  font-weight: var(--font-bold);
 }
 
 .lecture-description {
-    font-size: var(--text-base);
-    color: rgb(var(--v-theme-on-primary-2));
-    opacity: 0.8;
+  font-size: var(--text-base);
+  color: rgb(var(--v-theme-on-primary-2));
+  opacity: 0.8;
 }
 
 .lecture-lecturers {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.75rem;
-    margin-top: 0.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
 }
 
 .lecturer {

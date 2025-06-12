@@ -5,7 +5,6 @@ import messages from '../semesters/locale.json'
 import { useHead, useRoute } from '#app'
 import { useAuthStore } from '~/stores/authStore'
 import { useFavoriteStore } from '~/stores/favoritesStore'
-import { lecture } from '~/composables/api/lecture'
 
 const route = useRoute()
 const semesterId = route.params.id as string
@@ -298,10 +297,17 @@ useHead(() => ({
 }
 
 .lectures-grid {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   gap: 2rem;
   width: 100%;
+  align-items: stretch;
+}
+
+.lecture-card {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 .semester-progress {
@@ -411,8 +417,8 @@ useHead(() => ({
     padding: 1.25rem 0.75rem;
   }
 
-  .lecture-card {
-    flex: 1 1 100%;
+  .lectures-grid {
+    grid-template-columns: 1fr;
   }
 }
 </style>
