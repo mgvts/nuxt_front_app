@@ -1,57 +1,76 @@
 <script setup lang="ts">
-import { api } from "~/composables/api";
-import type { Profile } from "~/types/profile";
+import { api } from '~/composables/api'
+import type { Profile } from '~/types/profile'
 
-const { login } = useCookies();
-const avatarUrl = ref<Profile["avatarUrl"] | undefined>(undefined);
+const { login } = useCookies()
+const avatarUrl = ref<Profile['avatarUrl'] | undefined>(undefined)
 
-const isAuth = computed(() => !!login.value);
-const loginValue = computed(() => login.value || "");
+const isAuth = computed(() => !!login.value)
+const loginValue = computed(() => login.value || '')
 
 const getIcon = computed(() =>
-  isAuth.value ? "mdi-account" : "mdi-account-outline"
-);
+  isAuth.value ? 'mdi-account' : 'mdi-account-outline',
+)
 const getPath = computed(() =>
-  isAuth.value && login.value ? `/profiles/${login.value}` : "/auth"
-);
+  isAuth.value && login.value ? `/profiles/${login.value}` : '/auth',
+)
 
 // Load avatar when logged in
 onMounted(async () => {
   if (isAuth.value && login.value) {
     try {
-      const profile = await api.profile.getProfile(login.value);
-      avatarUrl.value = profile.avatarUrl;
-    } catch (e) {
-      console.error("Failed to load avatar:", e);
+      const profile = await api.profile.getProfile(login.value)
+      avatarUrl.value = profile.avatarUrl
+    }
+    catch (e) {
+      console.error('Failed to load avatar:', e)
     }
   }
-});
+})
 
 // Watch for auth state changes
 watch(isAuth, async (newIsAuth) => {
   if (newIsAuth && login.value) {
     try {
-      const profile = await api.profile.getProfile(login.value);
-      avatarUrl.value = profile.avatarUrl;
-    } catch (e) {
-      console.error("Failed to load avatar:", e);
+      const profile = await api.profile.getProfile(login.value)
+      avatarUrl.value = profile.avatarUrl
     }
-  } else {
-    avatarUrl.value = undefined;
+    catch (e) {
+      console.error('Failed to load avatar:', e)
+    }
   }
-});
+  else {
+    avatarUrl.value = undefined
+  }
+})
 </script>
 
 <template>
-  <UILink :to="getPath" class="account-link">
+  <UILink
+    :to="getPath"
+    class="account-link"
+  >
     <template v-if="isAuth">
-      <div v-if="avatarUrl" class="account-avatar">
-        <img :src="avatarUrl" :alt="loginValue" />
+      <div
+        v-if="avatarUrl"
+        class="account-avatar"
+      >
+        <img
+          :src="avatarUrl"
+          :alt="loginValue"
+        >
       </div>
-      <div v-else class="account-avatar placeholder-avatar" />
+      <div
+        v-else
+        class="account-avatar placeholder-avatar"
+      />
     </template>
     <template v-else>
-      <v-icon color="primary" :size="60" class="account-icon">
+      <v-icon
+        color="primary"
+        :size="60"
+        class="account-icon"
+      >
         {{ getIcon }}
       </v-icon>
     </template>
