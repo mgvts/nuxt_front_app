@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useHead } from "#app";
+import { useRouter } from "vue-router";
 import { useToast } from "vue-toast-notification";
 import CommentCard from "~/components/CommentCard.vue";
 import { useCommentsStore } from "~/stores/commentsStore";
@@ -39,6 +40,8 @@ const favoriteStore = useFavoriteStore();
 const isFavoriteLoading = ref(false);
 
 const toast = useToast();
+
+const router = useRouter();
 
 const isLoading = computed(() => lectureLoading.value || commentsLoading.value);
 const hasError = computed(() => lectureError.value || commentsError.value);
@@ -102,6 +105,11 @@ const currentCommentText = ref("");
 const isLastCommentImpl = ref(false);
 
 const sendComment = async (ev: KeyboardEvent) => {
+  if (!isLogin.value) {
+    router.push("/auth");
+    return;
+  }
+
   if (ev.ctrlKey) {
     currentCommentText.value += "\n";
     return;
@@ -137,10 +145,7 @@ const sendComment = async (ev: KeyboardEvent) => {
 
 const handleLike = async () => {
   if (!isLogin.value) {
-    toast.error(t("Необходимо войти в систему"), {
-      position: "top-right",
-      duration: 3000,
-    });
+    router.push("/auth");
     return;
   }
 
@@ -164,10 +169,7 @@ const handleLike = async () => {
 
 const handleFavorite = async () => {
   if (!isLogin.value) {
-    toast.error(t("Необходимо войти в систему"), {
-      position: "top-right",
-      duration: 3000,
-    });
+    router.push("/auth");
     return;
   }
 
