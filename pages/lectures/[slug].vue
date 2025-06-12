@@ -58,7 +58,7 @@ const loadFavorites = async () => {
 };
 
 // Load current user's profile during SSR if logged in
-const { data: profileData } = await useAsyncData(
+const { data: _ } = await useAsyncData(
   "currentProfile",
   async () => {
     if (isLogin.value && loginRef.value) {
