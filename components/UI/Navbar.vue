@@ -9,6 +9,7 @@ onMounted(() => {
   <v-app-bar
     scroll-behavior="hide"
     class="px-15 bg-transparent"
+    style="width: calc(100% + 0px)"
     :height="50"
     flat
     :extension-height="116"
