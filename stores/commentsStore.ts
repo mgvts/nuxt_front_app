@@ -47,7 +47,8 @@ export const useCommentsStore = defineStore("comments", () => {
   const sortedComments = computed(() => {
     if (!comments.value) return [];
     return comments.value.sort(
-      (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+      (a, b) =>
+        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
     );
   });
 

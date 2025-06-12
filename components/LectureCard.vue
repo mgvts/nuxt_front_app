@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import type { PropType } from 'vue'
-import messages from './locale.json'
-import type { Lecture } from '~/types/lecture'
+import type { PropType } from "vue";
+import type { Lecture } from "~/types/lecture";
+import messages from "./locale.json";
 
-const { t } = useI18n({ messages })
+const { t } = useI18n({ messages });
 
 const { lecture, isFavorite, whenChangeFavorite } = defineProps({
   lecture: {
@@ -22,47 +22,49 @@ const { lecture, isFavorite, whenChangeFavorite } = defineProps({
     type: Boolean,
     default: false,
   },
-})
+});
 
 const formatDate = (date: string) => {
-  const d = new Date(date)
-  const month = d.toLocaleString('en-US', { month: 'long' }).toLowerCase()
-  return `${d.getDate()} ${t(`months.${month}`)}`
-}
+  const d = new Date(date);
+  const month = d.toLocaleString("en-US", { month: "long" }).toLowerCase();
+  return `${d.getDate()} ${t(`months.${month}`)}`;
+};
 </script>
 
 <template>
-  <div
-    v-if="lecture"
-    class="lecture-card"
-  >
+  <div v-if="lecture" class="lecture-card">
+    <div class="lecture-image-container">
+      <ClientOnly v-if="lecture.presentationUrl">
+        <img
+          :src="lecture.presentationUrl"
+          class="lecture-image"
+          alt="Превью лекции"
+        />
+      </ClientOnly>
+      <div v-else class="lecture-image-placeholder">Нет изображения</div>
+      <div v-if="isLogin" class="favorite-icon-container">
+        <UIIcon
+          :icon="isFavorite ? 'mdi-star' : 'mdi-star-outline'"
+          class="favorite-icon"
+          @click="whenChangeFavorite"
+        />
+      </div>
+    </div>
     <div class="lecture-content">
       <div class="lecture-header">
         <div class="lecture-date">
           {{ formatDate(lecture.date) }}
         </div>
-        <div
-          v-if="lecture.tags?.length"
-          class="lecture-tags"
-        >
-          <span
-            v-for="tag in lecture.tags"
-            :key="tag"
-            class="lecture-tag"
-          >
+        <div v-if="lecture.tags?.length" class="lecture-tags">
+          <span v-for="tag in lecture.tags" :key="tag" class="lecture-tag">
             {{ tag }}
           </span>
-        </div>
-        <div v-if="isLogin">
-          <UIIcon
-            :icon="isFavorite ? 'mdi-star' : 'mdi-star-outline'"
-            @click="whenChangeFavorite"
-          />
         </div>
       </div>
       <UILink
         class="lecture-title"
         :to="`/lectures/${lecture.id}`"
+        size="text-2xl"
       >
         {{ lecture.title }}
       </UILink>
@@ -80,7 +82,7 @@ const formatDate = (date: string) => {
             :src="profile.avatarUrl"
             :alt="profile.name"
             class="lecturer-avatar"
-          >
+          />
           <span class="lecturer-name">{{ profile.name }}</span>
         </div>
       </div>
@@ -94,20 +96,47 @@ const formatDate = (date: string) => {
   min-width: 280px;
   background: rgb(var(--v-theme-primary-2));
   border-radius: 16px;
-  padding: 1.5rem;
   text-decoration: none !important;
   box-shadow: 0 4px 24px rgba(142, 111, 248, 0.08);
   transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
 
-.lecture-card:hover {
-  background: rgb(var(--v-theme-primary-2));
-  opacity: 0.9;
-  transform: translateY(-2px);
-  text-decoration: none !important;
+.lecture-image-container {
+  width: 100%;
+  position: relative;
+}
+
+.lecture-image {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  display: block;
+  margin: 0;
+  transition: transform 0.3s ease;
+}
+
+.lecture-image:hover {
+  transform: scale(1.02);
+}
+
+.lecture-image-placeholder {
+  width: 100%;
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(255, 255, 255, 0.1);
+  color: rgb(var(--v-theme-on-primary-2));
+  font-size: var(--text-base);
+  opacity: 0.8;
 }
 
 .lecture-content {
+  padding: 0 1.5rem 1.5rem 1.5rem;
+  margin-top: 1rem;
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
@@ -142,7 +171,6 @@ const formatDate = (date: string) => {
 }
 
 .lecture-title {
-  font-size: var(--text-2xl);
   color: rgb(var(--v-theme-on-primary-2));
   margin: 0;
   font-weight: var(--font-bold);
@@ -180,5 +208,21 @@ const formatDate = (date: string) => {
 .lecturer-name {
   font-size: var(--text-sm);
   color: rgb(var(--v-theme-on-primary-2));
+}
+
+.favorite-icon-container {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  z-index: 1;
+}
+
+.favorite-icon {
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.favorite-icon:hover {
+  transform: scale(1.1);
 }
 </style>

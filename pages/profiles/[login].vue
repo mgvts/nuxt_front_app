@@ -175,18 +175,22 @@ const loading = computed(() => profileLoading.value || favoriteLoading.value);
         <div class="text-h3">
           {{ t("Избранные лекции") }}
         </div>
-        <div class="list-lectures">
+        <div class="lectures-grid">
           <template v-if="favoriteLectures?.length">
-            <LectureCard
+            <div
               v-for="lecture of favoriteLectures"
               :key="lecture.id"
-              :lecture="lecture"
-              :is-login="isCurrentUser"
-              :is-favorite="favoriteStore.isLectureFavorite(lecture)"
-              :when-change-favorite="
-                () => favoriteStore.changeFavorite(lecture)
-              "
-            />
+              class="lecture-card"
+            >
+              <LectureCard
+                :lecture="lecture"
+                :is-login="isCurrentUser"
+                :is-favorite="favoriteStore.isLectureFavorite(lecture)"
+                :when-change-favorite="
+                  () => favoriteStore.changeFavorite(lecture)
+                "
+              />
+            </div>
           </template>
           <div v-else class="empty-state">
             {{
@@ -461,12 +465,18 @@ const loading = computed(() => profileLoading.value || favoriteLoading.value);
 .error {
   color: rgb(var(--v-theme-error));
 }
-.list-lectures {
+.lectures-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 2rem;
+  width: 100%;
+  align-items: stretch;
+}
+
+.lecture-card {
+  height: 100%;
   display: flex;
   flex-direction: column;
-  gap: 2rem;
-  margin-top: 2rem;
-  width: 100%;
 }
 
 .empty-state {
@@ -531,5 +541,11 @@ const loading = computed(() => profileLoading.value || favoriteLoading.value);
 
 :root[data-theme="dark"] .empty-state {
   opacity: 0.9;
+}
+
+@media (max-width: 768px) {
+  .lectures-grid {
+    grid-template-columns: 1fr;
+  }
 }
 </style>

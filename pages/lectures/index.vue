@@ -1,22 +1,20 @@
 <script setup lang="ts">
-const lectureStore = useLectureStore()
+const lectureStore = useLectureStore();
 
-const {
-  lectures,
-} = storeToRefs(lectureStore)
+const { lectures } = storeToRefs(lectureStore);
 
 onMounted(async () => {
   if (!lectures.value?.length) {
-    await lectureStore.loadLectures()
+    await lectureStore.loadLectures();
   }
-})
+});
 </script>
 
 <template>
   <div class="d-flex flex-column ga-15">
     <div
       v-for="lecture of lectures"
-      :key="lecture.slug"
+      :key="lecture.id"
       class="d-flex flex-row ga-16 card"
     >
       <UILink
@@ -31,20 +29,12 @@ onMounted(async () => {
             width="420"
             height="300"
             alt="Превью презентации"
-          >
+          />
         </ClientOnly>
       </UILink>
-      <div
-        v-else
-        class="placeholder"
-      >
-        Нет изображения
-      </div>
+      <div v-else class="placeholder">Нет изображения</div>
       <div class="d-flex flex-column ga-3 justify-space-around">
-        <UILink
-          :to="`./${lecture.slug}`"
-          class="title"
-        >
+        <UILink :to="`./${lecture.id}`" class="title">
           {{ lecture.title }}
         </UILink>
         <div>
@@ -64,50 +54,50 @@ onMounted(async () => {
 
 <style lang="css" scoped>
 .lecture-thumbnail {
-    cursor: pointer;
-    border-radius: 50px;
-    outline: 2px solid #003049;
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  cursor: pointer;
+  border-radius: 50px;
+  outline: 2px solid #003049;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
 }
 
 .lecture-thumbnail:hover {
-    transform: translateY(-2px);
-    transition: all 0.3s ease;
-    text-decoration: none !important;
+  transform: translateY(-2px);
+  transition: all 0.3s ease;
+  text-decoration: none !important;
 }
 
 .placeholder {
-    width: 420px;
-    height: 300px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: #f0f0f0;
-    color: #999;
+  width: 420px;
+  height: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f0f0f0;
+  color: #999;
 }
 
 .card {
-    background: #A0D6FF8A;
-    border: 2px solid #003049;
-    border-radius: 16px;
-    padding: 2rem;
-    margin-bottom: 2rem;
-    width: 100%;
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  background: #a0d6ff8a;
+  border: 2px solid #003049;
+  border-radius: 16px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  width: 100%;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
 }
 
 .title {
-    font-family: var(--font-kantumruy);
-    font-size: 3rem;
-    color: #003049;
-    line-height: 1;
-    font-weight: 500;
+  font-family: var(--font-kantumruy);
+  font-size: 3rem;
+  color: #003049;
+  line-height: 1;
+  font-weight: 500;
 }
 
 .profile {
-    font-family: var(--font-kantumruy);
-    font-size: 2rem;
-    color: #003049;
-    line-height: 1;
+  font-family: var(--font-kantumruy);
+  font-size: 2rem;
+  color: #003049;
+  line-height: 1;
 }
 </style>

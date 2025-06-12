@@ -1,5 +1,16 @@
 <script setup lang="ts">
-export type SizeValues = 'link' | 'text' | 'upper'
+export type SizeValues =
+  | "xs"
+  | "sm"
+  | "base"
+  | "lg"
+  | "xl"
+  | "text-2xl"
+  | "text-3xl"
+  | "text-4xl"
+  | "link"
+  | "text"
+  | "upper";
 
 const props = defineProps({
   color: {
@@ -12,9 +23,9 @@ const props = defineProps({
   },
   size: {
     type: String as PropType<SizeValues>,
-    default: 'text',
+    default: "base",
   },
-})
+});
 </script>
 
 <template>
@@ -33,6 +44,38 @@ const props = defineProps({
   display: inline-block;
   font-family: var(--font-kantumruy);
   line-height: 1;
+}
+
+.xs {
+  font-size: var(--text-xs);
+}
+
+.sm {
+  font-size: var(--text-sm);
+}
+
+.base {
+  font-size: var(--text-base);
+}
+
+.lg {
+  font-size: var(--text-lg);
+}
+
+.xl {
+  font-size: var(--text-xl);
+}
+
+.text-2xl {
+  font-size: var(--text-2xl);
+}
+
+.text-3xl {
+  font-size: var(--text-3xl);
+}
+
+.text-4xl {
+  font-size: var(--text-4xl);
 }
 
 .link {

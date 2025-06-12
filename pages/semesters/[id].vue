@@ -131,18 +131,27 @@ useHead(() => ({
               class="semester-progress"
             >
               <template v-if="!isNaN(currentSemester.percentOfView)">
-                <div class="progress-bar">
-                  <div
-                    class="progress-fill"
-                    :style="{
-                      width: `${Math.trunc(
-                        currentSemester.percentOfView * 100,
-                      )}%`,
-                    }"
-                  />
+                <div class="progress-text-above">
+                  {{
+                    t("Прогресс просмотра", {
+                      progress: Math.trunc(currentSemester.percentOfView * 100),
+                    })
+                  }}
                 </div>
-                <div class="progress-text">
-                  {{ Math.trunc(currentSemester.percentOfView * 100) }}%
+                <div class="progress-bar-container">
+                  <div class="progress-bar">
+                    <div
+                      class="progress-fill"
+                      :style="{
+                        width: `${Math.trunc(
+                          currentSemester.percentOfView * 100,
+                        )}%`,
+                      }"
+                    />
+                  </div>
+                  <div class="progress-text">
+                    {{ Math.trunc(currentSemester.percentOfView * 100) }}%
+                  </div>
                 </div>
               </template>
               <div
@@ -313,8 +322,23 @@ useHead(() => ({
 .semester-progress {
   margin-top: 1rem;
   display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.progress-text-above {
+  font-size: var(--text-lg);
+  color: rgb(var(--v-theme-on-primary-2));
+  font-weight: var(--font-medium);
+  margin-bottom: 0.5rem;
+  width: 100%;
+}
+
+.progress-bar-container {
+  display: flex;
   align-items: center;
   gap: 1rem;
+  width: 100%;
 }
 
 .progress-bar {
@@ -397,6 +421,7 @@ useHead(() => ({
 @media (max-width: 940px) {
   .semester-container {
     padding: 1.5rem 1rem;
+    margin-top: 2.5rem;
   }
 
   .semester-header-card {

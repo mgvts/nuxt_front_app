@@ -17,7 +17,9 @@
       "october": "октябрь",
       "november": "ноябрь",
       "december": "декабрь"
-    }
+    },
+    "Прогресс просмотра": "Вы посмотрели {progress}% лекций",
+    "Нет лекций": "В этом семестре пока нет лекций"
   },
   "en": {
     "semester": "semester",
@@ -37,6 +39,8 @@
       "october": "October",
       "november": "November",
       "december": "December"
-    }
+    },
+    "Прогресс просмотра": "You've watched {progress}% of lectures",
+    "Нет лекций": "No lectures in this semester yet"
   }
 }

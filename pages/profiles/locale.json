@@ -7,7 +7,7 @@
   },
   "en": {
     "Избранные лекции": "Favorite lectures",
-    "выйти": "logout",
+    "выйти": "Log out",
     "Нет избранных лекций": "{name} hasn't saved any lectures yet",
     "Нет избранных лекций своя": "You haven't saved any lectures yet"
   }
