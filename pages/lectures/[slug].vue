@@ -23,7 +23,8 @@ const {
 const commentsStore = useCommentsStore()
 const {
   sortedComments,
-  loading: commentsLoading,
+  getCommentsLoading,
+  addCommentsLoading,
   error: commentsError,
 } = storeToRefs(commentsStore)
 const authStore = useAuthStore()
@@ -43,7 +44,6 @@ const toast = useToast()
 
 const router = useRouter()
 
-const isLoading = computed(() => lectureLoading.value || commentsLoading.value)
 const hasError = computed(() => lectureError.value || commentsError.value)
 
 const isInitialLoad = ref(true)
@@ -107,7 +107,6 @@ watch([isLogin, loginRef], async ([newIsLogin, newLoginRef]) => {
 })
 
 const currentCommentText = ref('')
-const isLastCommentImpl = ref(false)
 
 const sendComment = async (ev: KeyboardEvent) => {
   if (!isLogin.value) {
@@ -129,10 +128,8 @@ const sendComment = async (ev: KeyboardEvent) => {
     return
   }
 
-  isLastCommentImpl.value = true
   try {
     await commentsStore.addComment(slug, trimmedText)
-    currentCommentText.value = ''
     toast.success(t('Комментарий успешно добавлен'), {
       position: 'top-right',
       duration: 3000,
@@ -146,7 +143,7 @@ const sendComment = async (ev: KeyboardEvent) => {
     })
   }
   finally {
-    isLastCommentImpl.value = false
+    currentCommentText.value = ''
   }
 }
 
@@ -206,6 +203,10 @@ function formatTime(dateStr: string) {
   return d.toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' })
 }
 
+function getCurDate(): string {
+  return new Date().toISOString()
+}
+
 function formatDate(dateStr: string) {
   const d = new Date(dateStr)
   return d.toLocaleDateString('ru-RU')
@@ -233,7 +234,7 @@ useHead(() => ({
       {{ lectureError || commentsError }}
     </div>
     <div
-      v-else-if="isLoading"
+      v-else-if="lectureLoading"
       class="loading-state"
     >
       {{ t("loading") }}
@@ -383,7 +384,7 @@ useHead(() => ({
           <h2 class="comments-title">
             {{ t("comments") }}
           </h2>
-          <template v-if="commentsLoading">
+          <template v-if="getCommentsLoading">
             <div>{{ t("loadingComments") }}</div>
           </template>
           <template v-else-if="commentsError">
@@ -392,6 +393,16 @@ useHead(() => ({
             </div>
           </template>
           <template v-else-if="sortedComments.length">
+            <!-- this is placeholder while waiting addComment response -->
+            <CommentCard
+              v-if="addCommentsLoading && currentProfile"
+              :author="'@' + currentProfile.login"
+              :avatar-url="currentProfile.avatarUrl"
+              :time="formatTime(getCurDate())"
+              :date="formatDate(getCurDate())"
+              :text="currentCommentText"
+              :login="currentProfile.login"
+            />
             <CommentCard
               v-for="comment in sortedComments"
               :key="comment.author.login + comment.createdAt"

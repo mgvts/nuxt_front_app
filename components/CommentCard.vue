@@ -1,5 +1,19 @@
+<script setup lang="ts">
+const props = defineProps({
+  author: { type: String, required: true },
+  avatarUrl: { type: String, default: '' },
+  time: { type: String, required: true },
+  date: { type: String, required: true },
+  text: { type: String, required: true },
+  login: { type: String, required: true },
+})
+</script>
+
 <template>
-  <div class="comment-card">
+  <div
+    class="comment-card"
+    v-bind="$attrs"
+  >
     <div class="comment-header">
       <UILink
         :to="`/profiles/${props.author.substring(1)}`"
@@ -32,17 +46,6 @@
     </div>
   </div>
 </template>
-
-<script setup lang="ts">
-const props = defineProps({
-  author: { type: String, required: true },
-  avatarUrl: { type: String, default: '' },
-  time: { type: String, required: true },
-  date: { type: String, required: true },
-  text: { type: String, required: true },
-  login: { type: String, required: true },
-})
-</script>
 
 <style scoped>
 .comment-card {

@@ -7,10 +7,12 @@ import type { Lecture } from '~/types/lecture'
 export const useCommentsStore = defineStore('comments', () => {
   const comments = ref<Comment[] | null>(null)
   const loading = ref<boolean>(false)
+  const getCommentsLoading = ref<boolean>(false)
+  const addCommentsLoading = ref<boolean>(false)
   const error = ref<string | null>(null)
 
   async function getComments(lectureId: Lecture['id']) {
-    loading.value = true
+    getCommentsLoading.value = true
     error.value = null
     try {
       comments.value = await api.comments.getComments(lectureId)
@@ -23,12 +25,12 @@ export const useCommentsStore = defineStore('comments', () => {
       throw e
     }
     finally {
-      loading.value = false
+      getCommentsLoading.value = false
     }
   }
 
   async function addComment(lectureId: Lecture['id'], text: string) {
-    loading.value = true
+    addCommentsLoading.value = true
     error.value = null
     try {
       const newComment = await api.comments.addComment(lectureId, text)
@@ -43,7 +45,7 @@ export const useCommentsStore = defineStore('comments', () => {
       throw e
     }
     finally {
-      loading.value = false
+      addCommentsLoading.value = false
     }
   }
 
@@ -57,6 +59,8 @@ export const useCommentsStore = defineStore('comments', () => {
 
   return {
     loading,
+    getCommentsLoading,
+    addCommentsLoading,
     error,
 
     comments,
