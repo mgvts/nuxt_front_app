@@ -1,0 +1,44 @@
+{
+  "name": "Фронтенд 2024-2025 на Vue",
+  "short_name": "Фронтенд Vue",
+  "description": "Фронтенд курс 2024-2025 на Vue",
+  "theme_color": "#7546AC",
+  "background_color": "#ffffff",
+  "display": "standalone",
+  "orientation": "portrait",
+  "scope": "/",
+  "start_url": "/",
+  "id": "/",
+  "icons": [
+    {
+      "src": "/pwa/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/pwa/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "/pwa/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/pwa/screenshot-desktop.png",
+      "sizes": "3456x2162",
+      "type": "image/png",
+      "form_factor": "wide"
+    },
+    {
+      "src": "/pwa/screenshot-mobile.jpg",
+      "sizes": "591x1280",
+      "type": "image/jpeg",
+      "form_factor": "narrow"
+    }
+  ]
+}

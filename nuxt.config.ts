@@ -46,6 +46,10 @@ export default defineNuxtConfig({
           href: "/pwa/apple-touch-icon.png",
           sizes: "180x180",
         },
+        {
+          rel: "manifest",
+          href: "/manifest.json",
+        },
       ],
       meta: [
         {
@@ -112,6 +116,9 @@ export default defineNuxtConfig({
   },
   pwa: {
     registerType: "autoUpdate",
+    strategies: "generateSW",
+    injectRegister: "auto",
+    includeAssets: ["favicon.ico", "favicon-light.svg", "favicon-dark.svg"],
     manifest: {
       name: "Фронтенд 2024-2025 на Vue",
       short_name: "Фронтенд Vue",
@@ -122,6 +129,7 @@ export default defineNuxtConfig({
       orientation: "portrait",
       scope: "/",
       start_url: "/",
+      id: "/",
       icons: [
         {
           src: "/pwa/icon-192x192.png",
@@ -147,7 +155,6 @@ export default defineNuxtConfig({
     },
     devOptions: {
       enabled: true,
-      type: "module",
     },
   },
 });
