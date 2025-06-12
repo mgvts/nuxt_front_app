@@ -1,16 +1,16 @@
 <script setup lang="ts">
 export type SizeValues =
-  | "xs"
-  | "sm"
-  | "base"
-  | "lg"
-  | "xl"
-  | "text-2xl"
-  | "text-3xl"
-  | "text-4xl"
-  | "link"
-  | "text"
-  | "upper";
+  | 'xs'
+  | 'sm'
+  | 'base'
+  | 'lg'
+  | 'xl'
+  | 'text-2xl'
+  | 'text-3xl'
+  | 'text-4xl'
+  | 'link'
+  | 'text'
+  | 'upper'
 
 const props = defineProps({
   color: {
@@ -23,9 +23,9 @@ const props = defineProps({
   },
   size: {
     type: String as PropType<SizeValues>,
-    default: "base",
+    default: 'base',
   },
-});
+})
 </script>
 
 <template>

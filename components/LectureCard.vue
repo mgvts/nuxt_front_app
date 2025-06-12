@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import type { PropType } from "vue";
-import type { Lecture } from "~/types/lecture";
-import messages from "./locale.json";
+import type { PropType } from 'vue'
+import messages from './locale.json'
+import type { Lecture } from '~/types/lecture'
 
-const { t } = useI18n({ messages });
+const { t } = useI18n({ messages })
 
 const { lecture, isFavorite, whenChangeFavorite } = defineProps({
   lecture: {
@@ -22,27 +22,38 @@ const { lecture, isFavorite, whenChangeFavorite } = defineProps({
     type: Boolean,
     default: false,
   },
-});
+})
 
 const formatDate = (date: string) => {
-  const d = new Date(date);
-  const month = d.toLocaleString("en-US", { month: "long" }).toLowerCase();
-  return `${d.getDate()} ${t(`months.${month}`)}`;
-};
+  const d = new Date(date)
+  const month = d.toLocaleString('en-US', { month: 'long' }).toLowerCase()
+  return `${d.getDate()} ${t(`months.${month}`)}`
+}
 </script>
 
 <template>
-  <div v-if="lecture" class="lecture-card">
+  <div
+    v-if="lecture"
+    class="lecture-card"
+  >
     <div class="lecture-image-container">
       <ClientOnly v-if="lecture.presentationUrl">
         <img
           :src="lecture.presentationUrl"
           class="lecture-image"
           alt="Превью лекции"
-        />
+        >
       </ClientOnly>
-      <div v-else class="lecture-image-placeholder">Нет изображения</div>
-      <div v-if="isLogin" class="favorite-icon-container">
+      <div
+        v-else
+        class="lecture-image-placeholder"
+      >
+        Нет изображения
+      </div>
+      <div
+        v-if="isLogin"
+        class="favorite-icon-container"
+      >
         <UIIcon
           :icon="isFavorite ? 'mdi-star' : 'mdi-star-outline'"
           class="favorite-icon"
@@ -55,8 +66,15 @@ const formatDate = (date: string) => {
         <div class="lecture-date">
           {{ formatDate(lecture.date) }}
         </div>
-        <div v-if="lecture.tags?.length" class="lecture-tags">
-          <span v-for="tag in lecture.tags" :key="tag" class="lecture-tag">
+        <div
+          v-if="lecture.tags?.length"
+          class="lecture-tags"
+        >
+          <span
+            v-for="tag in lecture.tags"
+            :key="tag"
+            class="lecture-tag"
+          >
             {{ tag }}
           </span>
         </div>
@@ -72,19 +90,26 @@ const formatDate = (date: string) => {
         {{ lecture.description }}
       </div>
       <div class="lecture-lecturers">
-        <div
+        <UILink
           v-for="profile in lecture.profiles"
           :key="profile.login"
-          class="lecturer"
+          :to="`/profiles/${profile.login}`"
+          class="lecturer-link"
         >
-          <img
-            v-if="profile.avatarUrl"
-            :src="profile.avatarUrl"
-            :alt="profile.name"
-            class="lecturer-avatar"
-          />
-          <span class="lecturer-name">{{ profile.name }}</span>
-        </div>
+          <div class="lecturer">
+            <template v-if="profile.avatarUrl">
+              <img
+                :src="profile.avatarUrl"
+                :alt="profile.name"
+                class="lecturer-avatar"
+              >
+            </template>
+            <template v-else>
+              <div class="lecturer-avatar placeholder-avatar" />
+            </template>
+            <span class="lecturer-name">{{ profile.name }}</span>
+          </div>
+        </UILink>
       </div>
     </div>
   </div>
@@ -224,5 +249,18 @@ const formatDate = (date: string) => {
 
 .favorite-icon:hover {
   transform: scale(1.1);
+}
+
+.lecturer-link {
+  display: inline-flex;
+  align-items: center;
+}
+
+.placeholder-avatar {
+  background: repeating-conic-gradient(
+      rgba(var(--v-theme-primary), 0.08) 0% 25%,
+      rgba(var(--v-theme-on-primary), 0.08) 0% 50%
+    )
+    50% / 20px 20px;
 }
 </style>

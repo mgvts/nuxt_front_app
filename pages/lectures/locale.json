@@ -1,0 +1,62 @@
+{
+  "ru": {
+    "loading": "Загрузка...",
+    "noImage": "Нет изображения",
+    "comments": "Комментарии",
+    "loadingComments": "Загрузка комментариев...",
+    "noComments": "Комментариев пока нет",
+    "leaveComment": "Ого тут, вы можете оставить своё непопулярное мнение:",
+    "send": "Отправить",
+    "addComment": "оставить комментарий",
+    "Введите комментарий": "Введите комментарий",
+    "months": {
+      "january": "января",
+      "february": "февраля",
+      "march": "марта",
+      "april": "апреля",
+      "may": "мая",
+      "june": "июня",
+      "july": "июля",
+      "august": "августа",
+      "september": "сентября",
+      "october": "октября",
+      "november": "ноября",
+      "december": "декабря"
+    },
+    "Комментарий не может быть пустым": "Комментарий не может быть пустым",
+    "Комментарий успешно добавлен": "Комментарий успешно добавлен",
+    "Не удалось добавить комментарий. Попробуйте позже.": "Не удалось добавить комментарий. Попробуйте позже.",
+    "Необходимо войти в систему": "Необходимо войти в систему",
+    "Не удалось поставить лайк. Попробуйте позже.": "Не удалось поставить лайк. Попробуйте позже."
+  },
+  "en": {
+    "loading": "Loading...",
+    "noImage": "No image",
+    "comments": "Comments",
+    "loadingComments": "Loading comments...",
+    "noComments": "No comments yet",
+    "leaveComment": "You can leave your unpopular opinion here:",
+    "send": "Send",
+    "addComment": "add comment",
+    "Введите комментарий": "Enter your comment",
+    "months": {
+      "january": "January",
+      "february": "February",
+      "march": "March",
+      "april": "April",
+      "may": "May",
+      "june": "June",
+      "july": "July",
+      "august": "August",
+      "september": "September",
+      "october": "October",
+      "november": "November",
+      "december": "December"
+    },
+    "Комментарий не может быть пустым": "Comment cannot be empty",
+    "Комментарий успешно добавлен": "Comment added successfully",
+    "Не удалось добавить комментарий. Попробуйте позже.": "Failed to add comment. Please try again later.",
+    "Необходимо войти в систему": "You need to log in to do that",
+    "Не удалось поставить лайк. Попробуйте позже.": "Failed to like. Please try again later."
+  }
+}

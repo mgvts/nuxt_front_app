@@ -1,10 +1,11 @@
 // composables/api/index.ts
-import { semester } from './semester'
-import { lecture } from './lecture'
-import { profile } from './profile'
 import { auth } from './auth'
-import { favorites } from './favorite'
 import { comments } from './comments'
+import { favorites } from './favorite'
+import { lecture } from './lecture'
+import { likes } from './likes'
+import { profile } from './profile'
+import { semester } from './semester'
 
 export const api = {
   semester,
@@ -13,4 +14,5 @@ export const api = {
   auth,
   favorites,
   comments,
+  likes,
 }

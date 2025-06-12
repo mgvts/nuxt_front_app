@@ -1,13 +1,13 @@
 <script setup lang="ts">
-const lectureStore = useLectureStore();
+const lectureStore = useLectureStore()
 
-const { lectures } = storeToRefs(lectureStore);
+const { lectures } = storeToRefs(lectureStore)
 
 onMounted(async () => {
   if (!lectures.value?.length) {
-    await lectureStore.loadLectures();
+    await lectureStore.loadLectures()
   }
-});
+})
 </script>
 
 <template>
@@ -29,12 +29,20 @@ onMounted(async () => {
             width="420"
             height="300"
             alt="Превью презентации"
-          />
+          >
         </ClientOnly>
       </UILink>
-      <div v-else class="placeholder">Нет изображения</div>
+      <div
+        v-else
+        class="placeholder"
+      >
+        Нет изображения
+      </div>
       <div class="d-flex flex-column ga-3 justify-space-around">
-        <UILink :to="`./${lecture.id}`" class="title">
+        <UILink
+          :to="`./${lecture.id}`"
+          class="title"
+        >
           {{ lecture.title }}
         </UILink>
         <div>
