@@ -1,4 +1,9 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+const isMounted = ref(false)
+onMounted(() => {
+  isMounted.value = true
+})
+</script>
 
 <template>
   <v-app-bar
@@ -15,9 +20,31 @@
         <Logo />
         <div class="d-flex ga-4">
           <ClientOnly>
-            <AccountBtn />
-            <I18nSwitch />
-            <ThemeToggle />
+            <template #default>
+              <AccountBtn v-if="isMounted" />
+              <div
+                v-else
+                class="placeholder"
+              />
+            </template>
+          </ClientOnly>
+          <ClientOnly>
+            <template #default>
+              <I18nSwitch v-if="isMounted" />
+              <div
+                v-else
+                class="placeholder"
+              />
+            </template>
+          </ClientOnly>
+          <ClientOnly>
+            <template #default>
+              <ThemeToggle v-if="isMounted" />
+              <div
+                v-else
+                class="placeholder"
+              />
+            </template>
           </ClientOnly>
         </div>
       </div>
@@ -34,5 +61,12 @@
     border-radius: 50px !important;
     padding: 10px !important;
   }
+}
+
+.placeholder {
+  height: 60px;
+  width: 60px;
+  background: rgb(var(--v-theme-primary));
+  border-radius: 50%;
 }
 </style>

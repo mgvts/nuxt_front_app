@@ -2,10 +2,10 @@ import type { LocaleKey } from '~/i18n/locales'
 import type { JWT } from '~/types'
 
 export const useCookies = () => {
-  const locale = useCookie('lang')
-  const jwt = useCookie('jwt')
-  const themeCookie = useCookie('theme')
-  const login = useCookie('login')
+  const locale = useCookie('lang', { default: () => 'ru' })
+  const jwt = useCookie('jwt', { default: () => '' })
+  const themeCookie = useCookie('theme', { default: () => 'light' })
+  const login = useCookie('login', { default: () => '' })
 
   const getLocale = (): string | undefined | null => {
     return locale.value
