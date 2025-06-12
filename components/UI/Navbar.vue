@@ -17,6 +17,7 @@ onMounted(() => {
     <template #extension>
       <div
         class="d-flex flex-row justify-space-between bg-primary-2 w-100 align-center rounded-pill px-10 navbar-root"
+        style="height: 116px; "
       >
         <Logo />
         <div class="d-flex ga-4">
