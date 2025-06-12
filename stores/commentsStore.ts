@@ -1,3 +1,4 @@
+/* eslint-disable @stylistic/quotes */
 // stores/lectureStore.ts
 import { defineStore } from "pinia";
 import { api } from "~/composables/api";
@@ -29,7 +30,7 @@ export const useCommentsStore = defineStore("comments", () => {
     loading.value = true;
     error.value = null;
     try {
-      // const newComment = await api.comments.addComment(lectureId, text)
+      const newComment = await api.comments.addComment(lectureId, text);
       // todo когда Артемий сделает ответ по ручке, просто пушить тогда val
       // comments.value.push(newComment)
       await getComments(lectureId);
