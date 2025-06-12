@@ -12,9 +12,20 @@ const props = defineProps({
 </script>
 
 <template>
-  <UILink
-    :to="props.to"
-  >
+  <template v-if="to">
+    <UILink
+      :to="props.to"
+    >
+      <v-icon
+        color="primary"
+        :size="props.size"
+        v-bind="$attrs"
+      >
+        <slot />
+      </v-icon>
+    </UILink>
+  </template>
+  <template v-else>
     <v-icon
       color="primary"
       :size="props.size"
@@ -22,5 +33,5 @@ const props = defineProps({
     >
       <slot />
     </v-icon>
-  </UILink>
+  </template>
 </template>

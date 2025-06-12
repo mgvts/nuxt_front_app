@@ -22,7 +22,7 @@ onMounted(() => {
           <ClientOnly>
             <template #default>
               <AccountBtn v-if="isMounted" />
-              <div
+              <span
                 v-else
                 class="placeholder"
               />
@@ -31,7 +31,7 @@ onMounted(() => {
           <ClientOnly>
             <template #default>
               <I18nSwitch v-if="isMounted" />
-              <div
+              <span
                 v-else
                 class="placeholder"
               />
@@ -40,7 +40,7 @@ onMounted(() => {
           <ClientOnly>
             <template #default>
               <ThemeToggle v-if="isMounted" />
-              <div
+              <span
                 v-else
                 class="placeholder"
               />
