@@ -1,18 +1,18 @@
 <script setup lang="ts">
-import messages from './locale.json'
-import { LocaleKey } from '~/i18n/locales'
+import { LocaleKey } from "~/i18n/locales";
+import messages from "./locale.json";
 
-const { themeCookie, setTheme, locale } = useCookies()
+const { themeCookie, setTheme, locale } = useCookies();
 
 onMounted(() => {
-  const theme = useTheme()
+  const theme = useTheme();
   if (themeCookie.value) {
-    setTheme(themeCookie.value)
-    theme.global.name.value = themeCookie.value
+    setTheme(themeCookie.value);
+    theme.global.name.value = themeCookie.value;
   }
-})
-const isEngLocale = computed(() => locale.value === LocaleKey.EN)
-const { t } = useI18n({ messages })
+});
+const isEngLocale = computed(() => locale.value === LocaleKey.EN);
+const { t } = useI18n({ messages });
 </script>
 
 <template>
@@ -25,8 +25,8 @@ const { t } = useI18n({ messages })
     <main class="main-layout">
       <slot />
     </main>
-    <footer class="bg-primary-2 text-h4 py-4 text-center">
-      {{ t('Создано в рамках Хакатона, 2025 год') }}
+    <footer class="bg-primary-2 text-h4 py-4 text-center mt-10">
+      {{ t("Создано в рамках Хакатона, 2025 год") }}
     </footer>
   </VLayout>
 </template>
@@ -73,7 +73,6 @@ const { t } = useI18n({ messages })
 
 @media (width <= 940px) {
   .main-layout {
-    min-width: 600px;
     width: 100%;
     padding: 8rem 1rem 0 1rem;
   }
