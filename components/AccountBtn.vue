@@ -45,36 +45,34 @@ watch(login, async (newIsAuth) => {
 </script>
 
 <template>
-  <ClientOnly>
-    <UILink
-      :to="getPath"
-      class="account-link"
-    >
-      <div v-show="login">
-        <div
-          v-if="avatarUrl"
-          class="account-avatar"
+  <UILink
+    :to="getPath"
+    class="account-link"
+  >
+    <div v-show="login">
+      <div
+        v-if="avatarUrl"
+        class="account-avatar"
+      >
+        <img
+          :src="avatarUrl"
+          :alt="loginValue"
         >
-          <img
-            :src="avatarUrl"
-            :alt="loginValue"
-          >
-        </div>
-        <div
-          v-else
-          class="account-avatar placeholder-avatar"
-        />
       </div>
-      <div v-show="!login">
-        <v-icon
-          color="primary"
-          :size="60"
-          class="account-icon"
-          :icon="getIcon"
-        />
-      </div>
-    </UILink>
-  </ClientOnly>
+      <div
+        v-else
+        class="account-avatar placeholder-avatar"
+      />
+    </div>
+    <div v-show="!login">
+      <v-icon
+        color="primary"
+        :size="60"
+        class="account-icon"
+        :icon="getIcon"
+      />
+    </div>
+  </UILink>
 </template>
 
 <style scoped lang="css">

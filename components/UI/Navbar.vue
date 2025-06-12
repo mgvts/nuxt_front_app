@@ -14,9 +14,11 @@
       >
         <Logo />
         <div class="d-flex ga-4">
-          <AccountBtn />
-          <I18nSwitch />
-          <ThemeToggle />
+          <ClientOnly>
+            <AccountBtn />
+            <I18nSwitch />
+            <ThemeToggle />
+          </ClientOnly>
         </div>
       </div>
     </template>
