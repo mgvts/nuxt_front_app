@@ -1,116 +1,104 @@
 <script setup lang="ts">
-import { storeToRefs } from 'pinia'
-import messages from './locale.json'
-import { useHead, useRoute } from '#app'
-import { useProfileStore } from '~/stores/profileStore'
-import { ProfileContactType, type ProfileContact } from '~/types/profile'
+import { useHead, useRoute } from "#app";
+import { storeToRefs } from "pinia";
+import { useProfileStore } from "~/stores/profileStore";
+import { ProfileContactType, type ProfileContact } from "~/types/profile";
+import messages from "./locale.json";
 
-const route = useRoute()
-const login = route.params.login as string
+const route = useRoute();
+const login = route.params.login as string;
 
-const profileStore = useProfileStore()
+const profileStore = useProfileStore();
 const {
   currentProfile,
   loading: profileLoading,
   error,
-} = storeToRefs(profileStore)
-const { t } = useI18n({ messages })
+} = storeToRefs(profileStore);
+const { t } = useI18n({ messages });
 interface ApiError {
-  message?: string
-  status?: number
-  statusText?: string
-  data?: unknown
+  message?: string;
+  status?: number;
+  statusText?: string;
+  data?: unknown;
 }
-const favoriteStore = useFavoriteStore()
-const { favoriteLectures, loading: favoriteLoading }
-  = storeToRefs(favoriteStore)
-const authStore = useAuthStore()
-const { loginRef } = storeToRefs(authStore)
+const favoriteStore = useFavoriteStore();
+const { favoriteLectures, loading: favoriteLoading } =
+  storeToRefs(favoriteStore);
+const authStore = useAuthStore();
+const { loginRef } = storeToRefs(authStore);
 
 onMounted(async () => {
   try {
-    await profileStore.loadProfile(login)
-    await favoriteStore.getAll(login)
-  }
-  catch (e: unknown) {
-    const error = e as ApiError
-    console.error('Failed to load profile:', e)
-    console.error('Error details:', {
+    await profileStore.loadProfile(login);
+    await favoriteStore.getAll(login);
+  } catch (e: unknown) {
+    const error = e as ApiError;
+    console.error("Failed to load profile:", e);
+    console.error("Error details:", {
       message: error?.message,
       status: error?.status,
       statusText: error?.statusText,
       data: error?.data,
-    })
+    });
   }
-})
+});
 
 useHead(() => ({
   title: currentProfile.value
-    ? `${currentProfile.value.name} | ${t('pageTitles.profile')}`
-    : t('pageTitles.profile'),
+    ? `${currentProfile.value.name} | ${t("pageTitles.profile")}`
+    : t("pageTitles.profile"),
   meta: [
     {
-      name: 'description',
+      name: "description",
       content: currentProfile.value
-        ? `${t('pageTitles.profile')} ${currentProfile.value.name}`
-        : t('pageTitles.profile'),
+        ? `${t("pageTitles.profile")} ${currentProfile.value.name}`
+        : t("pageTitles.profile"),
     },
   ],
-}))
+}));
 
 const ContactMap = {
   [ProfileContactType.TG]: {
-    icon: 'mdi-telegram',
+    icon: "mdi-telegram",
     link: (contact: string) => `https://t.me/${contact.substring(1)}`,
   },
   [ProfileContactType.PHONE]: {
-    icon: 'mdi-phone',
+    icon: "mdi-phone",
     link: (contact: string) => `tel:${contact}`,
   },
   [ProfileContactType.EMAIL]: {
-    icon: 'mdi-email',
+    icon: "mdi-email",
     link: (contact: string) => `mailto:${contact}`,
   },
-}
+};
 
 const wrapContacts = (contacts: ProfileContact[]) => {
   return contacts.map(({ type, contact }) => {
-    const { icon, link } = ContactMap[type]
+    const { icon, link } = ContactMap[type];
     return {
       icon,
       contact,
       link: link(contact),
-    }
-  })
-}
+    };
+  });
+};
 const isCurrentUser = computed(() => {
-  return currentProfile.value?.login === loginRef.value
-})
+  return currentProfile.value?.login === loginRef.value;
+});
 
 const logout = () => {
-  authStore.logout()
-  window.location.reload()
-}
-const loading = computed(() => profileLoading.value || favoriteLoading.value)
+  authStore.logout();
+  window.location.reload();
+};
+const loading = computed(() => profileLoading.value || favoriteLoading.value);
 </script>
 
 <template>
   <div class="profile-page">
-    <div
-      v-if="loading"
-      class="loading-container"
-    >
-      <v-progress-linear
-        indeterminate
-        color="primary"
-        height="4"
-        width="300"
-      />
+    <div v-if="loading" class="loading-container">
+      <v-progress-linear indeterminate color="primary" height="4" width="300" />
     </div>
-    <div
-      v-else-if="error"
-      class="error"
-    >
+    <div v-else-if="error" class="error">
       {{ error }}
     </div>
     <template v-else-if="currentProfile">
@@ -118,19 +106,14 @@ const loading = computed(() => profileLoading.value || favoriteLoading.value)
         <div class="profile-header-row">
           <div class="profile-avatar-block">
             <div class="profile-avatar">
-              <img
-                :src="currentProfile.avatarUrl"
-                :alt="currentProfile.name"
-              >
+              <img :src="currentProfile.avatarUrl" :alt="currentProfile.name" />
             </div>
           </div>
           <div class="profile-info-block">
             <h1 class="profile-name">
               {{ currentProfile.name }}
             </h1>
-            <div class="profile-login">
-              @{{ currentProfile.login }}
-            </div>
+            <div class="profile-login">@{{ currentProfile.login }}</div>
             <div
               v-if="currentProfile.contacts?.length"
               class="profile-contacts"
@@ -140,11 +123,7 @@ const loading = computed(() => profileLoading.value || favoriteLoading.value)
                 :key="contact.icon"
                 class="contact-item"
               >
-                <UIIcon
-                  :icon="contact.icon"
-                  :to="contact.link"
-                  :size="40"
-                />
+                <UIIcon :icon="contact.icon" :to="contact.link" :size="40" />
                 <address style="margin: 0">
                   <template v-if="contact.icon === 'mdi-email'">
                     <a :href="`mailto:${contact.contact}`">{{
@@ -157,10 +136,7 @@ const loading = computed(() => profileLoading.value || favoriteLoading.value)
                     }}</a>
                   </template>
                   <template v-else-if="contact.icon === 'mdi-telegram'">
-                    <a
-                      :href="contact.link"
-                      target="_blank"
-                    >{{
+                    <a :href="contact.link" target="_blank">{{
                       contact.contact
                     }}</a>
                   </template>
@@ -173,34 +149,30 @@ const loading = computed(() => profileLoading.value || favoriteLoading.value)
           </div>
         </div>
         <div class="profile-card-block">
-          <div
-            v-if="isCurrentUser"
-            class="logout-block"
-          >
-            <UIButton
-              :text="t('выйти')"
-              @click="logout"
-            />
+          <div v-if="isCurrentUser" class="logout-block">
+            <UIButton :text="t('выйти')" @click="logout" />
           </div>
           <div class="profile-card">
             <div class="profile-card-title">
               {{ currentProfile.education?.name || "—"
               }}<span
                 v-if="
-                  currentProfile.education?.degree
-                    && currentProfile.education.degree !== '-'
+                  currentProfile.education?.degree &&
+                  currentProfile.education.degree !== '-'
                 "
-              >, {{ currentProfile.education.degree }}</span>
+                >, {{ currentProfile.education.degree }}</span
+              >
             </div>
             <div class="profile-card-divider" />
             <div class="profile-card-title">
               {{ currentProfile.workExperience?.companyName || "—"
               }}<span
                 v-if="
-                  currentProfile.workExperience?.jobName
-                    && currentProfile.workExperience.jobName !== '-'
+                  currentProfile.workExperience?.jobName &&
+                  currentProfile.workExperience.jobName !== '-'
                 "
-              >, {{ currentProfile.workExperience.jobName }}</span>
+                >, {{ currentProfile.workExperience.jobName }}</span
+              >
             </div>
           </div>
         </div>
@@ -226,16 +198,13 @@ const loading = computed(() => profileLoading.value || favoriteLoading.value)
               />
             </div>
           </template>
-          <div
-            v-else
-            class="empty-state"
-          >
+          <div v-else class="empty-state">
             {{
               t(
                 isCurrentUser
                   ? "Нет избранных лекций своя"
                   : "Нет избранных лекций",
-                { name: currentProfile.name },
+                { name: currentProfile.name }
               )
             }}
           </div>
