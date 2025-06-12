@@ -1,3 +1,4 @@
+/* eslint-disable @stylistic/semi */
 /* eslint-disable @stylistic/quotes */
 // stores/lectureStore.ts
 import { defineStore } from "pinia";
