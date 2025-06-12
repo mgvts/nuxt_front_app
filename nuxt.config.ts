@@ -8,6 +8,7 @@ export default defineNuxtConfig({
     "vuetify-nuxt-module",
     "@pinia/nuxt",
     "@nuxtjs/i18n",
+    "@vite-pwa/nuxt",
   ],
   ssr: true,
   components: [
@@ -40,6 +41,11 @@ export default defineNuxtConfig({
           href: "/favicon-dark.svg",
           media: "(prefers-color-scheme: dark)",
         },
+        {
+          rel: "apple-touch-icon",
+          href: "/pwa/apple-touch-icon.png",
+          sizes: "180x180",
+        },
       ],
       meta: [
         {
@@ -51,6 +57,18 @@ export default defineNuxtConfig({
           name: "theme-color",
           content: "#F4DFF0",
           media: "(prefers-color-scheme: dark)",
+        },
+        {
+          name: "description",
+          content: "Фронтенд курс 2024-2025 на Vue",
+        },
+        {
+          name: "apple-mobile-web-app-capable",
+          content: "yes",
+        },
+        {
+          name: "apple-mobile-web-app-status-bar-style",
+          content: "black-translucent",
         },
       ],
     },
@@ -91,5 +109,45 @@ export default defineNuxtConfig({
   vuetify: {
     moduleOptions: {},
     vuetifyOptions: "./vuetify.config.ts",
+  },
+  pwa: {
+    registerType: "autoUpdate",
+    manifest: {
+      name: "Фронтенд 2024-2025 на Vue",
+      short_name: "Фронтенд Vue",
+      description: "Фронтенд курс 2024-2025 на Vue",
+      theme_color: "#7546AC",
+      background_color: "#ffffff",
+      display: "standalone",
+      orientation: "portrait",
+      scope: "/",
+      start_url: "/",
+      icons: [
+        {
+          src: "/pwa/icon-192x192.png",
+          sizes: "192x192",
+          type: "image/png",
+        },
+        {
+          src: "/pwa/icon-512x512.png",
+          sizes: "512x512",
+          type: "image/png",
+        },
+        {
+          src: "/pwa/icon-512x512.png",
+          sizes: "512x512",
+          type: "image/png",
+          purpose: "any maskable",
+        },
+      ],
+    },
+    workbox: {
+      navigateFallback: "/",
+      globPatterns: ["**/*.{js,css,html,png,svg,ico}"],
+    },
+    devOptions: {
+      enabled: true,
+      type: "module",
+    },
   },
 });

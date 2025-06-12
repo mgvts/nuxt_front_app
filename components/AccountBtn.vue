@@ -74,6 +74,7 @@ watch(isAuth, async (newIsAuth) => {
   object-fit: cover;
   display: block;
   margin-top: 5px;
+  margin-right: 10px;
   border: 2px solid rgb(var(--v-theme-primary));
   overflow: hidden;
 }
