@@ -17,7 +17,6 @@ onMounted(() => {
     <template #extension>
       <div
         class="d-flex flex-row justify-space-between bg-primary-2 w-100 align-center rounded-pill px-10 navbar-root"
-        style="height: 116px; "
       >
         <Logo />
         <div class="d-flex ga-4">
@@ -59,10 +58,14 @@ onMounted(() => {
   .navbar-root {
     margin-top: 80px !important;
     flex-direction: column !important;
-    gap: 5px !important;
     border-radius: 50px !important;
+    height: 190px !important;
     padding: 10px !important;
   }
+}
+
+.navbar-root {
+  height: 116px;
 }
 
 .placeholder {

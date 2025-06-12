@@ -85,6 +85,7 @@ export default defineNuxtConfig({
   },
   routeRules: {
     '/api/**': {
+      // proxy: 'https://ktcourse.ru/',
       proxy: 'http://84.201.151.242:8080/v1/**',
     },
   },
