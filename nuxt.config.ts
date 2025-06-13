@@ -86,6 +86,7 @@ export default defineNuxtConfig({
   },
   routeRules: {
     "/api/**": {
+      // proxy: 'https://ktcourse.ru/',
       proxy: "http://84.201.151.242:8080/v1/**",
     },
   },
@@ -106,7 +107,12 @@ export default defineNuxtConfig({
     locales: locales.map(({ key }) => key),
     defaultLocale: LocaleKey.RU,
     strategy: "no_prefix",
-    detectBrowserLanguage: false,
+    detectBrowserLanguage: {
+      useCookie: true,
+      cookieKey: "lang",
+      alwaysRedirect: false,
+      fallbackLocale: LocaleKey.RU,
+    },
   },
   pinia: {
     storesDirs: ["./stores/**"],

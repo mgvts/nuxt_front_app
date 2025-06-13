@@ -1,60 +1,77 @@
 <script setup lang="ts">
-import { api } from "~/composables/api";
-import type { Profile } from "~/types/profile";
+import { api } from '~/composables/api'
+import type { Profile } from '~/types/profile'
 
-const { login } = useCookies();
-const avatarUrl = ref<Profile["avatarUrl"] | undefined>(undefined);
+const { login } = useCookies()
+const avatarUrl = ref<Profile['avatarUrl'] | undefined>(undefined)
 
-const isAuth = computed(() => !!login.value);
-const loginValue = computed(() => login.value || "");
+const loginValue = computed(() => login.value || '')
 
 const getIcon = computed(() =>
-  isAuth.value ? "mdi-account" : "mdi-account-outline"
-);
+  login.value ? 'mdi-account' : 'mdi-account-outline',
+)
 const getPath = computed(() =>
-  isAuth.value && login.value ? `/profiles/${login.value}` : "/auth"
-);
+  login.value ? `/profiles/${login.value}` : '/auth',
+)
 
 // Load avatar when logged in
 onMounted(async () => {
-  if (isAuth.value && login.value) {
+  if (login.value) {
     try {
-      const profile = await api.profile.getProfile(login.value);
-      avatarUrl.value = profile.avatarUrl;
-    } catch (e) {
-      console.error("Failed to load avatar:", e);
+      const profile = await api.profile.getProfile(login.value)
+      avatarUrl.value = profile.avatarUrl
+    }
+    catch (e) {
+      console.error('Failed to load avatar:', e)
     }
   }
-});
+})
 
 // Watch for auth state changes
-watch(isAuth, async (newIsAuth) => {
+watch(login, async (newIsAuth) => {
   if (newIsAuth && login.value) {
     try {
-      const profile = await api.profile.getProfile(login.value);
-      avatarUrl.value = profile.avatarUrl;
-    } catch (e) {
-      console.error("Failed to load avatar:", e);
+      const profile = await api.profile.getProfile(login.value)
+      avatarUrl.value = profile.avatarUrl
     }
-  } else {
-    avatarUrl.value = undefined;
+    catch (e) {
+      console.error('Failed to load avatar:', e)
+    }
   }
-});
+  else {
+    avatarUrl.value = undefined
+  }
+})
 </script>
 
 <template>
-  <UILink :to="getPath" class="account-link">
-    <template v-if="isAuth">
-      <div v-if="avatarUrl" class="account-avatar">
-        <img :src="avatarUrl" :alt="loginValue" />
+  <UILink
+    :to="getPath"
+    class="account-link"
+  >
+    <div v-show="login">
+      <div
+        v-if="avatarUrl"
+        class="account-avatar"
+      >
+        <img
+          :src="avatarUrl"
+          :alt="loginValue"
+        >
       </div>
-      <div v-else class="account-avatar placeholder-avatar" />
-    </template>
-    <template v-else>
-      <v-icon color="primary" :size="60" class="account-icon">
-        {{ getIcon }}
-      </v-icon>
-    </template>
+      <div
+        v-else
+        class="account-avatar placeholder-avatar"
+      />
+    </div>
+    <div v-show="!login">
+      <v-icon
+        color="primary"
+        :size="60"
+        class="account-icon"
+        :icon="getIcon"
+      />
+    </div>
   </UILink>
 </template>
 
@@ -86,11 +103,8 @@ watch(isAuth, async (newIsAuth) => {
 }
 
 .placeholder-avatar {
-  background: repeating-conic-gradient(
-      rgba(var(--v-theme-primary), 0.1) 0% 25%,
-      rgba(var(--v-theme-primary), 0.2) 0% 50%
-    )
-    50% / 20px 20px;
+  background: repeating-conic-gradient(rgba(var(--v-theme-primary), 0.1) 0% 25%,
+      rgba(var(--v-theme-primary), 0.2) 0% 50%) 50% / 20px 20px;
 }
 
 .account-icon {
