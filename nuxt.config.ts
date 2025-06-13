@@ -1,3 +1,4 @@
+/* eslint-disable @stylistic/quotes */
 import { LocaleKey, locales } from "./i18n/locales";
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
@@ -10,7 +11,7 @@ export default defineNuxtConfig({
     "@nuxtjs/i18n",
     "@vite-pwa/nuxt",
   ],
-  ssr: true,
+  ssr: false,
   components: [
     {
       path: "~/components/UI/",
@@ -110,10 +111,6 @@ export default defineNuxtConfig({
   pinia: {
     storesDirs: ["./stores/**"],
   },
-  vuetify: {
-    moduleOptions: {},
-    vuetifyOptions: "./vuetify.config.ts",
-  },
   pwa: {
     registerType: "autoUpdate",
     strategies: "generateSW",
@@ -150,11 +147,64 @@ export default defineNuxtConfig({
       ],
     },
     workbox: {
+      globPatterns: [
+        "**/*.{js,css,html,png,svg,ico,jpg,jpeg,json,txt,woff2,woff,ttf,eot,mp3,mp4,webm,webp,avif}",
+      ],
+      runtimeCaching: [
+        {
+          urlPattern: /^\/_nuxt\/.*$/,
+          handler: "StaleWhileRevalidate",
+          options: {
+            cacheName: "nuxt-static",
+            expiration: {
+              maxEntries: 100,
+              maxAgeSeconds: 30 * 24 * 60 * 60,
+            },
+          },
+        },
+        {
+          urlPattern:
+            /\.(?:png|jpg|jpeg|svg|gif|webp|avif|ico|mp3|mp4|webm|woff2?|ttf|eot)$/,
+          handler: "CacheFirst",
+          options: {
+            cacheName: "assets-cache",
+            expiration: {
+              maxEntries: 100,
+              maxAgeSeconds: 30 * 24 * 60 * 60,
+            },
+          },
+        },
+        {
+          urlPattern: /\.(?:js|css)$/,
+          handler: "StaleWhileRevalidate",
+          options: {
+            cacheName: "static-resources",
+            expiration: {
+              maxEntries: 100,
+              maxAgeSeconds: 30 * 24 * 60 * 60,
+            },
+          },
+        },
+        {
+          urlPattern: /.*/,
+          handler: "NetworkFirst",
+          options: {
+            cacheName: "pages-cache",
+            expiration: {
+              maxEntries: 50,
+              maxAgeSeconds: 7 * 24 * 60 * 60,
+            },
+          },
+        },
+      ],
       navigateFallback: "/",
-      globPatterns: ["**/*.{js,css,html,png,svg,ico}"],
     },
     devOptions: {
       enabled: true,
     },
+  },
+  vuetify: {
+    moduleOptions: {},
+    vuetifyOptions: "./vuetify.config.ts",
   },
 });
